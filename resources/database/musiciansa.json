@@ -1,0 +1,58 @@
+{
+    "e3026394-5c3a-4843-b9e4-4acaf5732f92": {
+        "name": "test",
+        "genre": [
+            "Rap"
+        ],
+        "uuid": "e3026394-5c3a-4843-b9e4-4acaf5732f92"
+    },
+    "3ab68c72-7a2c-48c8-931a-5b091957b26d": {
+        "name": "test",
+        "genre": [
+            "Hip hop"
+        ],
+        "uuid": "3ab68c72-7a2c-48c8-931a-5b091957b26d"
+    },
+    "7e0be777-e54c-4a7f-807d-d907ca28b770": {
+        "name": "test",
+        "genre": [
+            "Hip hop"
+        ],
+        "uuid": "7e0be777-e54c-4a7f-807d-d907ca28b770"
+    },
+    "fee1f302-74e1-44a7-b6ad-4b993c0fda29": {
+        "name": "test",
+        "genre": [
+            "Hip hop"
+        ],
+        "uuid": "fee1f302-74e1-44a7-b6ad-4b993c0fda29"
+    },
+    "3d43f71a-2adf-4c4a-976f-a8e622754960": {
+        "name": "w",
+        "genre": [
+            "Metal"
+        ],
+        "uuid": "3d43f71a-2adf-4c4a-976f-a8e622754960"
+    },
+    "3b0e40c9-2f3e-45eb-894f-3cafd99a4f87": {
+        "name": "w",
+        "genre": [
+            "Metal"
+        ],
+        "uuid": "3b0e40c9-2f3e-45eb-894f-3cafd99a4f87"
+    },
+    "b906188d-ed32-4a76-bd27-acce752391cf": {
+        "name": "w",
+        "genre": [
+            "Metal"
+        ],
+        "uuid": "b906188d-ed32-4a76-bd27-acce752391cf"
+    },
+    "5a9507bd-12e5-4b42-92bf-8828687e1397": {
+        "name": "test",
+        "genre": [
+            "Hip hop"
+        ],
+        "uuid": "5a9507bd-12e5-4b42-92bf-8828687e1397"
+    }
+}
