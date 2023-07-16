@@ -15,14 +15,14 @@
         <?php echo "Event ticketPrice: " . $event->ticketPrice; ?> <br>
 
         <hr>
-        <form method="post" action="/events/remove/<?php echo $event->uuid; ?>">
+        <form method="post" action="/events/remove/<?php echo $event->id; ?>">
             @csrf
             @method('DELETE')
 
             <input type="submit" value="Remove event">
         </form>
 
-        <a href="/events/edit/<?php echo $event->uuid; ?>">Edit event</a>
+        <a href="/events/edit/<?php echo $event->id; ?>">Edit event</a>
         <hr>
     </article>
 </body>

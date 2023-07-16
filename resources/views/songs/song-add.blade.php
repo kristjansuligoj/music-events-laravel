@@ -30,7 +30,7 @@
     <label for="genre3">Rap</label><br><hr>
 
     <?php foreach($musicians as $musician): ?>
-        <input type="radio" name="musician" value="<?php echo $musician->uuid; ?>">
+        <input type="radio" name="musician" value="<?php echo $musician->id; ?>">
         <label for=""><?php echo $musician->name; ?></label><br>
     <?php endforeach; ?><hr>
 
