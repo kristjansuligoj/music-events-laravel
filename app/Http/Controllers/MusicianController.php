@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CopyMusician;
 use App\Models\Musician;
 use Illuminate\Http\Request;
 
 class MusicianController extends Controller
 {
     public function allMusicians() {
-        $musician = new Musician();
-
         return view('musicians/musicians', [
-            'musicians' => $musician->all()
+            'musicians' => Musician::all()
         ]);
     }
 
@@ -20,39 +19,45 @@ class MusicianController extends Controller
     }
 
     public function getMusician($id) {
-        $musician = new Musician();
-
         return view('musicians/musician',[
-            'musician' => $musician->find($id)
+            'musician' => Musician::with('genres')->find($id)
         ]);
     }
 
     public function editMusicianForm($id) {
-        $musician = new Musician();
-
         return view('musicians/musician-edit', [
-            'musician' => $musician->find($id)
+            'musician' => Musician::find($id)
         ]);
     }
 
     public function addMusician(Request $request) {
-        $musician = Musician::createFromArray($request->all());
-        $musician->add();
+        $musician = new Musician();
+        $musician->name = $request->name;
+        // $musician->image = $request->image;
+        $musician->image = "test.png";
+        $musician->save();
+
+        // Adds genres to the pivot table
+        $musician->genres()->sync(genreToIndex($request->genre));
 
         return redirect('/musicians');
     }
 
     public function editMusician($id, Request $request) {
-        $musician = Musician::createFromArray($request->all());
-        $musician->uuid = $id;
-        $musician->edit();
+        $requestData = $request->except(['_token', "_method"]);
+
+        $musician = Musician::find($id);
+        $musician->update($requestData);
+
+        // Updates genres in the pivot table
+        $musician->genres()->sync(genreToIndex($request->genre));
 
         return redirect('/musicians');
     }
 
     public function deleteMusician($id) {
-        $musician = new Musician();
-        $musician->remove($id);
+        $musician = Musician::find($id);
+        $musician->delete();
 
         return redirect('/musicians');
     }

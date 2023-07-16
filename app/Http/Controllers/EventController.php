@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Musician;
+use App\Models\CopyMusician;
 use App\Models\Event;
+use App\Models\EventCopy;
+use App\Models\Song;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
     public function allEvents() {
-        $event = new Event();
-
         return view('events/events',[
-            'events' => $event->all()
+            'events' => Event::all()
         ]);
     }
 
@@ -21,41 +21,47 @@ class EventController extends Controller
     }
 
     public function getEvent($id) {
-        $event = new Event();
-
         return view('events/event',[
-            'event' => $event->find($id)
+            'event' => Event::with('musicians')->find($id)
         ]);
     }
 
     public function editEventForm($id) {
-        $event = new Event();
-        $musicians = new Musician();
-
         return view('events/event-edit', [
-            'event' => $event->find($id),
-            'musicians' => $musicians->all(),
+            'event' => Event::with('musicians')->find($id),
         ]);
     }
 
     public function addEvent(Request $request) {
-        $event = Event::createFromArray($request->all());
-        $event->add();
+        $event = new Event();
+        $event->name = $request->name;
+        $event->address = $request->address;
+        $event->date = $request->date;
+        $event->time = $request->time;
+        $event->description = $request->description;
+        $event->ticketPrice = $request->ticketPrice;
+        $event->save();
+
+        // Adds genres to the pivot table
+        $event->musicians()->sync($request->musicians);
 
         return redirect('/events');
     }
 
     public function editEvent($id, Request $request) {
-        $event = Event::createFromArray($request->all());
-        $event->uuid = $id;
-        $event->edit();
+        $requestData = $request->except(['_token', "_method"]);
+
+        $event = Event::find($id);
+        $event->update($requestData);
+
+        $event->musicians()->sync($request->musicians);
 
         return redirect('/events');
     }
 
     public function deleteEvent($id) {
-        $event = new Event();
-        $event->remove($id);
+        $event = Event::find($id);
+        $event->delete();
 
         return redirect('/events');
     }
