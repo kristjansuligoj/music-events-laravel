@@ -2,29 +2,27 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
 class Event extends Model
 {
-    public string $name;
+    use HasUuids;
 
-    public string $address;
+    public $timestamps = false;
 
-    public string $date;
+    protected $fillable = [
+        'name',
+        'address',
+        'date',
+        'time',
+        'description',
+        'ticketPrice',
+    ];
 
-    public string $time;
-
-    public string $description;
-
-    public int $ticketPrice;
-
-    public static function createFromArray(array $data): Event {
-        $event = new Event();
-        $event->name = $data['name'];
-        $event->address = $data['address'];
-        $event->date = $data['date'];
-        $event->time = $data['time'];
-        $event->description = $data['description'];
-        $event->ticketPrice = $data['ticketPrice'];
-
-        return $event;
+    public function musicians()
+    {
+        return $this->belongsToMany(Musician::class, 'events_musicians', 'event_id', 'musician_id');
     }
 }
