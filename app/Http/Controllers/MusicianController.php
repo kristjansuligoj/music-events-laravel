@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CopyMusician;
 use App\Models\Musician;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class MusicianController extends Controller
@@ -45,10 +46,12 @@ class MusicianController extends Controller
             ]);
         }
 
+        $fileName = time() . '.' . $request->image->extension();
+        $request->image->move(public_path('images'), $fileName);
+
         $musician = new Musician();
         $musician->name = $request->name;
-        // $musician->image = $request->image;
-        $musician->image = "test.png";
+        $musician->image = $fileName;
         $musician->save();
 
         // Adds genres to the pivot table
@@ -69,6 +72,10 @@ class MusicianController extends Controller
 
         $requestData = $request->except(['_token', "_method"]);
 
+        $fileName = time() . '.' . $request->image->extension();
+        $request->image->move(public_path('images'), $fileName);
+        $requestData['image'] = $fileName;
+
         $musician = Musician::find($id);
         $musician->update($requestData);
 
@@ -81,6 +88,10 @@ class MusicianController extends Controller
     public function deleteMusician($id) {
         $musician = Musician::find($id);
         $musician->delete();
+
+        if(File::exists('images/' . $musician->image)) {
+            File::delete('images/' . $musician->image);
+        }
 
         return redirect('/musicians');
     }

@@ -15,6 +15,7 @@ class Musician extends Model
     protected $fillable = [
         'name',
         'age',
+        'image',
     ];
 
     public function genres()

@@ -5,8 +5,8 @@
 
 <?php foreach($musicians as $musician): ?>
     <article>
-        <b>Musician name: <?php echo $musician->name; ?></b><br>
-        <a href="/musicians/<?php echo $musician->id; ?>">Click to see more details!</a>
+        <b>Musician name: {{ $musician->name }}</b><br>
+        <a href="/musicians/{{ $musician->id }}">Click to see more details!</a>
     </article>
     <hr>
 <?php endforeach;

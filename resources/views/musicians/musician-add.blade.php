@@ -1,7 +1,10 @@
 <a href="/musicians">Back</a><br>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     @csrf <!-- Validates the request for cross-site request forgery (session token) -->
+    <?php if(isset($musician['name'])) { ?> <input type="hidden" name="_method" value="PATCH"> <?php } ?>
+
+    <input type="file" class="form-control" name="image" /><br>
 
     <label for="name">Name: </label><br>
     <input required type="text" name="name" value="{{ old('name', $musician['name'] ?? '') }}">
@@ -31,5 +34,5 @@
     <label for="genre3">Electronic</label><br><hr>
     {{ displayErrorIfExists($errors, "genre") }}
 
-    <input type="submit" value="Add musician">
+    <input type="submit" value="<?php if(isset($musician['name'])) echo "Edit musician"; else echo "Add musician"; ?>">
 </form>
