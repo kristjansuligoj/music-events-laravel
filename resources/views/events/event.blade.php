@@ -12,7 +12,13 @@
 
         <?php echo "Event description: " . $event->description; ?> <br>
 
-        <?php echo "Event ticketPrice: " . $event->ticketPrice; ?> <br>
+        <?php echo "Event ticket price: " . $event->ticketPrice; ?> <br>
+
+        <?php echo "Event musicians: " ?> <br>
+
+        <?php foreach($event->musicians as $musician): ?>
+            <label for=""><?php echo $musician->name; ?></label><br>
+        <?php endforeach; ?>
 
         <hr>
         <form method="post" action="/events/remove/<?php echo $event->id; ?>">
