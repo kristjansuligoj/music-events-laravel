@@ -8,6 +8,8 @@ use App\Models\Musician;
 use App\Models\Song;
 use App\Models\SongCopy;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class SongController extends Controller
 {
@@ -19,7 +21,9 @@ class SongController extends Controller
 
     public function addSongForm() {
         return view('songs/song-add', [
-            'musicians' => Musician::all()
+            'song' => [],
+            'musicians' => Musician::all(),
+            'errors' => [],
         ]);
     }
 
@@ -30,13 +34,36 @@ class SongController extends Controller
     }
 
     public function editSongForm($id) {
-        return view('songs/song-edit', [
-            'song' => Song::with('authors')->find($id),
-            'musicians' => Musician::all()
+        $song = Song::with('authors')->find($id);
+
+        // Because authors are saved separately, we need to concatenate them to a string
+        $authorsAsString = "";
+        foreach($song->authors as $author) {
+            $authorsAsString .= $author->name . ",";
+        }
+        $authorsAsString = substr($authorsAsString, 0, -1);
+
+        // Save the authors as a single string
+        $song['authors'] = $authorsAsString;
+
+        return view('songs/song-add', [
+            'song' => $song,
+            'musicians' => Musician::all(),
+            'errors' => []
         ]);
     }
 
     public function addSong(Request $request) {
+        $validated = $this->validateData($request);
+
+        if ($validated->fails()) {
+            return view('songs/song-add', [
+                'song' => [],
+                'musicians' => Musician::all(),
+                'errors' => $validated->errors()->messages(),
+            ]);
+        }
+
         $song = new Song();
         $song->musician_id = $request->musician;
         $song->title = $request->title;
@@ -47,9 +74,10 @@ class SongController extends Controller
         // Adds genres to the pivot table
         $song->genres()->sync(genreToIndex($request->genre));
 
-        // Adds authors to the pivot table
-        $authorNames = explode(',', $request->authors); // Assuming author names are comma-separated
+        // Explode the authors by comma
+        $authorNames = explode(',', $request->authors);
 
+        // Save every author to the table
         foreach ($authorNames as $authorName) {
             $author = new Author();
             $author->name = trim($authorName); // Trim any whitespace around the author name
@@ -60,6 +88,16 @@ class SongController extends Controller
     }
 
     public function editSong($id, Request $request) {
+        $validated = $this->validateData($request);
+
+        if ($validated->fails()) {
+            return view('songs/song-add', [
+                'song' => $request->all(),
+                'musicians' => Musician::all(),
+                'errors' => $validated->errors()->messages(),
+            ]);
+        }
+
         $requestData = $request->except(['_token', "_method"]);
         $requestData['musician_id'] = $requestData['musician'];
         unset($requestData['musician']);
@@ -77,5 +115,15 @@ class SongController extends Controller
         $song->delete();
 
         return redirect('/songs');
+    }
+
+    public function validateData($data) {
+        return Validator::make($data->all(), [
+            'musician' => 'required',
+            'title' => ['required', 'unique:songs,title'],
+            'length' => ['required', 'integer', 'between:10,300'],
+            'releaseDate' => ['required', 'date', 'before:today'],
+            'authors' => ['required'],
+        ]);
     }
 }
