@@ -4,10 +4,10 @@
 <body>
     <?php foreach($events as $event): ?>
         <article>
-            <?php echo "Event name: " . $event->name; ?> <br>
-            <?php echo "Event date: " . $event->date; ?> <br>
-            <?php echo "Event time: " . $event->time; ?> <br>
-            <a href="/events/<?php echo $event->id; ?>">Click to see more details!</a>
+            {{ "Event name: " . $event->name }} <br>
+            {{  "Event date: " . $event->date }} <br>
+            {{  "Event time: " . $event->time }} <br>
+            <a href="/events/{{  $event->id }}">Click to see more details!</a>
         </article>
         <hr>
     <?php endforeach; ?>

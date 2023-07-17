@@ -35,8 +35,8 @@
     {{ displayErrorIfExists($errors, "description") }}
 
     <?php foreach($musicians as $musician): ?>
-    <input type="radio" name="musician" value="<?php echo $musician->id; ?>">
-    <label for=""><?php echo $musician->name; ?></label><br>
+    <input type="radio" name="musician" value="{{ $musician->id }}">
+    <label for="">{{ $musician->name }}</label><br>
     <?php endforeach; ?><hr>
 
     <input type="submit" value="<?php if(isset($event['name'])) echo "Edit event"; else echo "Add event"; ?>">

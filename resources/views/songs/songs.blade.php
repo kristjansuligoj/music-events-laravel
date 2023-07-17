@@ -4,8 +4,8 @@
 <body>
     <?php foreach($songs as $song): ?>
         <article>
-            <?php echo "Song name: " . $song->title; ?> <br>
-            <a href="/songs/<?php echo $song->id ?>">Click to see more details!</a>
+            {{ "Song name: " . $song->title }} <br>
+            <a href="/songs/{{$song->id}}">Click to see more details!</a>
         </article>
         <hr>
     <?php endforeach; ?>

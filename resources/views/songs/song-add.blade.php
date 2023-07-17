@@ -15,7 +15,7 @@
     </label><br><hr>
 
     <label for="length">Length: <br>
-        <input type="number" min="0" name="length" value="<?php echo old('length', $song['length'] ?? ''); ?>">
+        <input type="number" min="0" name="length" value="{{ old('length', $song['length'] ?? '') }}">
         {{ displayErrorIfExists($errors, "length") }}
     </label><br><hr>
 
@@ -47,8 +47,8 @@
     <label for="genre3">Electronic</label><br><hr>
 
     <?php foreach($musicians as $musician): ?>
-        <input type="radio" name="musician" value="<?php echo $musician->id; ?>">
-        <label for=""><?php echo $musician->name; ?></label><br>
+        <input type="radio" name="musician" value="{{ $musician->id }}">
+        <label for="">{{ $musician->name }}</label><br>
     <?php endforeach; ?><hr>
 
     <input type="submit" value="<?php if(isset($song['title'])) echo "Edit song"; else echo "Add song"; ?>">
