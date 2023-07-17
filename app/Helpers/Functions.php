@@ -40,3 +40,7 @@
 
         return $genreIds;
     }
+
+    function displayErrorIfExists($errors, $field) {
+        if(isset($errors[$field])) echo $errors[$field][0];
+    }
