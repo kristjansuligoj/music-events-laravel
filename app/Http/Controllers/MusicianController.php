@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CopyMusician;
 use App\Models\Musician;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class MusicianController extends Controller
 {
@@ -15,7 +16,10 @@ class MusicianController extends Controller
     }
 
     public function addMusicianForm() {
-        return view('musicians/musician-add');
+        return view('musicians/musician-add', [
+            'musicians' => [],
+            'errors' => [],
+        ]);
     }
 
     public function getMusician($id) {
@@ -25,12 +29,22 @@ class MusicianController extends Controller
     }
 
     public function editMusicianForm($id) {
-        return view('musicians/musician-edit', [
-            'musician' => Musician::find($id)
+        return view('musicians/musician-add', [
+            'musician' => Musician::find($id),
+            'errors' => []
         ]);
     }
 
     public function addMusician(Request $request) {
+        $validated = $this->validateData($request);
+
+        if ($validated->fails()) {
+            return view('musicians/musician-add', [
+                'musician' => $request->all(),
+                'errors' => $validated->errors()->messages(),
+            ]);
+        }
+
         $musician = new Musician();
         $musician->name = $request->name;
         // $musician->image = $request->image;
@@ -44,6 +58,15 @@ class MusicianController extends Controller
     }
 
     public function editMusician($id, Request $request) {
+        $validated = $this->validateData($request);
+
+        if ($validated->fails()) {
+            return view('musicians/musician-add', [
+                'musician' => $request->all(),
+                'errors' => $validated->errors()->messages(),
+            ]);
+        }
+
         $requestData = $request->except(['_token', "_method"]);
 
         $musician = Musician::find($id);
@@ -60,5 +83,12 @@ class MusicianController extends Controller
         $musician->delete();
 
         return redirect('/musicians');
+    }
+
+    public function validateData($data) {
+        return Validator::make($data->all(), [
+            'name' => ['required', 'unique:musicians,name'],
+            'genre' => ['required'],
+        ]);
     }
 }
