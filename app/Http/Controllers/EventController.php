@@ -35,9 +35,13 @@ class EventController extends Controller
     }
 
     public function editEventForm($id) {
+        $event = Event::with('musicians')->find($id);
+        $musicians = collect($event['musicians'])->pluck('id')->first();
+        $event['musicians'] = $musicians;
+
         return view('events/event-add', [
             'action' => 'edit',
-            'event' => Event::with('musicians')->find($id),
+            'event' => $event,
             'musicians' => Musician::all(),
             'errors' => [],
         ]);

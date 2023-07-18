@@ -37,6 +37,7 @@ class SongController extends Controller
 
     public function editSongForm($id) {
         $song = Song::with('musicians', 'genres', 'authors')->find($id);
+        $song['musicians'] = collect($song['musician'])->first();
 
         // Transform collection to array
         $genres = collect($song['genres'])->pluck('name')->toArray();
