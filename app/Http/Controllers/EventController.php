@@ -20,6 +20,7 @@ class EventController extends Controller
 
     public function addEventForm() {
         return view('events/event-add', [
+            'action' => 'add',
             'event' => [],
             'musicians' => Musician::all(),
             'errors' => [],
@@ -34,6 +35,7 @@ class EventController extends Controller
 
     public function editEventForm($id) {
         return view('events/event-add', [
+            'action' => 'edit',
             'event' => Event::with('musicians')->find($id),
             'musicians' => Musician::all(),
             'errors' => [],
@@ -45,6 +47,7 @@ class EventController extends Controller
 
         if ($validated->fails()) {
             return view('events/event-add', [
+                'action' => 'add',
                 'event' => $request->all(),
                 'musicians' => Musician::all(),
                 'errors' => $validated->errors()->messages(),
@@ -71,7 +74,8 @@ class EventController extends Controller
 
         if ($validated->fails()) {
             return view('events/event-add', [
-                'event' => $request->all(),
+                'action' => 'edit',
+                'event' => $event,
                 'musicians' => Musician::all(),
                 'errors' => $validated->errors()->messages(),
             ]);

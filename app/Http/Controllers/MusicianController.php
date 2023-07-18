@@ -18,7 +18,8 @@ class MusicianController extends Controller
 
     public function addMusicianForm() {
         return view('musicians/musician-add', [
-            'musicians' => [],
+            'action' => 'add',
+            'musician' => [],
             'errors' => [],
         ]);
     }
@@ -31,7 +32,8 @@ class MusicianController extends Controller
 
     public function editMusicianForm($id) {
         return view('musicians/musician-add', [
-            'musician' => Musician::find($id),
+            'action' => 'edit',
+            'musician' => $musician,
             'errors' => []
         ]);
     }

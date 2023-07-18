@@ -21,6 +21,7 @@ class SongController extends Controller
 
     public function addSongForm() {
         return view('songs/song-add', [
+            'action' => 'add',
             'song' => [],
             'musicians' => Musician::all(),
             'errors' => [],
@@ -47,6 +48,7 @@ class SongController extends Controller
         $song['authors'] = $authorsAsString;
 
         return view('songs/song-add', [
+            'action' => 'edit',
             'song' => $song,
             'musicians' => Musician::all(),
             'errors' => []
@@ -58,7 +60,8 @@ class SongController extends Controller
 
         if ($validated->fails()) {
             return view('songs/song-add', [
-                'song' => [],
+                'action' => 'add',
+                'song' => $request->all(),
                 'musicians' => Musician::all(),
                 'errors' => $validated->errors()->messages(),
             ]);
@@ -92,6 +95,7 @@ class SongController extends Controller
 
         if ($validated->fails()) {
             return view('songs/song-add', [
+                'action' => 'edit',
                 'song' => $request->all(),
                 'musicians' => Musician::all(),
                 'errors' => $validated->errors()->messages(),
