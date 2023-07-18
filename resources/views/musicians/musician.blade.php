@@ -1,8 +1,8 @@
-<a href="/">Back</a><br>
+@props(["musician"])
 
 <body>
-    <b>Image: </b><img src="{{ asset('images/' .  $musician->image) }}" width="300px" height="300px"><br>
-    <b>Name: </b>{{ $musician?->name }} <br>
+    <b>Image: </b><br><img src="{{ asset('images/' .  $musician->image) }}" width="300px" height="300px"><br>
+    <b>Name: </b><br>{{ $musician?->name }} <br>
 
     <b>Genre:</b><br>
     <?php echo printArray($musician->genres, "name") ?>
