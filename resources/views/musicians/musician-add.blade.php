@@ -2,9 +2,11 @@
 
 <form method="post" enctype="multipart/form-data">
     @csrf <!-- Validates the request for cross-site request forgery (session token) -->
-    <?php if(isset($musician['name'])) { ?> <input type="hidden" name="_method" value="PATCH"> <?php } ?>
+    @isset($musician['id'])
+        @method('PATCH')
+    @endisset
 
-    <input type="file" class="form-control" name="image" /><br>
+    <input type="file" class="form-control" name="image" required/><br>
 
     <label for="name">Name: </label><br>
     <input required type="text" name="name" value="{{ old('name', $musician['name'] ?? '') }}">
@@ -21,18 +23,5 @@
         <x-genre-checkboxes></x-genre-checkboxes>
     <?php } ?>
 
-    <input type="checkbox" id="genre4" name="genre[]" value="Country">
-    <label for="genre3">Country</label><br>
-
-    <input type="checkbox" id="genre5" name="genre[]" value="Hip hop">
-    <label for="genre3">Hip hop</label><br>
-
-    <input type="checkbox" id="genre6" name="genre[]" value="Jazz">
-    <label for="genre3">Jazz</label><br>
-
-    <input type="checkbox" id="genre7" name="genre[]" value="Electronic">
-    <label for="genre3">Electronic</label><br><hr>
-    {{ displayErrorIfExists($errors, "genre") }}
-
-    <input type="submit" value="<?php if(isset($musician['name'])) echo "Edit musician"; else echo "Add musician"; ?>">
+    <input type="submit" value="{{ isset($musician['id']) ? 'Edit musician' : 'Add musician' }}">
 </form>

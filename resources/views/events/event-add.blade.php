@@ -2,7 +2,9 @@
 
 <form method="post">
     @csrf <!-- Validates the request for cross-site request forgery (session token) -->
-    <?php if(isset($event['name'])) { ?> <input type="hidden" name="_method" value="PATCH"> <?php } ?>
+    @isset($event['id'])
+        @method('PATCH')
+    @endisset
 
     <label for="date">Date: <br>
         <input type="date" name="date" required value="{{ old('date', $event['date'] ?? '') }}">
@@ -36,5 +38,5 @@
 
     <x-radio-buttons :data="$musicians"/>
 
-    <input type="submit" value="<?php if(isset($event['name'])) echo "Edit event"; else echo "Add event"; ?>">
+    <input type="submit" value="{{ isset($event['id']) ? 'Edit event' : 'Add event' }}">
 </form>
