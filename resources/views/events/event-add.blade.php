@@ -36,7 +36,14 @@
     </label><br><hr>
     {{ displayErrorIfExists($errors, "description") }}
 
-    <x-radio-buttons :data="$musicians"/>
+    @php
+        $data = [
+            'selectedMusician' => isset($event['musicians']) ? $event['musicians'] : null,
+            'musicians' => $musicians,
+        ];
+    @endphp
+
+    <x-radio-buttons :data="$data"/>
 
     <input type="submit" value="{{ isset($event['id']) ? 'Edit event' : 'Add event' }}">
 </form>

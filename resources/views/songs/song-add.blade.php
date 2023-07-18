@@ -6,7 +6,14 @@
         @method('PATCH')
     @endisset
 
-    <x-radio-buttons :data="$musicians"/>
+    @php
+        $data = [
+            'selectedMusician' => isset($song['musicians']) ? $song['musicians'] : null,
+            'musicians' => $musicians,
+        ];
+    @endphp
+
+    <x-radio-buttons :data="$data"/>
 
     <label for="title">Title: <br>
         <input required type="text" name="title" value="{{ old('title', $song['title'] ?? '') }}">
