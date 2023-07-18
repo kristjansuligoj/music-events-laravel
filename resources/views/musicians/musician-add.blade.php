@@ -11,15 +11,15 @@
     {{ displayErrorIfExists($errors, "name") }}
     <br>
 
-    <label for="genre">Genre: </label><br>
-    <input type="checkbox" id="genre1" name="genre[]" value="Rock">
-    <label for="genre1">Rock</label><br>
+    <?php if(isset($musician['genres'])) {
+        $data['genres'] = $musician['genres'];
+        $data['errors'] = $errors;
+        ?>
 
-    <input type="checkbox" id="genre2" name="genre[]" value="Metal">
-    <label for="genre2">Metal</label><br>
-
-    <input type="checkbox" id="genre3" name="genre[]" value="Rap">
-    <label for="genre3">Rap</label><br>
+        <x-genre-checkboxes :data="$data"></x-genre-checkboxes>
+    <?php } else { ?>
+        <x-genre-checkboxes></x-genre-checkboxes>
+    <?php } ?>
 
     <input type="checkbox" id="genre4" name="genre[]" value="Country">
     <label for="genre3">Country</label><br>

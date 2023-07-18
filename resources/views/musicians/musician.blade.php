@@ -8,17 +8,14 @@
     <?php echo printArray($musician->genres, "name") ?>
 
     <hr>
-    <form method="post" action="/musicians/remove/{{ $musician->id }}">
-        @csrf
-        @method('DELETE')
+    @php
+        $element = [
+            'name' => 'musician',
+            'id' => $musician->id,
+        ];
+    @endphp
 
-        <input type="submit" value="Remove musician">
-    </form>
-
-    <a href="/musicians/edit/{{ $musician->id }}">Edit musician</a>
-
-    <hr>
-
+    <x-buttons :element="$element" />
 </body>
 
 

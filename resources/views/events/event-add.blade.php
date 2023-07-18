@@ -30,14 +30,11 @@
     </label><br><hr>
 
     <label for="description">Description: <br>
-        <textarea name="description"></textarea>
+        <textarea name="description">{{ old('description', $event['description'] ?? '') }}</textarea>
     </label><br><hr>
     {{ displayErrorIfExists($errors, "description") }}
 
-    <?php foreach($musicians as $musician): ?>
-    <input type="radio" name="musician" value="{{ $musician->id }}">
-    <label for="">{{ $musician->name }}</label><br>
-    <?php endforeach; ?><hr>
+    <x-radio-buttons :data="$musicians"/>
 
     <input type="submit" value="<?php if(isset($event['name'])) echo "Edit event"; else echo "Add event"; ?>">
 </form>

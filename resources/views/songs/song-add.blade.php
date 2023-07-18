@@ -24,24 +24,14 @@
         {{ displayErrorIfExists($errors, "authors") }}
     </label><br><hr>
 
-    <label for="genre">Genre: </label><br>
-    <input type="checkbox" id="genre1" name="genre[]" value="Rock">
-    <label for="genre1">Rock</label><br>
+    @php
+        $data = [
+            'genres' => isset($song['genres']) ? $song['genres'] : null,
+            'errors' => $errors,
+        ];
+    @endphp
 
-    <input type="checkbox" id="genre2" name="genre[]" value="Metal">
-    <label for="genre2">Metal</label><br>
-
-    <input type="checkbox" id="genre3" name="genre[]" value="Rap">
-    <label for="genre3">Rap</label><br>
-
-    <input type="checkbox" id="genre4" name="genre[]" value="Country">
-    <label for="genre3">Country</label><br>
-
-    <input type="checkbox" id="genre5" name="genre[]" value="Hip hop">
-    <label for="genre3">Hip hop</label><br>
-
-    <input type="checkbox" id="genre6" name="genre[]" value="Jazz">
-    <label for="genre3">Jazz</label><br>
+    <x-genre-checkboxes :data="$data" />
 
     <input type="checkbox" id="genre7" name="genre[]" value="Electronic">
     <label for="genre3">Electronic</label><br><hr>

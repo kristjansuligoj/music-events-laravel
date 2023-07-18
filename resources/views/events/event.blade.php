@@ -20,16 +20,15 @@
             <label for=""><?php echo $musician->name; ?></label><br>
         <?php endforeach; ?>
 
-        <hr>
-        <form method="post" action="/events/remove/<?php echo $event->id; ?>">
-            @csrf
-            @method('DELETE')
+         <hr>
+        @php
+            $element = [
+                'name' => 'event',
+                'id' => $event->id,
+            ];
+        @endphp
 
-            <input type="submit" value="Remove event">
-        </form>
-
-        <a href="/events/edit/<?php echo $event->id; ?>">Edit event</a>
-        <hr>
+        <x-buttons :element="$element" />
     </article>
 </body>
 

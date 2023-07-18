@@ -23,11 +23,11 @@
             @csrf
             @method("DELETE")
 
-            <input type="submit" value="Remove song">
-        </form>
+@php
+    $element = [
+        'name' => 'song',
+        'id' => $song->id,
+    ];
+@endphp
 
-        <a href="/songs/edit/{{ $song->id }}">Edit song</a>
-
-        <hr>
-    </article>
-</body>
+<x-buttons :element="$element" />
