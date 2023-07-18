@@ -36,7 +36,11 @@ class SongController extends Controller
     }
 
     public function editSongForm($id) {
-        $song = Song::with('authors')->find($id);
+        $song = Song::with('musicians', 'genres', 'authors')->find($id);
+
+        // Transform collection to array
+        $genres = collect($song['genres'])->pluck('name')->toArray();
+        $song['genres'] = $genres;
 
         // Because authors are saved separately, we need to concatenate them to a string
         $authorsAsString = "";
@@ -68,12 +72,8 @@ class SongController extends Controller
             ]);
         }
 
-        $song = new Song();
-        $song->musician_id = $request->musician;
-        $song->title = $request->title;
-        $song->length = $request->length;
-        $song->releaseDate = $request->releaseDate;
-        $song->save();
+        $songData = $request->except(['genre', 'authors']);
+        $song = Song::create($songData);
 
         // Adds genres to the pivot table
         $song->genres()->sync(genreToIndex($request->genre));

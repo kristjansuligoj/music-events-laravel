@@ -55,17 +55,11 @@ class EventController extends Controller
             ]);
         }
 
-        $event = new Event();
-        $event->name = $request->name;
-        $event->address = $request->address;
-        $event->date = $request->date;
-        $event->time = $request->time;
-        $event->description = $request->description;
-        $event->ticketPrice = $request->ticketPrice;
-        $event->save();
+        $eventData = $request->all();
+        $event = Event::create($eventData);
 
         // Adds genres to the pivot table
-        $event->musicians()->sync($request->musician);
+        $event->musicians()->sync($eventData['musician']);
 
         return redirect('/events');
     }
@@ -74,6 +68,8 @@ class EventController extends Controller
         $validated = $this->validateData($request, $id);
 
         if ($validated->fails()) {
+            $event = $request->all();
+            $event['id'] = $id;
             return view('events/event-add', [
                 'action' => 'edit',
                 'event' => $event,
@@ -87,7 +83,7 @@ class EventController extends Controller
         $event = Event::find($id);
         $event->update($requestData);
 
-        $event->musicians()->sync($request->musicians);
+        $event->musicians()->sync($request->musician);
 
         return redirect('/events');
     }

@@ -32,6 +32,10 @@ class MusicianController extends Controller
     }
 
     public function editMusicianForm($id) {
+        $musician = Musician::with('genres')->find($id)->toArray();
+        $genres = collect($musician['genres'])->pluck('name')->toArray();
+        $musician['genres'] = $genres;
+
         return view('musicians/musician-add', [
             'action' => 'edit',
             'musician' => $musician,
@@ -49,16 +53,17 @@ class MusicianController extends Controller
             ]);
         }
 
+        // Save the image
         $fileName = time() . '.' . $request->image->extension();
         $request->image->move(public_path('images'), $fileName);
 
-        $musician = new Musician();
-        $musician->name = $request->name;
-        $musician->image = $fileName;
-        $musician->save();
+        // Create the musician
+        $musicianData = $request->all();
+        $musicianData['image'] = $fileName;
+        $musician = Musician::create($musicianData);
 
         // Adds genres to the pivot table
-        $musician->genres()->sync(genreToIndex($request->genre));
+        $musician->genres()->sync(genreToIndex($musicianData['genre']));
 
         return redirect('/musicians');
     }
