@@ -88,7 +88,7 @@ class SongController extends Controller
     }
 
     public function editSong($id, Request $request) {
-        $validated = $this->validateData($request);
+        $validated = $this->validateData($request, $id);
 
         if ($validated->fails()) {
             return view('songs/song-add', [
@@ -117,7 +117,16 @@ class SongController extends Controller
         return redirect('/songs');
     }
 
-    public function validateData($data) {
+    public function validateData($data, $id=null) {
+        if ($id != null) {
+            return Validator::make($data->all(), [
+                'musician' => 'required',
+                'title' => ['required', 'unique:songs,title,'.$id],
+                'length' => ['required', 'integer', 'between:10,300'],
+                'releaseDate' => ['required', 'date', 'before:today'],
+                'authors' => ['required'],
+            ]);
+        }
         return Validator::make($data->all(), [
             'musician' => 'required',
             'title' => ['required', 'unique:songs,title'],

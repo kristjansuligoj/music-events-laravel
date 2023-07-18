@@ -61,7 +61,7 @@ class MusicianController extends Controller
     }
 
     public function editMusician($id, Request $request) {
-        $validated = $this->validateData($request);
+        $validated = $this->validateData($request, $id);
 
         if ($validated->fails()) {
             return view('musicians/musician-add', [
@@ -96,10 +96,18 @@ class MusicianController extends Controller
         return redirect('/musicians');
     }
 
-    public function validateData($data) {
+    public function validateData($data, $id=null) {
+        if ($id != null) {
+            return Validator::make($data->all(), [
+                'name' => ['required', 'unique:musicians,name,'.$id],
+                'genre' => ['required'],
+                'image' => ['required'],
+            ]);
+        }
         return Validator::make($data->all(), [
             'name' => ['required', 'unique:musicians,name'],
             'genre' => ['required'],
+            'image' => ['required'],
         ]);
     }
 }
