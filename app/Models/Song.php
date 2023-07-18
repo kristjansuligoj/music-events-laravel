@@ -15,7 +15,7 @@ class Song extends Model
     protected $fillable = [
         'musician',
         'title',
-        'songLength',
+        'length',
         'releaseDate',
     ];
 
@@ -29,8 +29,8 @@ class Song extends Model
         return $this->hasMany(Author::class);
     }
 
-    public function musician()
+    public function musicians()
     {
-        return $this->belongsTo(Musician::class);
+        return $this->hasOne(Musician::class, 'id', 'musician');
     }
 }
