@@ -25,8 +25,9 @@ class MusicianController extends Controller
     }
 
     public function getMusician($id) {
-        return view('musicians/musician',[
-            'musician' => Musician::with('genres')->find($id)
+        return view('components/display',[
+            'component' => "musician",
+            'data' => Musician::with('genres')->find($id)
         ]);
     }
 

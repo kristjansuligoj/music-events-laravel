@@ -28,8 +28,9 @@ class EventController extends Controller
     }
 
     public function getEvent($id) {
-        return view('events/event',[
-            'event' => Event::with('musicians')->find($id)
+        return view('components/display',[
+            'component' => "event",
+            'data' => Event::with('musicians')->find($id)
         ]);
     }
 
