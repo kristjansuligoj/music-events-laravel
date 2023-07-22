@@ -1,28 +1,33 @@
-@props(['song'])
+@extends('layout.main')
+@section('page-content')
+    @props(['song'])
+    <div class="container">
+        @php
+            $data['name'] = 'song';
+            $data['id'] = $song->id;
+        @endphp
 
-<div>
-    <b>Name:</b> {{ $song->title }}<br>
+        <x-buttons :data="$data"/>
+        <hr>
 
-    <b>Genre:</b><br>
-    <?php echo printArray($song->genres, "name"); ?>
+        <div class="container">
+            <b>Name:</b> {{ $song->title }}<br>
 
-    <b>Length:</b> {{ $song->length }} <br>
+            <b>Genre:</b><br>
+            <?php echo printArray($song->genres, "name"); ?>
 
-    <b>Release date:</b> {{ $song->releaseDate }} <br>
+            <b>Length:</b> {{ $song->length }} <br>
 
-    <b>Authors:</b><br>
-    <?php echo printArray($song->authors, "name"); ?>
+            <b>Release date:</b> {{ $song->releaseDate }} <br>
 
-    @if (isset($song->musician->name))
-        <b>Musician:</b> {{ $song->musician->name }} <br>
-    @else
-        <b>No musician selected</b>
-    @endif
+            <b>Authors:</b><br>
+            <?php echo printArray($song->authors, "name"); ?>
 
-    @php
-        $data['name'] = 'song';
-        $data['id'] = $song->id;
-    @endphp
-
-    <x-buttons :data="$data" />
-</div>
+            @if (isset($song->musician->name))
+                <b>Musician:</b> {{ $song->musician->name }} <br>
+            @else
+                <b>No musician selected</b>
+            @endif
+        </div>
+    </div>
+@endsection
