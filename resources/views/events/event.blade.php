@@ -1,34 +1,32 @@
 @props(['event'])
 
-<body>
+<div>
     <article>
-         {{ "Event name: " . $event['name'] }} <br>
+        {{ "Event name: " . $event->name }} <br>
 
-         {{ "Event address: " . $event['address']  }}<br>
+        {{ "Event address: " . $event->address  }}<br>
 
-         {{ "Event date: " . $event['date'] }} <br>
+        {{ "Event date: " . $event->date }} <br>
 
-         {{ "Event time: " . $event['time'] }} <br>
+        {{ "Event time: " . $event->time }} <br>
 
-         {{ "Event description: " . $event['description'] }} <br>
+        {{ "Event description: " . $event->description }} <br>
 
-         {{ "Event ticket price: " . $event['ticketPrice'] }} <br>
+        {{ "Event ticket price: " . $event->ticketPrice }} <br>
 
-         {{ "Event musicians: " }} <br>
+        {{ "Event musicians: " }} <br>
 
-         <?php foreach($event['musicians'] as $musician): ?>
-             <label for=""><?php echo $musician['name']; ?></label><br>
-         <?php endforeach; ?>
+        @foreach($event->musicians as $musician)
+            <label for="">{{ $musician->name }}</label><br>
+        @endforeach
+        <hr>
 
-         <hr>
         @php
-            $element = [
-                'name' => 'event',
-                'id' => $event->id,
-            ];
+            $data['name'] = 'event';
+            $data['id'] = $event->id;
         @endphp
 
-        <x-buttons :element="$element" />
+        <x-buttons :data="$data" />
     </article>
-</body>
+</div>
 

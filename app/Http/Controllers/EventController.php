@@ -20,10 +20,8 @@ class EventController extends Controller
 
     public function addEventForm() {
         return view('events/event-add', [
-            'action' => 'add',
-            'event' => [],
+            'event' => null,
             'musicians' => Musician::all(),
-            'errors' => [],
         ]);
     }
 
@@ -35,13 +33,8 @@ class EventController extends Controller
     }
 
     public function editEventForm($id) {
-        $event = Event::with('musicians')->find($id);
-        $musicians = collect($event['musicians'])->pluck('id')->first();
-        $event['musicians'] = $musicians;
-
         return view('events/event-add', [
-            'action' => 'edit',
-            'event' => $event,
+            'event' => Event::with('musicians')->findOrFail($id),
             'musicians' => Musician::all(),
             'errors' => [],
         ]);
