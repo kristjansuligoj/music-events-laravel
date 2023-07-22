@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Author;
 use Illuminate\Support\Facades\File;
 
 function printArray($data, $field): string {
@@ -57,4 +58,24 @@ function printArray($data, $field): string {
 
     function displayErrorIfExists($errors, $field) {
         if(isset($errors[$field])) echo $errors[$field][0];
+    }
+
+    function authorsToString($authors): string {
+        $authorsAsString = "";
+        foreach($authors as $author) {
+            $authorsAsString .= $author->name . ",";
+        }
+        return substr($authorsAsString, 0, -1);
+    }
+
+    function saveAuthorsToTable($authors, $song): void {
+        // Explode the authors by comma
+        $authorNames = explode(',', $authors);
+
+        // Save every author to the table
+        foreach ($authorNames as $authorName) {
+            $author = new Author();
+            $author->name = trim($authorName); // Trim any whitespace around the author name
+            $song->authors()->save($author);
+        }
     }

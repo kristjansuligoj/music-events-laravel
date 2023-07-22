@@ -31,15 +31,8 @@ class SongController extends Controller
     public function editSongForm($id) {
         $song = Song::with('musician', 'genres', 'authors')->findOrFail($id);
 
-        // Because authors are saved separately, we need to concatenate them to a string
-        $authorsAsString = "";
-        foreach($song->authors as $author) {
-            $authorsAsString .= $author->name . ",";
-        }
-        $authorsAsString = substr($authorsAsString, 0, -1);
-
         // Save the authors as a single string
-        $song['authors'] = $authorsAsString;
+        $song['authors'] = authorsToString($song->authors);
 
         return view('songs/song-add', [
             'song' => $song,
@@ -55,15 +48,7 @@ class SongController extends Controller
         // Adds genres to the pivot table
         $song->genres()->sync(genreToIndex($request->genre));
 
-        // Explode the authors by comma
-        $authorNames = explode(',', $request->authors);
-
-        // Save every author to the table
-        foreach ($authorNames as $authorName) {
-            $author = new Author();
-            $author->name = trim($authorName); // Trim any whitespace around the author name
-            $song->authors()->save($author);
-        }
+        saveAuthorsToTable($request->authors, $song);
 
         return redirect('/songs');
     }
