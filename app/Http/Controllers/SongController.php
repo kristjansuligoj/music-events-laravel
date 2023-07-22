@@ -22,10 +22,8 @@ class SongController extends Controller
 
     public function addSongForm() {
         return view('songs/song-add', [
-            'action' => 'add',
-            'song' => [],
+            'song' => null,
             'musicians' => Musician::all(),
-            'errors' => [],
         ]);
     }
 
@@ -37,12 +35,7 @@ class SongController extends Controller
     }
 
     public function editSongForm($id) {
-        $song = Song::with('musicians', 'genres', 'authors')->find($id);
-        $song['musicians'] = collect($song['musician'])->first();
-
-        // Transform collection to array
-        $genres = collect($song['genres'])->pluck('name')->toArray();
-        $song['genres'] = $genres;
+        $song = Song::with('musician', 'genres', 'authors')->findOrFail($id);
 
         // Because authors are saved separately, we need to concatenate them to a string
         $authorsAsString = "";
