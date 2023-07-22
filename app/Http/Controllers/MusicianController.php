@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CopyMusician;
+use App\Http\Requests\MusicianRequest;
 use App\Models\Musician;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -43,16 +43,7 @@ class MusicianController extends Controller
         ]);
     }
 
-    public function addMusician(Request $request) {
-        $validated = $this->validateData($request);
-
-        if ($validated->fails()) {
-            return view('musicians/musician-add', [
-                'musician' => $request->all(),
-                'errors' => $validated->errors()->messages(),
-            ]);
-        }
-
+    public function addMusician(MusicianRequest $request) {
         // Save the image
         $fileName = time() . '.' . $request->image->extension();
         $request->image->move(public_path('images'), $fileName);
@@ -68,16 +59,7 @@ class MusicianController extends Controller
         return redirect('/musicians');
     }
 
-    public function editMusician($id, Request $request) {
-        $validated = $this->validateData($request, $id);
-
-        if ($validated->fails()) {
-            return view('musicians/musician-add', [
-                'musician' => $request->all(),
-                'errors' => $validated->errors()->messages(),
-            ]);
-        }
-
+    public function editMusician($id, MusicianRequest $request) {
         $requestData = $request->except(['_token', "_method"]);
 
         $fileName = time() . '.' . $request->image->extension();
