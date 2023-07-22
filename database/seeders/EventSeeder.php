@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Event;
+use App\Models\Musician;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class EventSeeder extends Seeder
 {
@@ -14,6 +16,13 @@ class EventSeeder extends Seeder
      */
     public function run()
     {
-        Event::factory()->count(5)->create();
+        for($i = 0; $i < 2; $i++) {
+            $event = Event::factory()->create();
+
+            DB::table('events_musicians')->insert([
+                'event_id' => $event->id,
+                'musician_id' => Musician::inRandomOrder()->first()->id,
+            ]);
+        }
     }
 }

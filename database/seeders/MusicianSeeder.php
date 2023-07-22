@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Musician;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class MusicianSeeder extends Seeder
 {
@@ -15,6 +15,13 @@ class MusicianSeeder extends Seeder
      */
     public function run()
     {
-        Musician::factory()->count(5)->create();
+        for($i = 0; $i < 5; $i++) {
+            $musician = Musician::factory()->create();
+
+            DB::table('musicians_genres')->insert([
+                'musician_id' => $musician->id,
+                'genre_id' => rand(1, 7),
+            ]);
+        }
     }
 }

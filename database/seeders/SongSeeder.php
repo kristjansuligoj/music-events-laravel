@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Song;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Faker\Factory as Faker;
 
 class SongSeeder extends Seeder
 {
@@ -14,6 +16,20 @@ class SongSeeder extends Seeder
      */
     public function run()
     {
-        Song::factory()->count(5)->create();
+        $faker = Faker::create();
+
+        for($i = 0; $i < 3; $i++) {
+            $song = Song::factory()->create();
+
+            DB::table('songs_genres')->insert([
+                'song_id' => $song->id,
+                'genre_id' => rand(1, 7),
+            ]);
+
+            DB::table('authors')->insert([
+                'song_id' => $song->id,
+                'name' => $faker->name
+            ]);
+        }
     }
 }

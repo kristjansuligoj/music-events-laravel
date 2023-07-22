@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Musician;
 use App\Models\Song;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,8 +21,8 @@ class SongFactory extends Factory
     public function definition()
     {
         return [
-            'musician_id' => $this->faker->uuid,
-            'title' => $this->faker->title,
+            'musician_id' => Musician::inRandomOrder()->first()->id,
+            'title' => $this->faker->userName,
             'length' => $this->faker->numberBetween(10,300),
             'releaseDate' => $this->faker->dateTime(),
         ];
