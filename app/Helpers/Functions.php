@@ -1,6 +1,8 @@
 <?php
 
-    function printArray($data, $field): string {
+use Illuminate\Support\Facades\File;
+
+function printArray($data, $field): string {
         $html = "";
 
         foreach($data as $field) {
@@ -8,6 +10,18 @@
         }
 
         return $html;
+    }
+
+    function saveImage($request): string {
+        $fileName = time() . '.' . $request->image->extension();
+        $request->image->move(public_path('images'), $fileName);
+        return $fileName;
+    }
+
+    function deleteImage($path): void {
+        if(File::exists('images/' . $path)) {
+            File::delete('images/' . $path);
+        }
     }
 
     function genreToIndex($genres): array {

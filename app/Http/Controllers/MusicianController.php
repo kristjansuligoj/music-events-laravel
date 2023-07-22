@@ -45,8 +45,7 @@ class MusicianController extends Controller
 
     public function addMusician(MusicianRequest $request) {
         // Save the image
-        $fileName = time() . '.' . $request->image->extension();
-        $request->image->move(public_path('images'), $fileName);
+        $fileName = saveImage($request);
 
         // Create the musician
         $musicianData = $request->all();
@@ -62,11 +61,13 @@ class MusicianController extends Controller
     public function editMusician($id, MusicianRequest $request) {
         $requestData = $request->except(['_token', "_method"]);
 
-        $fileName = time() . '.' . $request->image->extension();
-        $request->image->move(public_path('images'), $fileName);
+        // Save the image
+        $fileName = saveImage($request);
+
         $requestData['image'] = $fileName;
 
-        $musician = Musician::find($id);
+        // Deletes the old image
+        deleteImage($musician->image);
         $musician->update($requestData);
 
         // Updates genres in the pivot table
@@ -79,9 +80,7 @@ class MusicianController extends Controller
         $musician = Musician::find($id);
         $musician->delete();
 
-        if(File::exists('images/' . $musician->image)) {
-            File::delete('images/' . $musician->image);
-        }
+        deleteImage($musician->image);
 
         return redirect('/musicians');
     }
