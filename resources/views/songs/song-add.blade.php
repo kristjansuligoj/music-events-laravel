@@ -1,56 +1,96 @@
-<a href="/songs">Back</a><br>
+@extends('layout.main')
+@section('page-content')
+    <div class="container">
+        <a
+            class="btn btn-outline-dark mb-3"
+            href="{{ $song ? url('songs/' . $song['id']) : url('songs') }}"
+        >Back</a><br>
+        <hr>
 
-<div>
-    <form method="post">
-        @csrf <!-- Validates the request for cross-site request forgery (session token) -->
-        @isset($song['id'])
-            @method('PATCH')
-        @endisset
+        <form method="post">
+            @csrf <!-- Validates the request for cross-site request forgery (session token) -->
+            @isset($song['id'])
+                @method('PATCH')
+            @endisset
 
-        @php
-            $data['name'] = "musicians";
-            $data['options'] = $musicians;
-            $data['selectedData'] = collect(['id' => $song?->musician]);
-            $data['errors'] = $errors;
-        @endphp
-        <x-radio-buttons :data="$data"/>
+            <div class="mb-3">
+                @php
+                    $data['name'] = "musicians";
+                    $data['options'] = $musicians;
+                    $data['selectedData'] = collect(['id' => $song?->musician]);
+                    $data['errors'] = $errors;
+                @endphp
+                <x-radio-buttons :data="$data"/>
+            </div>
 
-        <label for="title">Title: <br>
-            <input required type="text" name="title" value="{{ old('title', $song?->title) }}">
-            @error('title')
-            <span>{{ $errors->first('title') }}</span>
-            @enderror
-        </label><br><hr>
+            <div class="mb-3">
+                <label for="title">Title: </label><br>
+                <input
+                    class="w-100"
+                    required
+                    type="text"
+                    name="title"
+                    value="{{ old('title', $song?->title) }}">
+                @error('title')
+                <span>{{ $errors->first('title') }}</span>
+                @enderror
+                <br>
+                <hr>
+            </div>
 
-        <label for="length">Length: <br>
-            <input type="number" min="0" name="length" value="{{ old('length', $song?->length) }}">
-            @error('length')
-            <span>{{ $errors->first('length') }}</span>
-            @enderror
-        </label><br><hr>
+            <div class="mb-3">
+                <label for="length">Length: </label><br>
+                <input
+                    class="w-100"
+                    type="number"
+                    min="0"
+                    name="length"
+                    value="{{ old('length', $song?->length) }}">
+                @error('length')
+                <span>{{ $errors->first('length') }}</span>
+                @enderror <br>
+                <hr>
+            </div>
 
-        <label for="releaseDate">Release date: <br>
-            <input type="date" name="releaseDate" value="{{ old('releaseDate', $song?->releaseDate) }}">
-            @error('releaseDate')
-            <span>{{ $errors->first('releaseDate') }}</span>
-            @enderror
-        </label><br><hr>
+            <div class="mb-3">
+                <label for="releaseDate">Release date: </label><br>
+                <input
+                    class="w-100"
+                    type="date"
+                    name="releaseDate"
+                    value="{{ old('releaseDate', $song?->releaseDate) }}">
+                @error('releaseDate')
+                <span>{{ $errors->first('releaseDate') }}</span>
+                @enderror <br>
+                <hr>
+            </div>
 
-        <label for="authors">Authors: <br>
-            <input type="text" name="authors" value="{{ old('authors', $song?->authors) }}">
-            @error('authors')
-            <span>{{ $errors->first('authors') }}</span>
-            @enderror
-        </label><br><hr>
+            <div class="mb-3">
+                <label for="authors">Authors: </label><br>
+                <input
+                    class="w-100"
+                    type="text"
+                    name="authors"
+                    value="{{ old('authors', $song?->authors) }}">
+                @error('authors')
+                <span>{{ $errors->first('authors') }}</span>
+                @enderror <br>
+                <hr>
+            </div>
 
-        @php
-            $data['name'] = "genre";
-            $data['options'] = \App\Enums\GenresEnum::getAllGenres();
-            $data['selectedData'] = isset($song->genres) ? $song->genres : null;
-            $data['errors'] = $errors;
-        @endphp
-        <x-checkboxes :data="$data"/>
+            @php
+                $data['name'] = "genre";
+                $data['options'] = \App\Enums\GenresEnum::getAllGenres();
+                $data['selectedData'] = isset($song->genres) ? $song->genres : null;
+                $data['errors'] = $errors;
+            @endphp
+            <x-checkboxes :data="$data"/>
+            <hr>
 
-        <input type="submit" value="{{ isset($song['id']) ? 'Edit song' : 'Add song' }}">
-    </form>
-</div>
+            <input
+                class="btn btn-success"
+                type="submit"
+                value="{{ isset($song['id']) ? 'Edit song' : 'Add song' }}">
+        </form>
+    </div>
+@endsection
