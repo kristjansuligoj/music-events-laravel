@@ -48,17 +48,17 @@ class MusicianController extends Controller
     }
 
     public function editMusician($id, MusicianRequest $request) {
-        $requestData = $request->except(['_token', "_method"]);
+        $musicianData = $request->except(['_token', "_method"]);
 
         // Save the image
         $fileName = saveImage($request);
+        $musicianData['image'] = $fileName;
 
-        $requestData['image'] = $fileName;
         $musician = Musician::findOrFail($id);
 
         // Deletes the old image
         deleteImage($musician->image);
-        $musician->update($requestData);
+        $musician->update($musicianData);
 
         // Updates genres in the pivot table
         $musician->genres()->sync(genreToIndex($request->genre));

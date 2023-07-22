@@ -54,12 +54,12 @@ class SongController extends Controller
     }
 
     public function editSong($id, SongRequest $request) {
-        $requestData = $request->except(['_token', "_method"]);
-        $requestData['musician_id'] = $requestData['musician'];
-        unset($requestData['musician']);
+        $songData = $request->except(['_token', "_method"]);
+        $songData['musician_id'] = $songData['musician'];
+        unset($songData['musician']);
 
         $song = Song::findOrFail($id);
-        $song->update($requestData);
+        $song->update($songData);
 
         $song->genres()->sync(genreToIndex($request->genre));
 

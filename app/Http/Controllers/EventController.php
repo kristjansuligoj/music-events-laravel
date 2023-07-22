@@ -45,10 +45,10 @@ class EventController extends Controller
     }
 
     public function editEvent($id, EventRequest $request) {
-        $requestData = $request->except(['_token', "_method"]);
+        $eventData = $request->except(['_token', "_method"]);
 
         $event = Event::findOrFail($id);
-        $event->update($requestData);
+        $event->update($eventData);
 
         $event->musicians()->sync($request->musician);
 
