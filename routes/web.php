@@ -16,7 +16,7 @@ use App\Http\Controllers\EventController;
 */
 
 Route::get('/', function () {
-    return view('layout/header');
+    return view('layout/main');
 });
 
 Route::prefix('musicians')->group(function() {
