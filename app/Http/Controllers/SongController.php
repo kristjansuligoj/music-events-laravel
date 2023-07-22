@@ -4,13 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SongRequest;
 use App\Models\Author;
-use App\Models\CopyMusician;
 use App\Models\Musician;
 use App\Models\Song;
-use App\Models\SongCopy;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class SongController extends Controller
 {
@@ -48,15 +43,14 @@ class SongController extends Controller
         $song['authors'] = $authorsAsString;
 
         return view('songs/song-add', [
-            'action' => 'edit',
             'song' => $song,
             'musicians' => Musician::all(),
-            'errors' => []
         ]);
     }
 
     public function addSong(SongRequest $request) {
         $songData = $request->except(['genre', 'authors']);
+        $songData['musician_id'] = $request->musician;
         $song = Song::create($songData);
 
         // Adds genres to the pivot table
@@ -93,24 +87,5 @@ class SongController extends Controller
         $song->delete();
 
         return redirect('/songs');
-    }
-
-    public function validateData($data, $id=null) {
-        if ($id != null) {
-            return Validator::make($data->all(), [
-                'musician' => 'required',
-                'title' => ['required', 'unique:songs,title,'.$id],
-                'length' => ['required', 'integer', 'between:10,300'],
-                'releaseDate' => ['required', 'date', 'before:today'],
-                'authors' => ['required'],
-            ]);
-        }
-        return Validator::make($data->all(), [
-            'musician' => 'required',
-            'title' => ['required', 'unique:songs,title'],
-            'length' => ['required', 'integer', 'between:10,300'],
-            'releaseDate' => ['required', 'date', 'before:today'],
-            'authors' => ['required'],
-        ]);
     }
 }

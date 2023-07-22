@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MusicianRequest;
 use App\Models\Musician;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Validator;
 
 class MusicianController extends Controller
 {
@@ -76,20 +74,5 @@ class MusicianController extends Controller
         deleteImage($musician->image);
 
         return redirect('/musicians');
-    }
-
-    public function validateData($data, $id=null) {
-        if ($id != null) {
-            return Validator::make($data->all(), [
-                'name' => ['required', 'unique:musicians,name,'.$id],
-                'genre' => ['required'],
-                'image' => ['required'],
-            ]);
-        }
-        return Validator::make($data->all(), [
-            'name' => ['required', 'unique:musicians,name'],
-            'genre' => ['required'],
-            'image' => ['required'],
-        ]);
     }
 }

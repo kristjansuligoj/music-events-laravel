@@ -4,11 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EventRequest;
 use App\Models\Event;
-use App\Models\EventCopy;
 use App\Models\Musician;
-use App\Models\Song;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
@@ -36,7 +32,6 @@ class EventController extends Controller
         return view('events/event-add', [
             'event' => Event::with('musicians')->findOrFail($id),
             'musicians' => Musician::all(),
-            'errors' => [],
         ]);
     }
 
@@ -66,26 +61,5 @@ class EventController extends Controller
         $event->delete();
 
         return redirect('/events');
-    }
-
-    public function validateData($data, $id = null) {
-        if ($id != null) {
-            return Validator::make($data->all(), [
-                'name' => ['required', 'unique:events,name,'.$id],
-                'address' => ['required', 'unique:events,address,'.$id],
-                'date' => ['required', 'date', 'after:today'],
-                'time' => ['required'],
-                'description' => ['required'],
-                'ticketPrice' => ['required', 'integer', 'between:10,300'],
-            ]);
-        }
-        return Validator::make($data->all(), [
-            'name' => ['required', 'unique:events,name'],
-            'address' => ['required', 'unique:events,address'],
-            'date' => ['required', 'date', 'after:today'],
-            'time' => ['required'],
-            'description' => ['required'],
-            'ticketPrice' => ['required', 'integer', 'between:10,300'],
-        ]);
     }
 }
