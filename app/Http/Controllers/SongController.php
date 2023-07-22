@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SongRequest;
 use App\Models\Author;
 use App\Models\CopyMusician;
 use App\Models\Musician;
@@ -61,18 +62,7 @@ class SongController extends Controller
         ]);
     }
 
-    public function addSong(Request $request) {
-        $validated = $this->validateData($request);
-
-        if ($validated->fails()) {
-            return view('songs/song-add', [
-                'action' => 'add',
-                'song' => $request->all(),
-                'musicians' => Musician::all(),
-                'errors' => $validated->errors()->messages(),
-            ]);
-        }
-
+    public function addSong(SongRequest $request) {
         $songData = $request->except(['genre', 'authors']);
         $song = Song::create($songData);
 
@@ -92,18 +82,7 @@ class SongController extends Controller
         return redirect('/songs');
     }
 
-    public function editSong($id, Request $request) {
-        $validated = $this->validateData($request, $id);
-
-        if ($validated->fails()) {
-            return view('songs/song-add', [
-                'action' => 'edit',
-                'song' => $request->all(),
-                'musicians' => Musician::all(),
-                'errors' => $validated->errors()->messages(),
-            ]);
-        }
-
+    public function editSong($id, SongRequest $request) {
         $requestData = $request->except(['_token', "_method"]);
         $requestData['musician_id'] = $requestData['musician'];
         unset($requestData['musician']);
