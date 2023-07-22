@@ -6,7 +6,7 @@ function printArray($data, $field): string {
         $html = "";
 
         foreach($data as $field) {
-            $html .= "<li>" . $field->name . "</li>";
+            $html .= "<li class=\"m-2\">" . $field->name . "</li>";
         }
 
         return $html;
