@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Song extends Model
 {
     use HasUuids;
+    use HasFactory;
 
     public $timestamps = false;
 
