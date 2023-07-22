@@ -20,9 +20,9 @@ class EventFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->word,
+            'name' => $this->faker->words(5, true),
             'address' => $this->faker->address,
-            'date' => $this->faker->dateTime(),
+            'date' => $this->faker->dateTimeBetween('+0 days', '+30 days'),
             'time' => $this->faker->time,
             'description' => $this->faker->sentence,
             'ticketPrice' => $this->faker->numberBetween(10,300)

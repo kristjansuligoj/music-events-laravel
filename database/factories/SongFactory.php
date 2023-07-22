@@ -22,7 +22,7 @@ class SongFactory extends Factory
     {
         return [
             'musician_id' => Musician::inRandomOrder()->first()->id,
-            'title' => $this->faker->userName,
+            'title' => $this->faker->words(2, true),
             'length' => $this->faker->numberBetween(10,300),
             'releaseDate' => $this->faker->dateTime(),
         ];
