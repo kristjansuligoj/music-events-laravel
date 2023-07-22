@@ -45,7 +45,7 @@
 
         @php
             $data['name'] = "genre";
-            $data['options'] = ["Rock", "Metal", "Rap", "Country", "Hip hop", "Jazz", "Electronic"];
+            $data['options'] = \App\Enums\GenresEnum::getAllGenres();
             $data['selectedData'] = isset($song->genres) ? $song->genres : null;
             $data['errors'] = $errors;
         @endphp
