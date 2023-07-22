@@ -18,28 +18,20 @@ class MusicianController extends Controller
 
     public function addMusicianForm() {
         return view('musicians/musician-add', [
-            'action' => 'add',
-            'musician' => [],
-            'errors' => [],
+            'musician' => null,
         ]);
     }
 
     public function getMusician($id) {
         return view('components/display',[
             'component' => "musician",
-            'data' => Musician::with('genres')->find($id)
+            'data' => Musician::with('genres')->findOrFail($id)
         ]);
     }
 
     public function editMusicianForm($id) {
-        $musician = Musician::with('genres')->find($id)->toArray();
-        $genres = collect($musician['genres'])->pluck('name')->toArray();
-        $musician['genres'] = $genres;
-
         return view('musicians/musician-add', [
-            'action' => 'edit',
-            'musician' => $musician,
-            'errors' => []
+            'musician' => Musician::with('genres')->findOrFail($id),
         ]);
     }
 
