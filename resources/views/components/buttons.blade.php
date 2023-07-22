@@ -1,11 +1,13 @@
-@props(['element'])
+@props(['data'])
 
-<form method="post" action="/{{$element['name']}}s/remove/<?php echo $element['id']; ?>">
-    @csrf
-    @method('DELETE')
+<div>
+    <form method="post" action="/{{ $data['name'] }}s/remove/{{ $data['id'] }}">
+        @csrf
+        @method('DELETE')
 
-    <input type="submit" value="Remove {{$element['name']}}">
-</form>
+        <input type="submit" value="Remove {{ $data['name'] }}">
+    </form>
 
-<a href="/{{$element['name']}}s/edit/<?php echo $element['id']; ?>">Edit {{$element['name']}}</a>
-<hr>
+    <a href="/{{ $data['name'] }}s/edit/{{ $data['id'] }}">Edit {{ $data['name'] }}</a>
+    <hr>
+</div>
