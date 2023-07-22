@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CopyMusician;
+use App\Http\Requests\EventRequest;
 use App\Models\Event;
 use App\Models\EventCopy;
 use App\Models\Musician;
@@ -47,18 +47,7 @@ class EventController extends Controller
         ]);
     }
 
-    public function addEvent(Request $request) {
-        $validated = $this->validateData($request);
-
-        if ($validated->fails()) {
-            return view('events/event-add', [
-                'action' => 'add',
-                'event' => $request->all(),
-                'musicians' => Musician::all(),
-                'errors' => $validated->errors()->messages(),
-            ]);
-        }
-
+    public function addEvent(EventRequest $request) {
         $eventData = $request->all();
         $event = Event::create($eventData);
 
@@ -68,20 +57,7 @@ class EventController extends Controller
         return redirect('/events');
     }
 
-    public function editEvent($id, Request $request) {
-        $validated = $this->validateData($request, $id);
-
-        if ($validated->fails()) {
-            $event = $request->all();
-            $event['id'] = $id;
-            return view('events/event-add', [
-                'action' => 'edit',
-                'event' => $event,
-                'musicians' => Musician::all(),
-                'errors' => $validated->errors()->messages(),
-            ]);
-        }
-
+    public function editEvent($id, EventRequest $request) {
         $requestData = $request->except(['_token', "_method"]);
 
         $event = Event::find($id);
