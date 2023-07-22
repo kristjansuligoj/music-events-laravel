@@ -28,7 +28,7 @@ class EventController extends Controller
     public function getEvent($id) {
         return view('components/display',[
             'component' => "event",
-            'data' => Event::with('musicians')->find($id)
+            'data' => Event::with('musicians')->findOrFail($id)
         ]);
     }
 
@@ -53,7 +53,7 @@ class EventController extends Controller
     public function editEvent($id, EventRequest $request) {
         $requestData = $request->except(['_token', "_method"]);
 
-        $event = Event::find($id);
+        $event = Event::findOrFail($id);
         $event->update($requestData);
 
         $event->musicians()->sync($request->musician);
@@ -62,7 +62,7 @@ class EventController extends Controller
     }
 
     public function deleteEvent($id) {
-        $event = Event::find($id);
+        $event = Event::findOrFail($id);
         $event->delete();
 
         return redirect('/events');

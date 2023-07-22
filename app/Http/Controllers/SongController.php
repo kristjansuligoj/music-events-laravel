@@ -30,7 +30,7 @@ class SongController extends Controller
     public function getSong($id) {
         return view('components/display',[
             'component' => 'song',
-            'data' => Song::with('musicians', 'genres', 'authors')->find($id)
+            'data' => Song::with('musician', 'genres', 'authors')->findOrFail($id)
         ]);
     }
 
@@ -80,7 +80,7 @@ class SongController extends Controller
         $requestData['musician_id'] = $requestData['musician'];
         unset($requestData['musician']);
 
-        $song = Song::find($id);
+        $song = Song::findOrFail($id);
         $song->update($requestData);
 
         $song->genres()->sync(genreToIndex($request->genre));
@@ -89,7 +89,7 @@ class SongController extends Controller
     }
 
     public function deleteSong($id) {
-        $song = Song::find($id);
+        $song = Song::findOrFail($id);
         $song->delete();
 
         return redirect('/songs');

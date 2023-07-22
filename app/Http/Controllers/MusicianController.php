@@ -57,6 +57,7 @@ class MusicianController extends Controller
         $fileName = saveImage($request);
 
         $requestData['image'] = $fileName;
+        $musician = Musician::findOrFail($id);
 
         // Deletes the old image
         deleteImage($musician->image);
@@ -69,7 +70,7 @@ class MusicianController extends Controller
     }
 
     public function deleteMusician($id) {
-        $musician = Musician::find($id);
+        $musician = Musician::findOrFail($id);
         $musician->delete();
 
         deleteImage($musician->image);
