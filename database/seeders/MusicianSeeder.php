@@ -15,7 +15,7 @@ class MusicianSeeder extends Seeder
      */
     public function run()
     {
-        for($i = 0; $i < 5; $i++) {
+        for($i = 0; $i < 100; $i++) {
             $musician = Musician::factory()->create();
 
             DB::table('musicians_genres')->insert([
