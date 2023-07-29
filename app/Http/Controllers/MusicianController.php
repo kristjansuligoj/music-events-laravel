@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\File;
 
 class MusicianController extends Controller
 {
-    public function allMusicians() {
+    public function allMusicians(MusicianRequest $request) {
         return view('musicians/musicians', [
-            'musicians' => Musician::all()
+            'musicians' => $this->getOrderedMusicians($request->order, $request->field)
         ]);
     }
 
@@ -73,5 +73,21 @@ class MusicianController extends Controller
         deleteImage($musician->image);
 
         return redirect()->route('musicians.list');
+    }
+
+    public function getOrderedMusicians($sortOrder, $sortField) {
+        if ($sortOrder === null) {
+            return Musician::all();
+        } else {
+            if ($sortField === "genre") {
+                return Musician::join('musicians_genres', 'musicians.id', '=', 'musicians_genres.musician_id')
+                    ->join('genres', 'musicians_genres.genre_id', '=', 'genres.id')
+                    ->orderBy('genres.name', $sortOrder)
+                    ->select('musicians.*')
+                    ->get();
+            } else {
+                return Musician::orderBy($sortField, $sortOrder)->get();
+            }
+        }
     }
 }
