@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Event;
-use App\Models\Musician;
-use App\Models\Song;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MusicianController;
+use App\Http\Controllers\SongController;
+use App\Http\Controllers\EventController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,194 +16,48 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome/welcome');
+    return view('layout/main');
+});
+
+Route::prefix('musicians')->group(function() {
+    Route::get('/', [MusicianController::class, 'allMusicians'])->name('musicians.list');
+    Route::get('/add', [MusicianController::class, 'addMusicianForm'])->name('musicians.addForm');
+    Route::get('/{musician}', [MusicianController::class, 'getMusician'])->whereUuid('musician')->name('musicians.get');;
+    Route::get('/edit/{musician}', [MusicianController::class, 'editMusicianForm'])->whereUuid('musician')->name('musicians.editForm');;
+
+    Route::post('/add', [MusicianController::class, 'addMusician'])->name('musicians.add');
+
+    Route::patch('/edit/{musician}', [MusicianController::class, 'editMusician'])->whereUuid('musician')->name('musicians.edit');
+
+    Route::delete('/remove/{musician}', [MusicianController::class, 'deleteMusician'])->whereUuid('musician')->name('musicians.delete');
 });
 
 
-// Musicians
+Route::prefix('songs')->group(function() {
+    Route::get('/', [SongController::class, 'allSongs'])->name('songs.list');
+    Route::get('/add', [SongController::class, 'addSongForm'])->name('songs.addForm');
+    Route::get('/{song}', [SongController::class, 'getSong'])->whereUuid('song')->name('songs.get');
+    Route::get('/edit/{song}', [SongController::class, 'editSongForm'])->whereUuid('song')->name('songs.editForm');
 
-// GET
-Route::get('/musicians', function () {
-    $musician = new Musician();
+    Route::post('/add', [SongController::class, 'addSong'])->name('songs.add');
 
-    return view('musicians/musicians', [
-        'musicians' => $musician->all()
-    ]);
+    Route::patch('/edit/{song}', [SongController::class, 'editSong'])->whereUuid('song')->name('songs.edit');
+
+    Route::delete('/remove/{song}', [SongController::class, 'deleteSong'])->whereUuid('song')->name('songs.delete');
 });
 
-Route::get('/musicians/add', function () {
-    return view('musicians/musician-add');
+
+Route::prefix('events')->group(function() {
+    Route::get('/', [EventController::class, 'allEvents'])->name('events.list');
+    Route::get('/add', [EventController::class, 'addEventForm'])->name('events.addForm');
+    Route::get('/{event}', [EventController::class, 'getEvent'])->whereUuid('event')->name('events.get');
+    Route::get('/edit/{event}', [EventController::class, 'editEventForm'])->whereUuid('event')->name('events.editForm');
+
+    Route::post('/add', [EventController::class, 'addEvent'])->name('events.add');
+
+    Route::patch('/edit/{event}', [EventController::class, 'editEvent'])->whereUuid('event')->name('events.edit');
+
+    Route::delete('/remove/{event}', [EventController::class, 'deleteEvent'])->whereUuid('event')->name('events.delete');
 });
 
-Route::get('/musicians/{musician}', function ($id) {
-    $musician = new Musician();
-
-    return view('musicians/musician',[
-        'musician' => $musician->find($id)
-    ]);
-})->whereUuid('musician');
-
-Route::get('/musicians/edit/{musician}', function ($id) {
-    $musician = new Musician();
-
-    return view('musicians/musician-edit', [
-        'musician' => $musician->find($id)
-    ]);
-})->whereUuid('musician');
-
-// POST
-Route::post('/musicians/add', function (Illuminate\Http\Request $request) {
-    $musician = Musician::createFromArray($request->all());
-    $musician->add();
-
-    return redirect('/musicians');
-});
-
-// PATCH
-Route::patch('/musicians/edit/{musician}', function ($id, Illuminate\Http\Request $request) {
-    $musician = Musician::createFromArray($request->all());
-    $musician->uuid = $id;
-    $musician->edit();
-
-    return redirect('/musicians');
-})->whereUuid('musician');
-
-// DELETE
-Route::delete('/musicians/remove/{musician}', function ($id) {
-    $musician = new Musician();
-    $musician->remove($id);
-
-    return redirect('/musicians');
-})->whereUuid('musician');
-
-
-
-
-
-// Songs
-
-// GET
-Route::get('/songs', function () {
-    $song = new Song();
-
-    return view('songs/songs', [
-        'songs' => $song->all()
-    ]);
-});
-
-Route::get('/songs/add', function () {
-    $musician = new Musician();
-
-    return view('songs/song-add', [
-        'musicians' => $musician->all()
-    ]);
-});
-
-Route::get('/songs/{song}', function ($id) {
-    $song = new Song();
-    $song = $song->find($id);
-    $musician = new Musician();
-
-    return view('songs/song',[
-        'song' => $song,
-        'musician' => $musician->find($song->musician),
-    ]);
-})->whereUuid('song');
-
-Route::get('/songs/edit/{song}', function ($id) {
-    $song = new Song();
-    $musicians = new Musician();
-
-    return view('songs/song-edit', [
-        'song' => $song->find($id),
-        'musicians' => $musicians->all(),
-    ]);
-})->whereUuid('song');
-
-// POST
-Route::post('/songs/add', function (Illuminate\Http\Request $request) {
-    $song = Song::createFromArray($request->all());
-    $song->add();
-
-    return redirect('/songs');
-});
-
-// PATCH
-Route::patch('/songs/edit/{song}', function ($id, Illuminate\Http\Request $request) {
-    $song = Song::createFromArray($request->all());
-    $song->uuid = $id;
-    $song->edit();
-
-    return redirect('/songs');
-})->whereUuid('song');
-
-// DELETE
-Route::delete('/songs/remove/{song}', function ($id) {
-    $song = new Song();
-    $song->remove($id);
-
-    return redirect('/songs');
-})->whereUuid('song');
-
-
-
-
-
-// Events
-
-// GET
-Route::get('/events', function () {
-    $event = new Event();
-
-    return view('events/events',[
-        'events' => $event->all()
-    ]);
-});
-
-Route::get('/events/add', function () {
-    return view('events/event-add');
-});
-
-Route::get('/events/{event}', function ($id) {
-    $event = new Event();
-
-    return view('events/event',[
-        'event' => $event->find($id)
-    ]);
-})->whereUuid('event');
-
-Route::get('/events/edit/{event}', function ($id) {
-    $event = new Event();
-    $musicians = new Musician();
-
-    return view('events/event-edit', [
-        'event' => $event->find($id),
-        'musicians' => $musicians->all(),
-    ]);
-})->whereUuid('event');
-
-// POST
-Route::post('/events/add', function (Illuminate\Http\Request $request) {
-    $event = Event::createFromArray($request->all());
-    $event->add();
-
-    return redirect('/events');
-});
-
-// PATCH
-Route::patch('/events/edit/{event}', function ($id, Illuminate\Http\Request $request) {
-    $event = Event::createFromArray($request->all());
-    $event->uuid = $id;
-    $event->edit();
-
-    return redirect('/events');
-})->whereUuid('event');
-
-// DELETE
-Route::delete('/events/remove/{event}', function ($id) {
-    $event = new Event();
-    $event->remove($id);
-
-    return redirect('/events');
-})->whereUuid('event');
 

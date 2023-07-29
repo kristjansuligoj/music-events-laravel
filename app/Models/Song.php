@@ -2,35 +2,36 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
 class Song extends Model
 {
-    public string $title;
+    use HasUuids;
+    use HasFactory;
 
-    public string $musician;
+    public $timestamps = false;
 
-    public array $genre;
+    protected $fillable = [
+        'musician_id',
+        'title',
+        'length',
+        'releaseDate',
+    ];
 
-    public int $length;
+    public function genres()
+    {
+        return $this->belongsToMany(Genre::class, 'songs_genres', 'song_id', 'genre_id');
+    }
 
-    public string $releaseDate;
+    public function authors()
+    {
+        return $this->hasMany(Author::class);
+    }
 
-    public array $authors;
-
-    public static function createFromArray(array $data): Song {
-        $song = new Song();
-        $song->title = $data['title'];
-        $song->musician = $data['musician'];
-        $song->genre = $data['genre'];
-        $song->length = $data['length'];
-        $song->releaseDate = $data['releaseDate'];
-
-        // If it is an array, do nothing
-        if (is_array($data['authors'])) {
-            $song->authors = $data['authors'];
-        } else { // Else explode it by the string
-            $song->authors = explode(',', $data['authors']);
-        }
-
-        return $song;
+    public function musician()
+    {
+        return $this->belongsTo(Musician::class, 'musician_id', 'id');
     }
 }

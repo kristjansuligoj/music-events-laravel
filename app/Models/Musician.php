@@ -2,17 +2,31 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 class Musician extends Model
 {
-    public string $name;
+    use HasUuids;
+    use HasFactory;
 
-    public array $genre;
+    public $timestamps = false;
 
-    public static function createFromArray(array $data): Musician {
-        $musician = new Musician();
-        $musician->name = $data['name'];
-        $musician->genre = $data['genre'];
+    protected $fillable = [
+        'name',
+        'age',
+        'image',
+    ];
 
-        return $musician;
+    public function genres()
+    {
+        return $this->belongsToMany(Genre::class, 'musicians_genres', 'musician_id', 'genre_id');
+    }
+
+    public function events()
+    {
+        return $this->belognsToMany(Event::class, 'events_musicians', 'musician_id', 'event_id');
     }
 }

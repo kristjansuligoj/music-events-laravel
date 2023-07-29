@@ -1,15 +1,27 @@
-<a href="/">Back</a><br>
-<h3><a href="/events/add">Add event</a></h3>
-
-<body>
-    <?php foreach($events as $event): ?>
-        <article>
-            <?php echo "Event name: " . $event->name; ?> <br>
-            <?php echo "Event date: " . $event->date; ?> <br>
-            <?php echo "Event time: " . $event->time; ?> <br>
-            <a href="/events/<?php echo $event->uuid; ?>">Click to see more details!</a>
-        </article>
+@extends('layout.main')
+@section('page-content')
+    <div class="container">
         <hr>
-    <?php endforeach; ?>
-</body>
+        <div class="d-flex justify-content-between align-items-baseline">
+            <h4>List of events:</h4>
+            <a
+                class="btn btn-success"
+                href="{{ route('events.add') }}"
+                style="width:200px"
+            >Add event</a>
+        </div>
+        <hr>
+        @foreach($events as $event)
+            <article class="p-2 border mt-5 d-flex justify-content-between align-items-center"
+                     style="background-color: #F2F1F1">
+                {{ $event->name }} <br>
+                <a
+                    class="btn btn-outline-danger btn-sm m-2"
+                    href="/events/{{ $event->id }}"
+                >More details!</a>
+            </article>
+            <hr>
+        @endforeach
+    </div>
+@endsection
 

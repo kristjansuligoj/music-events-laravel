@@ -1,23 +1,28 @@
-<a href="/">Back</a><br>
+@extends('layout.main')
+@section('page-content')
+    @props(["musician"])
+    <div class="container">
+        @php
+            $data['name'] = 'musician';
+            $data['id'] = $musician->id;
+        @endphp
+        <x-buttons :data="$data"/>
+        <hr>
 
-<body>
-    <b>Name: </b><?php echo $musician?->name ?><br>
+        <div class="container">
+            <div class="d-flex align-items-center">
+                <img
+                    class="m-2"
+                    src="{{ asset('images/' .  $musician->image) }}"
+                    style="width: 50px; height:50px; border-radius: 30%">
+                <b>{{ $musician?->name }}</b>
+            </div>
+            <hr>
 
-    <b>Genre:</b><br>
-    <?php echo printArray($musician, "genre"); ?>
-
-    <hr>
-    <form method="post" action="/musicians/remove/<?php echo $musician->uuid; ?>">
-        @csrf
-        @method('DELETE')
-
-        <input type="submit" value="Remove musician">
-    </form>
-
-    <a href="/musicians/edit/<?php echo $musician->uuid; ?>">Edit musician</a>
-
-    <hr>
-
-</body>
+            <b>Genre:</b><br>
+            <?php echo printArray($musician->genres, "name"); ?>
+        </div>
+    </div>
+@endsection
 
 

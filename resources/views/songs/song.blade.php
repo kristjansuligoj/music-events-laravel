@@ -1,33 +1,33 @@
-<a href="/">Back</a><br>
+@extends('layout.main')
+@section('page-content')
+    @props(['song'])
+    <div class="container">
+        @php
+            $data['name'] = 'song';
+            $data['id'] = $song->id;
+        @endphp
 
-<h3>Songs page</h3>
-
-<body>
-    <article>
-        <?php echo "<b>Name:</b> " . $song->title; ?> <br>
-
-        <b>Genre:</b><br>
-        <?php echo printArray($song, "genre"); ?>
-
-        <?php echo "<b>Length:</b> " . $song->length; ?> <br>
-
-        <?php echo "<b>Release date:</b> " . $song->releaseDate; ?> <br>
-
-        <b>Authors:</b><br>
-        <?php echo printArray($song, "authors"); ?>
-
-        <?php echo "<b>Musician:</b> " . $musician->name; ?> <br>
-
+        <x-buttons :data="$data"/>
         <hr>
-        <form method="post" action="/songs/remove/<?php echo $song->uuid; ?>">
-            @csrf
-            @method("DELETE")
 
-            <input type="submit" value="Remove song">
-        </form>
+        <div class="container">
+            <b>Name:</b> {{ $song->title }}<br>
 
-        <a href="/songs/edit/<?php echo $song->uuid; ?>">Edit song</a>
+            <b>Genre:</b><br>
+            <?php echo printArray($song->genres, "name"); ?>
 
-        <hr>
-    </article>
-</body>
+            <b>Length:</b> {{ $song->length }} <br>
+
+            <b>Release date:</b> {{ $song->releaseDate }} <br>
+
+            <b>Authors:</b><br>
+            <?php echo printArray($song->authors, "name"); ?>
+
+            @if (isset($song->musician->name))
+                <b>Musician:</b> {{ $song->musician->name }} <br>
+            @else
+                <b>No musician selected</b>
+            @endif
+        </div>
+    </div>
+@endsection

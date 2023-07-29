@@ -1,29 +1,30 @@
-<a href="/events">Back</a><br>
+@extends('layout.main')
+@section('page-content')
+    @props(['event'])
+    <div class="container">
+        @php
+            $data['name'] = 'event';
+            $data['id'] = $event->id;
+        @endphp
 
-<body>
-    <article>
-        <?php echo "Event name: " . $event->name; ?> <br>
-
-        <?php echo "Event address: " . $event->address; ?> <br>
-
-        <?php echo "Event date: " . $event->date; ?> <br>
-
-        <?php echo "Event time: " . $event->time; ?> <br>
-
-        <?php echo "Event description: " . $event->description; ?> <br>
-
-        <?php echo "Event ticketPrice: " . $event->ticketPrice; ?> <br>
-
+        <x-buttons :data="$data"/>
         <hr>
-        <form method="post" action="/events/remove/<?php echo $event->uuid; ?>">
-            @csrf
-            @method('DELETE')
 
-            <input type="submit" value="Remove event">
-        </form>
+        <div class="container">
+            <b>Name:</b> {{ $event->name }} <br>
 
-        <a href="/events/edit/<?php echo $event->uuid; ?>">Edit event</a>
-        <hr>
-    </article>
-</body>
+            <b>Address:</b> {{ $event->address  }}<br>
+
+            <b>Date:</b> {{ $event->date }} <br>
+
+            <b>Time:</b> {{ $event->time }} <br>
+
+            <b>Description:</b> {{ $event->description }} <br>
+
+            <b>Ticket price:</b> {{ $event->ticketPrice }}€<br>
+
+            <b>Musician:</b> {{$event->musicians[0]->name}}<br>
+        </div>
+    </div>
+@endsection
 

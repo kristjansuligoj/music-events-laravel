@@ -1,20 +1,57 @@
-<a href="/musicians">Back</a><br>
+@extends('layout.main')
+@section('page-content')
+    <div class="container">
+        <a
+            class="btn btn-outline-dark mb-3"
+            href="{{ $musician ? url('musicians/' . $musician->id) : url('musicians') }}"
+        >Back</a><br>
+        <hr>
 
-<form method="post">
-    @csrf <!-- Validates the request for cross-site request forgery (session token) -->
+        <form method="post" enctype="multipart/form-data">
+            @csrf <!-- Validates the request for cross-site request forgery (session token) -->
+            @isset($musician['id'])
+                @method('PATCH')
+            @endisset
 
-    <label for="name">Name: </label><br>
-    <input type="text" name="name"><br><hr>
+            <div class="mb-3">
+                <label for="image">Image </label><br>
+                <input
+                    class="form-control"
+                    type="file"
+                    name="image"
+                    required/><br>
+            </div>
 
-    <label for="genre">Genre: </label><br>
-    <input type="checkbox" id="genre1" name="genre[]" value="Metal">
-    <label for="genre1">Metal</label><br>
 
-    <input type="checkbox" id="genre2" name="genre[]" value="Hip hop">
-    <label for="genre2">Hip hop</label><br>
+            <div class="mb-3">
+                <label for="name">Name </label><br>
+                <input
+                    class="w-100"
+                    required
+                    type="text"
+                    name="name"
+                    value="{{ old('name', $musician?->name) }}">
+                @error('name')
+                <span>{{ $errors->first('name') }}</span>
+                @enderror
+                <br>
+            </div>
 
-    <input type="checkbox" id="genre3" name="genre[]" value="Rap">
-    <label for="genre3">Rap</label><br>
+            <div class="mb-3">
+                @php
+                    $data['name'] = "genre";
+                    $data['options'] = \App\Enums\GenresEnum::getAllGenres();
+                    $data['selectedData'] = isset($musician->genres) ? $musician->genres : null;
+                    $data['errors'] = $errors;
+                @endphp
+                <x-checkboxes :data="$data"/>
+            </div>
 
-    <input type="submit" value="Add musician">
-</form>
+            <input
+                class="btn btn-success"
+                type="submit"
+                value="{{ isset($musician->id) ? 'Edit musician' : 'Add musician' }}"
+            >
+        </form>
+    </div>
+@endsection
