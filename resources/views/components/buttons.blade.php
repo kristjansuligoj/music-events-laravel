@@ -12,6 +12,7 @@
         @method('DELETE')
 
         <input
+            onclick="return confirm('Are you sure?')"
             class="btn btn-danger"
             style="width:200px"
             type="submit"
