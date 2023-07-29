@@ -38,6 +38,7 @@
                     href="/musicians/{{ $musician->id }}"
                 >More details!</a>
             </article>
+            <hr>
         @endforeach
         <div class="d-flex justify-content-center m-5">
             @if($musicians instanceof \Illuminate\Pagination\LengthAwarePaginator)
