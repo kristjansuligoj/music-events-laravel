@@ -36,6 +36,10 @@ class SongRequest extends FormRequest
             $rules['title'] = ['required', 'unique:songs,title,' . $this->route('song')];
         }
 
+        if ($this->route()->uri === 'songs') {
+            $rules = [];
+        }
+
         return $rules;
     }
 }

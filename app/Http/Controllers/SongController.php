@@ -9,9 +9,9 @@ use App\Models\Song;
 
 class SongController extends Controller
 {
-    public function allSongs() {
+    public function allSongs(SongRequest $request) {
         return view('songs/songs', [
-            'songs' => Song::all()
+            'songs' => $this->getOrderedSongs($request->order, $request->field)
         ]);
     }
 
@@ -71,5 +71,31 @@ class SongController extends Controller
         $song->delete();
 
         return redirect()->route('songs.list');
+    }
+
+    public function getOrderedSongs($sortOrder, $sortField) {
+        if ($sortOrder === null) {
+            return Song::all();
+        } else {
+            if ($sortField === "genre") {
+                return Song::join('songs_genres', 'songs.id', '=', 'songs_genres.song_id')
+                    ->join('genres', 'songs_genres.genre_id', '=', 'genres.id')
+                    ->orderBy('genres.name', $sortOrder)
+                    ->select('songs.*')
+                    ->get();
+            } else if ($sortField === "authors") {
+                return Song::join('authors', 'songs.id', '=', 'authors.song_id')
+                    ->orderBy('authors.name', $sortOrder)
+                    ->select('songs.*')
+                    ->get();
+            } else if ($sortField === "musician") {
+                return Song::join('musicians', 'songs.musician_id', '=', 'musicians.id')
+                    ->orderBy('musicians.name', $sortOrder)
+                    ->select('songs.*')
+                    ->get();
+            } else {
+                return Song::orderBy($sortField, $sortOrder)->get();
+            }
+        }
     }
 }
