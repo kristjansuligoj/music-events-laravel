@@ -75,26 +75,26 @@ class SongController extends Controller
 
     public function getOrderedSongs($sortOrder, $sortField) {
         if ($sortOrder === null) {
-            return Song::all();
+            return Song::paginate(7);
         } else {
             if ($sortField === "genre") {
                 return Song::join('songs_genres', 'songs.id', '=', 'songs_genres.song_id')
                     ->join('genres', 'songs_genres.genre_id', '=', 'genres.id')
                     ->orderBy('genres.name', $sortOrder)
                     ->select('songs.*')
-                    ->get();
+                    ->paginate(7);
             } else if ($sortField === "authors") {
                 return Song::join('authors', 'songs.id', '=', 'authors.song_id')
                     ->orderBy('authors.name', $sortOrder)
                     ->select('songs.*')
-                    ->get();
+                    ->paginate(7);
             } else if ($sortField === "musician") {
                 return Song::join('musicians', 'songs.musician_id', '=', 'musicians.id')
                     ->orderBy('musicians.name', $sortOrder)
                     ->select('songs.*')
-                    ->get();
+                    ->paginate(7);
             } else {
-                return Song::orderBy($sortField, $sortOrder)->get();
+                return Song::orderBy($sortField, $sortOrder)->paginate(7);;
             }
         }
     }

@@ -64,16 +64,16 @@ class EventController extends Controller
 
     public function getOrderedEvents($sortOrder, $sortField) {
         if ($sortOrder === null) {
-            return Event::all();
+            return Event::paginate(7);;
         } else {
             if ($sortField === "musician") {
                 return Event::join('events_musicians', 'events.id', '=', 'events_musicians.event_id')
                     ->join('musicians', 'events_musicians.musician_id', '=', 'musicians.id')
                     ->orderBy('musicians.name', $sortOrder)
                     ->select('events.*')
-                    ->get();
+                    ->paginate(7);
             } else {
-                return Event::orderBy($sortField, $sortOrder)->get();
+                return Event::orderBy($sortField, $sortOrder)->paginate(7);
             }
         }
     }

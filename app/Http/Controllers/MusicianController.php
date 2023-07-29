@@ -77,16 +77,16 @@ class MusicianController extends Controller
 
     public function getOrderedMusicians($sortOrder, $sortField) {
         if ($sortOrder === null) {
-            return Musician::all();
+            return Musician::paginate(7);
         } else {
             if ($sortField === "genre") {
                 return Musician::join('musicians_genres', 'musicians.id', '=', 'musicians_genres.musician_id')
                     ->join('genres', 'musicians_genres.genre_id', '=', 'genres.id')
                     ->orderBy('genres.name', $sortOrder)
                     ->select('musicians.*')
-                    ->get();
+                    ->paginate(7);
             } else {
-                return Musician::orderBy($sortField, $sortOrder)->get();
+                return Musician::orderBy($sortField, $sortOrder)->paginate(7);
             }
         }
     }
