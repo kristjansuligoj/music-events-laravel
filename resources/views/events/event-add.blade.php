@@ -3,7 +3,7 @@
     <div class="container">
         <a
             class="btn btn-outline-dark mb-3"
-            href="{{ $event ? url('events/' . $event['id']) : url('events') }}"
+            href="{{ $event ? url('events/' . $event->id) : url('events') }}"
         >Back</a><br>
         <hr>
 
@@ -99,7 +99,7 @@
             <input
                 class="btn btn-success"
                 type="submit"
-                value="{{ isset($event['id']) ? 'Edit event' : 'Add event' }}">
+                value="{{ isset($event->id) ? 'Edit event' : 'Add event' }}">
         </form>
     </div>
 @endsection

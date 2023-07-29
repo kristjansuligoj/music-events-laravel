@@ -3,7 +3,7 @@
     <div class="container">
         <a
             class="btn btn-outline-dark mb-3"
-            href="{{ $musician ? url('musicians/' . $musician['id']) : url('musicians') }}"
+            href="{{ $musician ? url('musicians/' . $musician->id) : url('musicians') }}"
         >Back</a><br>
         <hr>
 
@@ -50,7 +50,7 @@
             <input
                 class="btn btn-success"
                 type="submit"
-                value="{{ isset($musician['id']) ? 'Edit musician' : 'Add musician' }}"
+                value="{{ isset($musician->id) ? 'Edit musician' : 'Add musician' }}"
             >
         </form>
     </div>
