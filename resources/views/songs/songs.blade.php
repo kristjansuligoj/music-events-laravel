@@ -1,6 +1,36 @@
 @extends('layout.main')
 @section('page-content')
     <div class="container">
+        <div>
+            @php
+                $currentOrder = request()->input('order', '');
+                $nextOrder = ($currentOrder === 'asc') ? 'desc' : (($currentOrder === 'desc') ? '' : 'asc');
+            @endphp
+            Sort by:
+            <th>
+                <a href="{{ route('songs.list', ['order' => $nextOrder, 'field' => 'title']) }}">Title</a>
+            </th>
+            <th>
+                <a href="{{ route('songs.list', ['order' => $nextOrder, 'field' => 'genre']) }}">Genre</a>
+            </th>
+            <th>
+                <a href="{{ route('songs.list', ['order' => $nextOrder, 'field' => 'length']) }}">Length</a>
+            </th>
+            <th>
+                <a href="{{ route('songs.list', ['order' => $nextOrder, 'field' => 'releaseDate']) }}">Release date</a>
+            </th>
+            <th>
+                <a href="{{ route('songs.list', ['order' => $nextOrder, 'field' => 'authors']) }}">Authors</a>
+            </th>
+            <th>
+                <a href="{{ route('songs.list', ['order' => $nextOrder, 'field' => 'musician']) }}">Musician</a>
+            </th><br>
+            Order: {{ $currentOrder }}
+            <form action="">
+                <input type="text" placeholder="Search by keyword . . .">
+                <input type="submit" value="Search">
+            </form>
+        </div>
         <hr>
         <div class="d-flex justify-content-between align-items-baseline">
             <h4>List of songs:</h4>
