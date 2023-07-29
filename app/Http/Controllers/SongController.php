@@ -50,7 +50,7 @@ class SongController extends Controller
 
         saveAuthorsToTable($request->authors, $song);
 
-        return redirect('/songs');
+        return redirect()->route('songs.list');
     }
 
     public function editSong($id, SongRequest $request) {
@@ -63,13 +63,13 @@ class SongController extends Controller
 
         $song->genres()->sync(genreToIndex($request->genre));
 
-        return redirect('/songs');
+        return redirect()->route('songs.list');
     }
 
     public function deleteSong($id) {
         $song = Song::findOrFail($id);
         $song->delete();
 
-        return redirect('/songs');
+        return redirect()->route('songs.list');
     }
 }

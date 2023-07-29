@@ -44,7 +44,7 @@ class MusicianController extends Controller
         // Adds genres to the pivot table
         $musician->genres()->sync(genreToIndex($musicianData['genre']));
 
-        return redirect('/musicians');
+        return redirect()->route('musicians.list');
     }
 
     public function editMusician($id, MusicianRequest $request) {
@@ -63,7 +63,7 @@ class MusicianController extends Controller
         // Updates genres in the pivot table
         $musician->genres()->sync(genreToIndex($request->genre));
 
-        return redirect('/musicians');
+        return redirect()->route('musicians.list');
     }
 
     public function deleteMusician($id) {
@@ -72,6 +72,6 @@ class MusicianController extends Controller
 
         deleteImage($musician->image);
 
-        return redirect('/musicians');
+        return redirect()->route('musicians.list');
     }
 }

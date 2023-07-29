@@ -41,7 +41,7 @@ class EventController extends Controller
         // Adds genres to the pivot table
         $event->musicians()->sync($eventData['musician']);
 
-        return redirect('/events');
+        return redirect()->route('events.list');
     }
 
     public function editEvent($id, EventRequest $request) {
@@ -52,13 +52,13 @@ class EventController extends Controller
 
         $event->musicians()->sync($request->musician);
 
-        return redirect('/events');
+        return redirect()->route('events.list');
     }
 
     public function deleteEvent($id) {
         $event = Event::findOrFail($id);
         $event->delete();
 
-        return redirect('/events');
+        return redirect()->route('events.list');
     }
 }
