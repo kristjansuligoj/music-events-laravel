@@ -55,6 +55,11 @@
             </article>
             <hr>
         @endforeach
+        <div class="d-flex justify-content-center m-5">
+            @if($events instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                {{$events->links()}}
+            @endif
+        </div>
     </div>
 @endsection
 

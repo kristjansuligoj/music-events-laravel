@@ -39,5 +39,10 @@
                 >More details!</a>
             </article>
         @endforeach
+        <div class="d-flex justify-content-center m-5">
+            @if($musicians instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                {{$musicians->links()}}
+            @endif
+        </div>
     </div>
 @endsection
