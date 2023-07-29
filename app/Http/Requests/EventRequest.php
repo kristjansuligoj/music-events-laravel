@@ -39,6 +39,10 @@ class EventRequest extends FormRequest
             $rules['address'] = ['required', 'unique:events,address,' . $this->route('event')];
         }
 
+        if ($this->route()->uri === 'events') {
+            $rules = [];
+        }
+
         return $rules;
     }
 }

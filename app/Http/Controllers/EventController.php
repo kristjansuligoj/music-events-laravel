@@ -8,9 +8,9 @@ use App\Models\Musician;
 
 class EventController extends Controller
 {
-    public function allEvents() {
+    public function allEvents(EventRequest $request) {
         return view('events/events',[
-            'events' => Event::all()
+            'events' => $this->getOrderedEvents($request->order, $request->field)
         ]);
     }
 
@@ -60,5 +60,21 @@ class EventController extends Controller
         $event->delete();
 
         return redirect()->route('events.list');
+    }
+
+    public function getOrderedEvents($sortOrder, $sortField) {
+        if ($sortOrder === null) {
+            return Event::all();
+        } else {
+            if ($sortField === "musician") {
+                return Event::join('events_musicians', 'events.id', '=', 'events_musicians.event_id')
+                    ->join('musicians', 'events_musicians.musician_id', '=', 'musicians.id')
+                    ->orderBy('musicians.name', $sortOrder)
+                    ->select('events.*')
+                    ->get();
+            } else {
+                return Event::orderBy($sortField, $sortOrder)->get();
+            }
+        }
     }
 }
