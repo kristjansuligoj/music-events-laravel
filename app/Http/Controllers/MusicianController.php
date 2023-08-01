@@ -90,4 +90,12 @@ class MusicianController extends Controller
             }
         }
     }
+
+    public function searchMusiciansByKeyword($keyword) {
+        return Musician::where('name', 'LIKE', '%' . $keyword . '%')
+            ->orWhereHas('genres', function ($query) use ($keyword) {
+                $query->where('name', 'LIKE', '%' . $keyword . '%');
+            })
+            ->paginate(7);
+    }
 }

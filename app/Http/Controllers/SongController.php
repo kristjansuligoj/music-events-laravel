@@ -98,4 +98,17 @@ class SongController extends Controller
             }
         }
     }
+
+    public function searchSongsByKeyword($keyword) {
+        return Song::where('title', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('length', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('releaseDate', 'LIKE', '%' . $keyword . '%')
+            ->orWhereHas('genres', function ($query) use ($keyword) {
+                $query->where('name', 'LIKE', '%' . $keyword . '%');
+            })
+            ->orWhereHas('musician', function ($query) use ($keyword) {
+                $query->where('name', 'LIKE', '%' . $keyword . '%');
+            })
+            ->paginate(7);
+    }
 }

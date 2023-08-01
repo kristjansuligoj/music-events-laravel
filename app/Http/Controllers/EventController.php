@@ -77,4 +77,17 @@ class EventController extends Controller
             }
         }
     }
+
+    public function searchEventsByKeyword($keyword) {
+        return Event::where('name', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('address', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('date', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('time', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('description', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('ticketPrice', 'LIKE', '%' . $keyword . '%')
+            ->orWhereHas('musicians', function ($query) use ($keyword) {
+                $query->where('name', 'LIKE', '%' . $keyword . '%');
+            })
+            ->paginate(7);
+    }
 }
