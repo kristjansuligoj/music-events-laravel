@@ -10,8 +10,14 @@ use App\Models\Song;
 class SongController extends Controller
 {
     public function allSongs(SongRequest $request) {
+        if ($request->has('keyword')) {
+            $songs = $this->searchSongsByKeyword($request->keyword);
+        } else {
+            $songs = $this->searchSongsByFilter($request->order, $request->field);
+        }
+
         return view('songs/songs', [
-            'songs' => $this->getOrderedSongs($request->order, $request->field)
+            'songs' => $songs
         ]);
     }
 
@@ -73,7 +79,7 @@ class SongController extends Controller
         return redirect()->route('songs.list');
     }
 
-    public function getOrderedSongs($sortOrder, $sortField) {
+    public function searchSongsByFilter($sortOrder, $sortField) {
         if ($sortOrder === null) {
             return Song::paginate(7);
         } else {

@@ -9,8 +9,14 @@ use App\Models\Musician;
 class EventController extends Controller
 {
     public function allEvents(EventRequest $request) {
+        if ($request->has('keyword')) {
+            $events = $this->searchEventsByKeyword($request->keyword);
+        } else {
+            $events = $this->searchEventsByFilter($request->order, $request->field);
+        }
+
         return view('events/events',[
-            'events' => $this->getOrderedEvents($request->order, $request->field)
+            'events' => $events
         ]);
     }
 
@@ -62,9 +68,9 @@ class EventController extends Controller
         return redirect()->route('events.list');
     }
 
-    public function getOrderedEvents($sortOrder, $sortField) {
+    public function searchEventsByFilter($sortOrder, $sortField) {
         if ($sortOrder === null) {
-            return Event::paginate(7);;
+            return Event::paginate(7);
         } else {
             if ($sortField === "musician") {
                 return Event::join('events_musicians', 'events.id', '=', 'events_musicians.event_id')

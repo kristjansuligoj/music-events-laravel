@@ -9,8 +9,14 @@ use Illuminate\Support\Facades\File;
 class MusicianController extends Controller
 {
     public function allMusicians(MusicianRequest $request) {
+        if ($request->has('keyword')) {
+            $musicians = $this->searchMusiciansByKeyword($request->keyword);
+        } else {
+            $musicians = $this->searchMusiciansByFilter($request->order, $request->field);
+        }
+
         return view('musicians/musicians', [
-            'musicians' => $this->getOrderedMusicians($request->order, $request->field)
+            'musicians' => $musicians
         ]);
     }
 
@@ -75,7 +81,7 @@ class MusicianController extends Controller
         return redirect()->route('musicians.list');
     }
 
-    public function getOrderedMusicians($sortOrder, $sortField) {
+    public function searchMusiciansByFilter($sortOrder, $sortField) {
         if ($sortOrder === null) {
             return Musician::paginate(7);
         } else {
