@@ -3,21 +3,15 @@
     <div class="container">
         <div>
             @php
-                $currentOrder = request()->input('order', '');
-                $nextOrder = ($currentOrder === 'asc') ? 'desc' : (($currentOrder === 'desc') ? '' : 'asc');
+                $data['currentOrder'] = request()->input('order', '');
+                $data['nextOrder'] = ( $data['currentOrder'] === 'asc') ? 'desc' : (( $data['currentOrder'] === 'desc') ? '' : 'asc');
+                $data['route'] = "musicians.list";
+                $data['fields'] = ['name', 'genre'];
             @endphp
-            Sort by:
-            <th>
-                <a href="{{ route('musicians.list', ['order' => $nextOrder, 'field' => 'name']) }}">Name</a>
-            </th>
-            <th>
-                <a href="{{ route('musicians.list', ['order' => $nextOrder, 'field' => 'genre']) }}">Genre</a>
-            </th><br>
-            Order: {{ $currentOrder }}
-            <form action="">
-                <input type="text" placeholder="Search by keyword . . .">
-                <input type="submit" value="Search">
-            </form>
+            <div class="mb-3">
+                <x-filter :data="$data"/>
+                <x-searchbar/>
+            </div>
         </div>
         <hr>
         <div class="d-flex justify-content-between align-items-baseline">
