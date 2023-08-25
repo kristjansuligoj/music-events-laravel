@@ -1,6 +1,18 @@
 @extends('layout.main')
 @section('page-content')
     <div class="container">
+        <div>
+            @php
+                $data['currentOrder'] = request()->input('order', '');
+                $data['nextOrder'] = ( $data['currentOrder'] === 'asc') ? 'desc' : (( $data['currentOrder'] === 'desc') ? '' : 'asc');
+                $data['route'] = "events.list";
+                $data['fields'] = ['name', 'address', 'date', 'time', 'description', 'ticketPrice', 'musician'];
+            @endphp
+            <div class="mb-3">
+                <x-filter :data="$data"/>
+                <x-searchbar/>
+            </div>
+        </div>
         <hr>
         <div class="d-flex justify-content-between align-items-baseline">
             <h4>List of events:</h4>
@@ -22,6 +34,11 @@
             </article>
             <hr>
         @endforeach
+        <div class="d-flex justify-content-center m-5">
+            @if($events instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                {{$events->links()}}
+            @endif
+        </div>
     </div>
 @endsection
 

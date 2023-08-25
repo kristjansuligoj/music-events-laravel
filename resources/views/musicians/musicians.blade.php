@@ -1,6 +1,18 @@
 @extends('layout.main')
 @section('page-content')
     <div class="container">
+        <div>
+            @php
+                $data['currentOrder'] = request()->input('order', '');
+                $data['nextOrder'] = ( $data['currentOrder'] === 'asc') ? 'desc' : (( $data['currentOrder'] === 'desc') ? '' : 'asc');
+                $data['route'] = "musicians.list";
+                $data['fields'] = ['name', 'genre'];
+            @endphp
+            <div class="mb-3">
+                <x-filter :data="$data"/>
+                <x-searchbar/>
+            </div>
+        </div>
         <hr>
         <div class="d-flex justify-content-between align-items-baseline">
             <h4>List of musicians:</h4>
@@ -20,6 +32,12 @@
                     href="/musicians/{{ $musician->id }}"
                 >More details!</a>
             </article>
+            <hr>
         @endforeach
+        <div class="d-flex justify-content-center m-5">
+            @if($musicians instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                {{$musicians->links()}}
+            @endif
+        </div>
     </div>
 @endsection

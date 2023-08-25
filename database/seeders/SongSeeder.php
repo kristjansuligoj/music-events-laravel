@@ -18,7 +18,7 @@ class SongSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        for($i = 0; $i < 3; $i++) {
+        for($i = 0; $i < 100; $i++) {
             $song = Song::factory()->create();
 
             DB::table('songs_genres')->insert([

@@ -8,9 +8,15 @@ use Illuminate\Support\Facades\File;
 
 class MusicianController extends Controller
 {
-    public function allMusicians() {
+    public function allMusicians(MusicianRequest $request) {
+        if ($request->has('keyword')) {
+            $musicians = $this->searchMusiciansByKeyword($request->keyword);
+        } else {
+            $musicians = $this->searchMusiciansByFilter($request->order, $request->field);
+        }
+
         return view('musicians/musicians', [
-            'musicians' => Musician::all()
+            'musicians' => $musicians
         ]);
     }
 
@@ -73,5 +79,29 @@ class MusicianController extends Controller
         deleteImage($musician->image);
 
         return redirect()->route('musicians.list');
+    }
+
+    public function searchMusiciansByFilter($sortOrder, $sortField) {
+        if ($sortOrder === null) {
+            return Musician::paginate(7);
+        } else {
+            if ($sortField === "genre") {
+                return Musician::join('musicians_genres', 'musicians.id', '=', 'musicians_genres.musician_id')
+                    ->join('genres', 'musicians_genres.genre_id', '=', 'genres.id')
+                    ->orderBy('genres.name', $sortOrder)
+                    ->select('musicians.*')
+                    ->paginate(7);
+            } else {
+                return Musician::orderBy($sortField, $sortOrder)->paginate(7);
+            }
+        }
+    }
+
+    public function searchMusiciansByKeyword($keyword) {
+        return Musician::where('name', 'LIKE', '%' . $keyword . '%')
+            ->orWhereHas('genres', function ($query) use ($keyword) {
+                $query->where('name', 'LIKE', '%' . $keyword . '%');
+            })
+            ->paginate(7);
     }
 }
