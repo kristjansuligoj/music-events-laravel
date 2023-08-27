@@ -27,6 +27,11 @@ class Musician extends Model
 
     public function events()
     {
-        return $this->belognsToMany(Event::class, 'events_musicians', 'musician_id', 'event_id');
+        return $this->belongsToMany(Event::class, 'events_musicians', 'musician_id', 'event_id');
+    }
+
+    public function songs()
+    {
+        return $this->hasMany(Song::class);
     }
 }
