@@ -10,6 +10,6 @@
         <label for="{{$option->name}}">{{ $option->name }}</label><br>
     @endforeach
     @error($data['name'])
-        <span>{{ $errors->first(substr($data['name'], 0, -1)) }}</span>
+        <span class="fw-bold">{{ $errors->first(substr($data['name'], 0, -1)) }}</span>
     @enderror
 </div><hr>
