@@ -6,7 +6,7 @@
         <input
             class="m-2"
             type="checkbox" id="{{$data['name']}}{{$loop->iteration}}" name="{{$data['name']}}[]" value="{{$option}}"
-           @if(isset($data['selectedData']) && $data['selectedData']->contains('name', $option))
+           @if(isset($data['selectedData']) && in_array($option, $data['selectedData']))
                checked
            @endif
         ><label for="{{$data['name']}}{{$loop->iteration}}">{{$option}}</label><br>

@@ -29,6 +29,7 @@ class SongRequest extends FormRequest
             'length' => ['required', 'integer', 'between:10,300'],
             'releaseDate' => ['required', 'date', 'before:today'],
             'authors' => ['required'],
+            'genre' => ['required'],
         ];
 
         if ($this->route()->uri === 'songs/edit/{song}') {
