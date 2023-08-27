@@ -15,13 +15,13 @@ function printArray($data, $field): string {
 
     function saveImage($request): string {
         $fileName = time() . '.' . $request->image->extension();
-        $request->image->move(public_path('images'), $fileName);
+        $request->image->move(public_path('images/musicians'), $fileName);
         return $fileName;
     }
 
     function deleteImage($path): void {
-        if(File::exists('images/' . $path)) {
-            File::delete('images/' . $path);
+        if(File::exists('images/musicians' . $path)) {
+            File::delete('images/musicians' . $path);
         }
     }
 
