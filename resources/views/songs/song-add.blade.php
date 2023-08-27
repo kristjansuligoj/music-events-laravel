@@ -15,12 +15,14 @@
 
             <div class="mb-3">
                 @php
-                    $data['name'] = "musicians";
-                    $data['options'] = $musicians;
-                    $data['selectedData'] = collect(['id' => $song?->musician]);
+                    $data = [];
+                    $data['dropdown-items'] = $musicians;
+                    $data['name'] = "musician";
+                    $data['property'] = 'name';
+                    $data['selectedOption'] = old('musician', $song?->musician->id); // String or array
                     $data['errors'] = $errors;
                 @endphp
-                <x-radio-buttons :data="$data"/>
+                <x-select2-dropdown :data="$data"/>
             </div>
 
             <div class="mb-3">
