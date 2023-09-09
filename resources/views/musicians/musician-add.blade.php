@@ -41,7 +41,7 @@
                 @php
                     $data['name'] = "genre";
                     $data['options'] = \App\Enums\GenresEnum::getAllGenres();
-                    $data['selectedData'] = isset($musician->genres) ? $musician->genres : null;
+                    $data['selectedData'] = old('genre', $musician?->genres->pluck('name')->toArray());
                     $data['errors'] = $errors;
                 @endphp
                 <x-checkboxes :data="$data"/>

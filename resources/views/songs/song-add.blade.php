@@ -15,12 +15,14 @@
 
             <div class="mb-3">
                 @php
-                    $data['name'] = "musicians";
-                    $data['options'] = $musicians;
-                    $data['selectedData'] = collect(['id' => $song?->musician]);
+                    $data = [];
+                    $data['dropdown-items'] = $musicians;
+                    $data['name'] = "musician";
+                    $data['property'] = 'name';
+                    $data['selectedOption'] = old('musician', $song?->musician->id); // String or array
                     $data['errors'] = $errors;
                 @endphp
-                <x-radio-buttons :data="$data"/>
+                <x-select2-dropdown :data="$data"/>
             </div>
 
             <div class="mb-3">
@@ -81,7 +83,7 @@
             @php
                 $data['name'] = "genre";
                 $data['options'] = \App\Enums\GenresEnum::getAllGenres();
-                $data['selectedData'] = isset($song->genres) ? $song->genres : null;
+                $data['selectedData'] = old('genre', $song?->genres->pluck('name')->toArray());
                 $data['errors'] = $errors;
             @endphp
             <x-checkboxes :data="$data"/>
