@@ -13,5 +13,5 @@
     @endforeach
 </div>
 @error($data['name'])
-    <span>{{ $errors->first($data['name']) }}</span>
+    <span class="fw-bold">{{ $errors->first($data['name']) }}</span>
 @enderror

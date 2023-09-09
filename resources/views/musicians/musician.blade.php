@@ -13,7 +13,7 @@
             <div class="d-flex align-items-center">
                 <img
                     class="m-2"
-                    src="{{ asset('images/' .  $musician->image) }}"
+                    src="{{ asset('images/musicians/' .  $musician->image) }}"
                     style="width: 50px; height:50px; border-radius: 30%">
                 <b>{{ $musician?->name }}</b>
             </div>

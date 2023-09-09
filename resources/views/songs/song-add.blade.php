@@ -34,7 +34,7 @@
                     name="title"
                     value="{{ old('title', $song?->title) }}">
                 @error('title')
-                <span>{{ $errors->first('title') }}</span>
+                <span class="fw-bold">{{ $errors->first('title') }}</span>
                 @enderror
                 <br>
                 <hr>
@@ -49,7 +49,7 @@
                     name="length"
                     value="{{ old('length', $song?->length) }}">
                 @error('length')
-                <span>{{ $errors->first('length') }}</span>
+                <span class="fw-bold">{{ $errors->first('length') }}</span>
                 @enderror <br>
                 <hr>
             </div>
@@ -62,7 +62,7 @@
                     name="releaseDate"
                     value="{{ old('releaseDate', $song?->releaseDate) }}">
                 @error('releaseDate')
-                <span>{{ $errors->first('releaseDate') }}</span>
+                <span class="fw-bold">{{ $errors->first('releaseDate') }}</span>
                 @enderror <br>
                 <hr>
             </div>
@@ -75,7 +75,7 @@
                     name="authors"
                     value="{{ old('authors', $song?->authors) }}">
                 @error('authors')
-                <span>{{ $errors->first('authors') }}</span>
+                <span class="fw-bold">{{ $errors->first('authors') }}</span>
                 @enderror <br>
                 <hr>
             </div>

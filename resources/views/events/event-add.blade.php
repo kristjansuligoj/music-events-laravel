@@ -20,7 +20,7 @@
                     type="date" name="date" required value="{{ old('date', $event?->date) }}"
                 >
                 @error('date')
-                <span>{{ $errors->first('date') }}</span>
+                <span class="fw-bold">{{ $errors->first('date') }}</span>
                 @enderror <br>
                 <hr>
             </div>
@@ -33,7 +33,7 @@
                     type="time" name="time" required value="{{ old('time', $event?->time) }}"
                 >
                 @error('time')
-                <span>{{ $errors->first('time') }}</span>
+                <span class="fw-bold">{{ $errors->first('time') }}</span>
                 @enderror <br>
                 <hr>
             </div>
@@ -45,7 +45,7 @@
                     type="text" name="name" required value="{{ old('name', $event?->name) }}"
                 >
                 @error('name')
-                <span>{{ $errors->first('name') }}</span>
+                <span class="fw-bold">{{ $errors->first('name') }}</span>
                 @enderror <br>
                 <hr>
             </div>
@@ -57,7 +57,7 @@
                     type="text" name="address" required value="{{ old('address', $event?->address) }}"
                 >
                 @error('address')
-                <span>{{ $errors->first('address') }}</span>
+                <span class="fw-bold">{{ $errors->first('address') }}</span>
                 @enderror <br>
                 <hr>
             </div>
@@ -70,7 +70,7 @@
                     value="{{ old('ticketPrice', $event?->ticketPrice) }}"
                 >
                 @error('ticketPrice')
-                <span>{{ $errors->first('ticketPrice') }}</span>
+                <span class="fw-bold">{{ $errors->first('ticketPrice') }}</span>
                 @enderror <br>
                 <hr>
             </div>
@@ -81,7 +81,7 @@
                     class="w-100"
                     name="description">{{ old('description', $event?->description) }}</textarea>
                 @error('description')
-                <span>{{ $errors->first('description') }}</span>
+                <span class="fw-bold">{{ $errors->first('description') }}</span>
                 @enderror <br>
                 <hr>
             </div>
