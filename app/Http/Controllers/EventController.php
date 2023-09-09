@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EventRequest;
 use App\Models\Event;
+use App\Models\EventParticipant;
 use App\Models\Musician;
+use App\Models\User;
 
 class EventController extends Controller
 {
@@ -29,8 +31,50 @@ class EventController extends Controller
 
     public function getEvent($id) {
         return view('events/event',[
-            'event' => Event::with('musicians')->findOrFail($id)
+            'event' => Event::with('musicians', 'participants')->findOrFail($id)
         ]);
+    }
+
+    public function addUserToEvent($eventId, $userId) {
+        $event = Event::find($eventId);
+
+        if (!$event) {
+            return redirect()->route('events.list');
+        }
+
+        $user = User::find($userId);
+
+        if (!$user) {
+            return redirect()->route('events.list');
+        }
+
+        $eventParticipant = EventParticipant::firstOrCreate([
+            'user_id' => $userId,
+            'event_id' => $eventId,
+        ]);
+
+        return redirect('events/' . $eventId);
+    }
+
+    public function removeUserFromEvent($eventId, $userId) {
+        $event = Event::find($eventId);
+
+        if (!$event) {
+            redirect('events/' . $eventId);
+        }
+
+        $user = User::find($userId);
+
+        if (!$user) {
+            redirect('events/' . $eventId);
+        }
+
+        EventParticipant::where([
+            'user_id' => $userId,
+            'event_id' => $eventId,
+        ])->delete();
+
+        return redirect('events/' . $eventId);
     }
 
     public function editEventForm($id) {

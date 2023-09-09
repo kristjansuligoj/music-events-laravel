@@ -26,4 +26,9 @@ class Event extends Model
     {
         return $this->belongsToMany(Musician::class, 'events_musicians', 'event_id', 'musician_id');
     }
+
+    public function participants()
+    {
+        return $this->belongsToMany(User::class, 'event_participants');
+    }
 }
