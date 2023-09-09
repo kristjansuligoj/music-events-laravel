@@ -90,6 +90,8 @@ class MusicianController extends Controller
                     ->join('genres', 'musicians_genres.genre_id', '=', 'genres.id')
                     ->orderBy('genres.name', $sortOrder)
                     ->select('musicians.*')
+                    ->with('songs')
+                    ->with('events')
                     ->paginate(7);
             } else {
                 return Musician::orderBy($sortField, $sortOrder)->paginate(7);
@@ -102,6 +104,8 @@ class MusicianController extends Controller
             ->orWhereHas('genres', function ($query) use ($keyword) {
                 $query->where('name', 'LIKE', '%' . $keyword . '%');
             })
+            ->with('songs')
+            ->with('events')
             ->paginate(7);
     }
 }
