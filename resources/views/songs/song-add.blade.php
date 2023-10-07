@@ -1,19 +1,16 @@
 @extends('layout.main')
 @section('page-content')
-    <div class="container">
-        <a
-            class="btn btn-outline-dark mb-3"
-            href="{{ $song ? url('songs/' . $song->id) : url('songs') }}"
-        >Back</a><br>
-        <hr>
+    <div class="container w-full sm:max-w-md mt-6 p-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+        <x-button :href="$song ? url('songs/' . $song->id) : url('songs')" :buttonText="'Back'"/>
 
-        <form method="post">
+        <form method="post" class="mt-4">
             @csrf <!-- Validates the request for cross-site request forgery (session token) -->
             @isset($song['id'])
                 @method('PATCH')
             @endisset
 
             <div class="mb-3">
+                <label for="musician" class="block font-medium text-gray-700">Musician: </label><br>
                 @php
                     $data = [];
                     $data['dropdown-items'] = $musicians;
@@ -26,9 +23,9 @@
             </div>
 
             <div class="mb-3">
-                <label for="title">Title: </label><br>
+                <label for="title" class="block font-medium text-gray-700">Title: </label><br>
                 <input
-                    class="w-100"
+                    class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     required
                     type="text"
                     name="title"
@@ -41,9 +38,9 @@
             </div>
 
             <div class="mb-3">
-                <label for="length">Length: </label><br>
+                <label for="length" class="block font-medium text-gray-700">Length: </label><br>
                 <input
-                    class="w-100"
+                    class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="number"
                     min="0"
                     name="length"
@@ -55,9 +52,9 @@
             </div>
 
             <div class="mb-3">
-                <label for="releaseDate">Release date: </label><br>
+                <label for="releaseDate" class="block font-medium text-gray-700">Release date: </label><br>
                 <input
-                    class="w-100"
+                    class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="date"
                     name="releaseDate"
                     value="{{ old('releaseDate', $song?->releaseDate) }}">
@@ -68,9 +65,9 @@
             </div>
 
             <div class="mb-3">
-                <label for="authors">Authors: </label><br>
+                <label for="authors" class="block font-medium text-gray-700">Authors: </label><br>
                 <input
-                    class="w-100"
+                    class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="text"
                     name="authors"
                     value="{{ old('authors', $song?->authors) }}">
@@ -90,7 +87,11 @@
             <hr>
 
             <input
-                class="btn btn-success"
+                class="inline-flex items-center px-4 py-2 bg-green-500 border
+                        border-transparent rounded-md text-xs text-white
+                        tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
+                        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
+                        transition ease-in-out duration-150 ml-4 text-decoration-none uppercase"
                 type="submit"
                 value="{{ isset($song->id) ? 'Edit song' : 'Add song' }}">
         </form>

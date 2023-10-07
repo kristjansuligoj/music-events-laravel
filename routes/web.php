@@ -4,6 +4,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\MusicianController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SongController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*

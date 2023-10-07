@@ -1,6 +1,6 @@
 @extends('layout.main')
 @section('page-content')
-    <div class="container">
+    <div class="container p-5 sm:p-8 bg-white shadow sm:rounded-lg">
         <div>
             @php
                 $data['currentOrder'] = request()->input('order', '');
@@ -13,26 +13,19 @@
                 <x-searchbar/>
             </div>
         </div>
-        <hr>
-        <div class="d-flex justify-content-between align-items-baseline">
-            <h4>List of musicians:</h4>
-            <a
-                class="btn btn-success"
-                href="{{ route('musicians.add') }}"
-                style="width:200px"
-            >Add musician</a>
+        <div class="d-flex justify-content-between align-items-baseline mt-5">
+            <h4>Musicians:</h4>
+
+            <x-button :route="'musicians.add'" :buttonText="'Add musician'"/>
         </div>
-        <hr>
         @foreach($musicians as $musician)
-            <article class="p-2 border mt-5 justify-content-between align-items-center"
+            <article class="p-3 border mt-5 justify-content-between align-items-center sm:p-8 bg-gray-100 shadow sm:rounded-lg"
                      style="background-color: #F2F1F1">
 
                 <div class="d-flex justify-content-between">
                     <h5>{{ $musician->name }}</h5>
-                    <a
-                        class="btn btn-outline-danger btn-sm m-2"
-                        href="/musicians/{{ $musician->id }}"
-                    >More details!</a>
+
+                    <x-button :href="'/musicians/' . $musician->id" :buttonText="'More details!'"/>
                 </div>
 
                 @php
@@ -53,7 +46,6 @@
                     <x-relations-list :data="$data"/>
                 </div>
             </article>
-            <hr>
         @endforeach
         <div class="d-flex justify-content-center m-5">
             @if($musicians instanceof \Illuminate\Pagination\LengthAwarePaginator)

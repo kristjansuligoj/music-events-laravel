@@ -1,22 +1,18 @@
 @extends('layout.main')
 @section('page-content')
-    <div class="container">
-        <a
-            class="btn btn-outline-dark mb-3"
-            href="{{ $musician ? url('musicians/' . $musician->id) : url('musicians') }}"
-        >Back</a><br>
-        <hr>
+    <div class="container w-full sm:max-w-md mt-6 p-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+        <x-button :href="$musician ? url('musicians/' . $musician->id) : url('musicians')" :buttonText="'Back'"/>
 
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" class="mt-4">
             @csrf <!-- Validates the request for cross-site request forgery (session token) -->
             @isset($musician['id'])
                 @method('PATCH')
             @endisset
 
             <div class="mb-3">
-                <label for="image">Image </label><br>
+                <label for="image" class="block font-medium text-gray-700">Image </label><br>
                 <input
-                    class="form-control"
+                    class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="file"
                     name="image"
                     required/><br>
@@ -24,9 +20,9 @@
 
 
             <div class="mb-3">
-                <label for="name">Name </label><br>
+                <label for="name" class="block font-medium text-gray-700">Name </label><br>
                 <input
-                    class="w-100"
+                    class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     required
                     type="text"
                     name="name"
@@ -48,7 +44,11 @@
             </div>
 
             <input
-                class="btn btn-success"
+                class="inline-flex items-center px-4 py-2 bg-green-500 border
+                        border-transparent rounded-md text-xs text-white
+                        tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
+                        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
+                        transition ease-in-out duration-150 ml-4 text-decoration-none uppercase"
                 type="submit"
                 value="{{ isset($musician->id) ? 'Edit musician' : 'Add musician' }}"
             >

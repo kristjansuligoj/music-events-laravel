@@ -1,6 +1,6 @@
 @extends('layout.main')
 @section('page-content')
-    <div class="container">
+    <div class="container p-5 sm:p-8 bg-white shadow sm:rounded-lg">
         <div>
             @php
                 $data['currentOrder'] = request()->input('order', '');
@@ -13,26 +13,20 @@
                 <x-searchbar/>
             </div>
         </div>
-        <hr>
-        <div class="d-flex justify-content-between align-items-baseline">
-            <h4>List of events:</h4>
-            <a
-                class="btn btn-success"
-                href="{{ route('events.add') }}"
-                style="width:200px"
-            >Add event</a>
+        <div class="d-flex justify-content-between align-items-baseline mt-5">
+            <h4>Events:</h4>
+
+            <x-button :route="'events.add'" :buttonText="'Add event'"/>
         </div>
-        <hr>
         @foreach($events as $event)
-            <article class="p-2 border mt-5 d-flex justify-content-between align-items-center"
+            <article class="p-3 border mt-5 justify-content-between align-items-center sm:p-8 bg-gray-100 shadow sm:rounded-lg"
                      style="background-color: #F2F1F1">
-                {{ $event->name }} <br>
-                <a
-                    class="btn btn-outline-danger btn-sm m-2"
-                    href="/events/{{ $event->id }}"
-                >More details!</a>
+                <div class="d-flex justify-content-between">
+                    {{ $event->name }} <br>
+
+                    <x-button :href="'/events/' . $event->id" :buttonText="'More details!'"/>
+                </div>
             </article>
-            <hr>
         @endforeach
         <div class="d-flex justify-content-center m-5">
             @if($events instanceof \Illuminate\Pagination\LengthAwarePaginator)
