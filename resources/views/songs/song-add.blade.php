@@ -10,7 +10,7 @@
             @endisset
 
             <div class="mb-3">
-                <label for="musician" class="block font-medium text-gray-700">Musician: </label><br>
+                <label for="musician" class="block font-medium text-sm text-gray-700 mb-2">Musician: </label>
                 @php
                     $data = [];
                     $data['dropdown-items'] = $musicians;
@@ -23,7 +23,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="title" class="block font-medium text-gray-700">Title: </label><br>
+                <label for="title" class="block font-medium text-sm text-gray-700 mb-2">Title: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     required
@@ -32,13 +32,11 @@
                     value="{{ old('title', $song?->title) }}">
                 @error('title')
                 <span class="fw-bold">{{ $errors->first('title') }}</span>
-                @enderror
-                <br>
-                <hr>
+                @enderror <br>
             </div>
 
             <div class="mb-3">
-                <label for="length" class="block font-medium text-gray-700">Length: </label><br>
+                <label for="length" class="block font-medium text-sm text-gray-700 mb-2">Length: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="number"
@@ -48,11 +46,10 @@
                 @error('length')
                 <span class="fw-bold">{{ $errors->first('length') }}</span>
                 @enderror <br>
-                <hr>
             </div>
 
             <div class="mb-3">
-                <label for="releaseDate" class="block font-medium text-gray-700">Release date: </label><br>
+                <label for="releaseDate" class="block font-medium text-sm text-gray-700 mb-2">Release date: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="date"
@@ -61,11 +58,10 @@
                 @error('releaseDate')
                 <span class="fw-bold">{{ $errors->first('releaseDate') }}</span>
                 @enderror <br>
-                <hr>
             </div>
 
             <div class="mb-3">
-                <label for="authors" class="block font-medium text-gray-700">Authors: </label><br>
+                <label for="authors" class="block font-medium text-sm text-gray-700 mb-2">Authors: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="text"
@@ -74,7 +70,6 @@
                 @error('authors')
                 <span class="fw-bold">{{ $errors->first('authors') }}</span>
                 @enderror <br>
-                <hr>
             </div>
 
             @php
@@ -84,7 +79,6 @@
                 $data['errors'] = $errors;
             @endphp
             <x-checkboxes :data="$data"/>
-            <hr>
 
             <input
                 class="inline-flex items-center px-4 py-2 bg-green-500 border

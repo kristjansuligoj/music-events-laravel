@@ -10,7 +10,7 @@
             @endisset
 
             <div class="mb-3">
-                <label for="date" class="block font-medium text-gray-700">Date: </label><br>
+                <label for="date" class="block font-medium text-sm text-gray-700 mb-2">Date: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="date" name="date" required value="{{ old('date', $event?->date) }}"
@@ -18,12 +18,11 @@
                 @error('date')
                 <span class="fw-bold">{{ $errors->first('date') }}</span>
                 @enderror <br>
-                <hr>
             </div>
 
 
             <div class="mb-3">
-                <label for="time" class="block font-medium text-gray-700">Time: </label><br>
+                <label for="time" class="block font-medium text-sm text-gray-700 mb-2">Time: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="time" name="time" required value="{{ old('time', $event?->time) }}"
@@ -31,11 +30,10 @@
                 @error('time')
                 <span class="fw-bold">{{ $errors->first('time') }}</span>
                 @enderror <br>
-                <hr>
             </div>
 
             <div class="mb-3">
-                <label for="name" class="block font-medium text-gray-700">Name: </label><br>
+                <label for="name" class="block font-medium text-sm text-gray-700 mb-2">Name: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="text" name="name" required value="{{ old('name', $event?->name) }}"
@@ -43,11 +41,10 @@
                 @error('name')
                 <span class="fw-bold">{{ $errors->first('name') }}</span>
                 @enderror <br>
-                <hr>
             </div>
 
             <div class="mb-3">
-                <label for="address" class="block font-medium text-gray-700">Address: </label><br>
+                <label for="address" class="block font-medium text-sm text-gray-700 mb-2">Address: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="text" name="address" required value="{{ old('address', $event?->address) }}"
@@ -55,11 +52,10 @@
                 @error('address')
                 <span class="fw-bold">{{ $errors->first('address') }}</span>
                 @enderror <br>
-                <hr>
             </div>
 
             <div class="mb-3">
-                <label for="ticketPrice" class="block font-medium text-gray-700">Ticket price: </label><br>
+                <label for="ticketPrice" class="block font-medium text-sm text-gray-700 mb-2">Ticket price: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="number" min="0" name="ticketPrice" required
@@ -68,18 +64,16 @@
                 @error('ticketPrice')
                 <span class="fw-bold">{{ $errors->first('ticketPrice') }}</span>
                 @enderror <br>
-                <hr>
             </div>
 
             <div class="mb-3">
-                <label for="description" class="block font-medium text-gray-700">Description: </label><br>
+                <label for="description" class="block font-medium text-sm text-gray-700 mb-2">Description: </label>
                 <textarea
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     name="description">{{ old('description', $event?->description) }}</textarea>
                 @error('description')
                 <span class="fw-bold">{{ $errors->first('description') }}</span>
                 @enderror <br>
-                <hr>
             </div>
 
             <div class="mb-3">

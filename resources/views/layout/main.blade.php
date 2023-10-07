@@ -12,14 +12,20 @@
             @if(Auth::check())
                 <form action="{{ route('logout') }}" method="post">
                     @csrf
-                    <button type="submit" class="btn btn-success w-auto m-3">Logout</button>
+                    <button type="submit"
+                            class="inline-flex items-center px-4 py-2 bg-gray-800 border
+                            border-transparent rounded-md text-xs text-white
+                            tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900
+                            focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
+                            transition ease-in-out duration-150 ml-4 text-decoration-none uppercase"
+                    >Log out</button>
                 </form><br>
 
                 <h2>Logged in user: {{Auth::user()->name}}
             @else
                 <x-button :route="'register'" :buttonText="'Register'"/>
 
-                <x-button :route="'login'" :buttonText="'Login'"/>
+                <x-button :route="'login'" :buttonText="'Log in'"/>
             @endif
         </div>
 

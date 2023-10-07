@@ -10,7 +10,7 @@
             @endisset
 
             <div class="mb-3">
-                <label for="image" class="block font-medium text-gray-700">Image </label><br>
+                <label for="image" class="block font-medium text-sm text-gray-700 mb-2">Image </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="file"
@@ -20,9 +20,9 @@
 
 
             <div class="mb-3">
-                <label for="name" class="block font-medium text-gray-700">Name </label><br>
+                <label for="name" class="block font-medium text-sm text-gray-700 mb-2">Name </label>
                 <input
-                    class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
+                    class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"
                     required
                     type="text"
                     name="name"
