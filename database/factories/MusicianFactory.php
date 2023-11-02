@@ -26,6 +26,10 @@ class MusicianFactory extends Factory
         // Copy default image to musician-images directory
         $sourcePath = public_path('images/default-musicians/' . $defaultImage);
         $destinationPath = public_path('images/musicians/' . $destinationImage);
+
+        $path = public_path('images/musicians/');
+        File::isDirectory($path) or File::makeDirectory($path, 0777, true, true);
+
         File::copy($sourcePath, $destinationPath);
 
         return [
