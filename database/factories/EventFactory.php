@@ -21,7 +21,7 @@ class EventFactory extends Factory
     {
         return [
             'name' => $this->faker->words(5, true),
-            'address' => $this->faker->address,
+            'address' => str_replace(["\n", "\r"], '', $this->faker->address),
             'date' => $this->faker->dateTimeBetween('+0 days', '+30 days'),
             'time' => $this->faker->time,
             'description' => $this->faker->sentence,
