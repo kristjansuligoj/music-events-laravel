@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Event extends Model
 {
@@ -21,6 +22,15 @@ class Event extends Model
         'description',
         'ticketPrice',
     ];
+
+    protected $casts = [
+        'date' => 'date:d-m-Y'
+    ];
+
+    public function getDateAttribute()
+    {
+        return Carbon::parse($this->attributes['date'])->format('d-m-Y');
+    }
 
     public function musicians()
     {
