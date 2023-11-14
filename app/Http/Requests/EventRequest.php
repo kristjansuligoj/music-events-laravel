@@ -26,7 +26,7 @@ class EventRequest extends FormRequest
         $rules = [
             'name' => ['required', 'unique:events,name'],
             'address' => ['required', 'unique:events,address'],
-            'date' => ['required', 'date', 'after:today'],
+            'date' => ['required', 'date', 'date_format:Y-m-d', 'after:today'],
             'time' => ['required'],
             'description' => ['required'],
             'ticketPrice' => ['required', 'integer', 'between:10,300'],
@@ -44,5 +44,17 @@ class EventRequest extends FormRequest
         }
 
         return $rules;
+    }
+
+    /**
+     * Get custom error messages for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages()
+    {
+        return [
+            'date.date_format' => 'The date is invalid.',
+        ];
     }
 }
