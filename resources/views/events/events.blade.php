@@ -19,12 +19,17 @@
             <x-button :route="'events.add'" :buttonText="'Add event'"/>
         </div>
         @foreach($events as $event)
-            <article class="p-3 border mt-5 justify-content-between align-items-center sm:p-8 bg-gray-100 shadow sm:rounded-lg"
-                     style="background-color: #F2F1F1">
-                <div class="d-flex justify-content-between">
-                    {{ $event->name }} <br>
-
-                    <x-button :href="'/events/' . $event->id" :buttonText="'More details!'"/>
+            <article class="p-3 border mt-5 bg-gray-100 shadow sm:rounded-lg">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <b>Name:</b> {{ $event->name }}<br>
+                        <b>Date:</b> {{ $event->date }}<br>
+                        <b>Ticket price:</b> {{ $event->ticketPrice }}€ <br>
+                        <b>Musician:</b> {{ $event->musicians[0]->name }} <br>
+                    </div>
+                    <div class="text-center">
+                        <x-button :href="'/events/' . $event->id" :buttonText="'More details!'"/>
+                    </div>
                 </div>
             </article>
         @endforeach
