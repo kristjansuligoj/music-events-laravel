@@ -5,6 +5,7 @@
         @php
             $data['name'] = 'musician';
             $data['id'] = $musician->id;
+            $data['usedElsewhere'] = $usedElsewhere;
         @endphp
         <x-buttons :data="$data"/>
         <hr>
