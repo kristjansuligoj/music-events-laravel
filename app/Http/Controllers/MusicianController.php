@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MusicianRequest;
+use App\Models\Event;
 use App\Models\Musician;
+use App\Models\Song;
 use Illuminate\Support\Facades\File;
 
 class MusicianController extends Controller
@@ -108,4 +110,14 @@ class MusicianController extends Controller
             ->with('events')
             ->paginate(7);
     }
+
+    public function checkMusicianUsage($id) {
+        $isUsedInEvent = Event::whereHas('musicians', function ($query) use ($id) {
+            $query->where('musician_id', $id);
+        })->exists();
+        $isUsedInSong = Song::where('musician_id', '=', $id)->exists();
+
+        return $isUsedInEvent || $isUsedInSong;
+    }
+
 }
