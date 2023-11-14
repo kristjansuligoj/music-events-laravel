@@ -19,12 +19,17 @@
             <x-button :route="'songs.add'" :buttonText="'Add song'"/>
         </div>
         @foreach($songs as $song)
-            <article class="p-3 border mt-5 justify-content-between align-items-center sm:p-8 bg-gray-100 shadow sm:rounded-lg"
-                     style="background-color: #F2F1F1">
+            <article class="p-3 border mt-5 bg-gray-100 shadow sm:rounded-lg">
                 <div class="d-flex justify-content-between">
-                    {{ $song->title }} <br>
+                    <div>
+                        <b>Title: </b> {{ $song->title }} <br>
+                        <b>Length: </b> {{ $song->length }} <br>
+                        <b>Release date: </b> {{ $song->releaseDate }} <br>
+                    </div>
 
-                    <x-button :href="'/songs/' . $song->id" :buttonText="'More details!'"/>
+                    <div class="text-center">
+                        <x-button :href="'/songs/' . $song->id" :buttonText="'More details!'"/>
+                    </div>
                 </div>
             </article>
         @endforeach
