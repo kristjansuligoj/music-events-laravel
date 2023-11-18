@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Song extends Model
 {
@@ -19,6 +20,15 @@ class Song extends Model
         'length',
         'releaseDate',
     ];
+
+    protected $casts = [
+        'releaseDate' => 'date:d-m-Y'
+    ];
+
+    public function getReleaseDateAttribute()
+    {
+        return Carbon::parse($this->attributes['releaseDate'])->format('d-m-Y');
+    }
 
     public function genres()
     {
