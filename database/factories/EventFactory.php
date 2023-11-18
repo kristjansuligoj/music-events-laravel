@@ -23,7 +23,7 @@ class EventFactory extends Factory
             'name' => $this->faker->words(5, true),
             'address' => str_replace(["\n", "\r"], '', $this->faker->address),
             'date' => $this->faker->dateTimeBetween('+0 days', '+30 days'),
-            'time' => $this->faker->time,
+            'time' => $this->faker->time("H:m"),
             'description' => $this->faker->sentence,
             'ticketPrice' => $this->faker->numberBetween(10,300)
         ];

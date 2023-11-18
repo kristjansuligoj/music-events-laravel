@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\EventParticipant;
 use App\Models\Musician;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 
 class EventController extends Controller
 {
@@ -30,8 +31,11 @@ class EventController extends Controller
     }
 
     public function getEvent($id) {
+        $event = Event::with('musicians', 'participants')->findOrFail($id);
+        $event->time = Carbon::parse($event->time)->format("H:i");
+
         return view('events/event',[
-            'event' => Event::with('musicians', 'participants')->findOrFail($id)
+            'event' => $event
         ]);
     }
 
