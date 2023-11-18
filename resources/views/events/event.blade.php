@@ -1,14 +1,16 @@
 @extends('layout.main')
 @section('page-content')
     @props(['event'])
-    <div class="container">
-        @php
-            $data['name'] = 'event';
-            $data['id'] = $event->id;
-        @endphp
+    <div class="container p-5 sm:p-8 bg-white shadow sm:rounded-lg">
+        @if(Auth::check() && Auth::user()->id === $event->user_id)
+            @php
+                $data['name'] = 'event';
+                $data['id'] = $event->id;
+            @endphp
 
-        <x-buttons :data="$data"/>
-        <hr>
+            <x-buttons :data="$data"/>
+            <hr>
+        @endif
 
         <div class="container">
             <b>Name:</b> {{ $event->name }} <br>

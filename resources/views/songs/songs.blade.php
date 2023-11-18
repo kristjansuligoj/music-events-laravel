@@ -16,7 +16,9 @@
         <div class="d-flex justify-content-between align-items-baseline mt-5">
             <h4>Songs:</h4>
 
-            <x-button :route="'songs.add'" :buttonText="'Add song'"/>
+            @if(Auth::check())
+                <x-button :route="'songs.add'" :buttonText="'Add song'"/>
+            @endif
         </div>
         @foreach($songs as $song)
             <article class="p-3 border mt-5 bg-gray-100 shadow sm:rounded-lg">
