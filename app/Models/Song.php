@@ -19,6 +19,7 @@ class Song extends Model
         'title',
         'length',
         'releaseDate',
+        'user_id',
     ];
 
     protected $casts = [

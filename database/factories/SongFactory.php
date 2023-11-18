@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Musician;
 use App\Models\Song;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,11 +21,14 @@ class SongFactory extends Factory
      */
     public function definition()
     {
+        $user = User::first();
+
         return [
             'musician_id' => Musician::inRandomOrder()->first()->id,
             'title' => $this->faker->words(2, true),
             'length' => $this->faker->numberBetween(10,300),
             'releaseDate' => $this->faker->dateTime(),
+            'user_id' => $user->id,
         ];
     }
 }

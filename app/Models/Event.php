@@ -21,6 +21,7 @@ class Event extends Model
         'time',
         'description',
         'ticketPrice',
+        'user_id',
     ];
 
     protected $casts = [

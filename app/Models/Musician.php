@@ -18,6 +18,7 @@ class Musician extends Model
         'name',
         'age',
         'image',
+        'user_id',
     ];
 
     public function genres()

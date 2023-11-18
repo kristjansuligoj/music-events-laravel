@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Musician;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\File;
 
@@ -20,6 +21,8 @@ class MusicianFactory extends Factory
      */
     public function definition()
     {
+        $user = User::first();
+
         $defaultImage = rand(1,5) . '.jpeg';
         $destinationImage = time() . '.jpeg';
 
@@ -35,6 +38,7 @@ class MusicianFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'image' => $destinationImage,
+            'user_id' => $user->id,
         ];
     }
 }
