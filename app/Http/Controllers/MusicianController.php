@@ -6,6 +6,7 @@ use App\Http\Requests\MusicianRequest;
 use App\Models\Event;
 use App\Models\Musician;
 use App\Models\Song;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class MusicianController extends Controller
@@ -48,6 +49,8 @@ class MusicianController extends Controller
         // Create the musician
         $musicianData = $request->all();
         $musicianData['image'] = $fileName;
+        $musicianData['user_id'] = Auth::user()->id;
+
         $musician = Musician::create($musicianData);
 
         // Adds genres to the pivot table
