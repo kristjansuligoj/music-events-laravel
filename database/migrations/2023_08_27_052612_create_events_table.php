@@ -21,6 +21,7 @@ return new class extends Migration
             $table->time('time');
             $table->string('description');
             $table->integer('ticketPrice');
+            $table->string('user_id');
         });
     }
 

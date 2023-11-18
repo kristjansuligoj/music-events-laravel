@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('title');
             $table->integer('length');
             $table->date('releaseDate');
+            $table->string('user_id');
         });
     }
 
