@@ -19,7 +19,9 @@
                             focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
                             transition ease-in-out duration-150 ml-4 text-decoration-none uppercase"
                     >Log out</button>
-                </form><br>
+                </form>
+
+                <x-button :route="'profile.edit'" :buttonText="'Profile'"/>
 
                 <h2>Logged in user: {{Auth::user()->name}}
             @else
