@@ -72,13 +72,15 @@
                 @enderror <br>
             </div>
 
-            @php
-                $data['name'] = "genre";
-                $data['options'] = \App\Enums\GenresEnum::getAllGenres();
-                $data['selectedData'] = old('genre', $song?->genres->pluck('name')->toArray());
-                $data['errors'] = $errors;
-            @endphp
-            <x-checkboxes :data="$data"/>
+            <div class="mb-3">
+                @php
+                    $data['name'] = "genre";
+                    $data['options'] = \App\Enums\GenresEnum::getAllGenres();
+                    $data['selectedData'] = old('genre', $song?->genres->pluck('name')->toArray());
+                    $data['errors'] = $errors;
+                @endphp
+                <x-checkboxes :data="$data"/>
+            </div>
 
             <input
                 class="inline-flex items-center px-4 py-2 bg-green-500 border
