@@ -28,7 +28,7 @@
                         <b>Musician:</b> {{ $event->musicians[0]->name }} <br>
                     </div>
                     <div class="text-center">
-                        <x-button :href="'/events/' . $event->id" :buttonText="'More details!'"/>
+                        <x-button :href="'/events/' . $event->id" :buttonText="'More details'"/>
                     </div>
                 </div>
             </article>

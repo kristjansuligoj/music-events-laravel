@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="text-center">
-                        <x-button :href="'/songs/' . $song->id" :buttonText="'More details!'"/>
+                        <x-button :href="'/songs/' . $song->id" :buttonText="'More details'"/>
                     </div>
                 </div>
             </article>
