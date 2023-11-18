@@ -6,10 +6,17 @@ use App\Http\Requests\SongRequest;
 use App\Models\Author;
 use App\Models\Musician;
 use App\Models\Song;
+use Illuminate\Support\Facades\Session;
 
 class SongController extends Controller
 {
     public function allSongs(SongRequest $request) {
+        $sortOrderMap = getOrderMap(
+            "songs",
+            $request->input('field'),
+            ["title", "genre", "length", "releaseDate", "authors", "musician"]
+        );
+
         if ($request->has('keyword')) {
             $songs = $this->searchSongsByKeyword($request->keyword);
         } else {
@@ -17,7 +24,8 @@ class SongController extends Controller
         }
 
         return view('songs/songs', [
-            'songs' => $songs
+            'songs' => $songs,
+            'sortOrder' => $sortOrderMap,
         ]);
     }
 
