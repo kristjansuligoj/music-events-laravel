@@ -14,13 +14,19 @@
         @csrf
         @method('DELETE')
 
+        @php
+            $confirmationMessage = isset($data['usedElsewhere']) && $data['usedElsewhere']
+                ? "This {$data['name']} is used elsewhere. Are you sure?"
+                : "Are you sure?";
+        @endphp
+
         <input
-            onclick="return confirm('Are you sure?')"
+            onclick="return confirm('{{ $confirmationMessage }}')"
             class="inline-flex items-center px-4 py-2 bg-red-800 border
-                   border-transparent rounded-md text-xs text-white
-                   tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900
-                   focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
-                   transition ease-in-out duration-150 ml-4 text-decoration-none uppercase h-100"
+        border-transparent rounded-md text-xs text-white
+        tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900
+        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
+        transition ease-in-out duration-150 ml-4 text-decoration-none uppercase h-100"
             type="submit"
             value="Remove {{ $data['name'] }}"
         >
