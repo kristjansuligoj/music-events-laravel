@@ -15,6 +15,35 @@
 
             <b>Address:</b> {{ $event->address  }}<br>
 
+            <div class="container">
+                <div id="map" style="height: 400px;"></div>
+
+                <script>
+                    function initMap() {
+                        const address = '{{ $event->address }}';
+                        const geocoder = new google.maps.Geocoder();
+
+                        geocoder.geocode({ 'address': address }, function(results, status) {
+                            if (status === google.maps.GeocoderStatus.OK) {
+                                const map = new google.maps.Map(document.getElementById('map'), {
+                                    zoom: 13,
+                                    center: results[0].geometry.location
+                                });
+
+                                new google.maps.Marker({
+                                    map: map,
+                                    position: results[0].geometry.location,
+                                    title: "{{ $event->name }} Location"
+                                });
+                            } else {
+                                alert('Geocode was not successful for the following reason: ' + status);
+                            }
+                        });
+                    }
+                </script>
+                <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&callback=initMap" async defer></script>
+            </div>
+
             <b>Date:</b> {{ $event->date }} <br>
 
             <b>Time:</b> {{ $event->time }} <br>
@@ -64,6 +93,7 @@
                 </form><br>
             @endif
         @endif
+
     </div>
 @endsection
 
