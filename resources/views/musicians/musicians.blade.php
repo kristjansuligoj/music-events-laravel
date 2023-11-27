@@ -25,7 +25,7 @@
                 <div class="d-flex justify-content-between">
                     <h5>{{ $musician->name }}</h5>
 
-                    <x-button :href="'/musicians/' . $musician->id" :buttonText="'More details!'"/>
+                    <x-button :href="'/musicians/' . $musician->id" :buttonText="'More details'"/>
                 </div>
 
                 @php
