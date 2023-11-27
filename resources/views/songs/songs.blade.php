@@ -4,9 +4,9 @@
         <div>
             @php
                 $data['currentOrder'] = request()->input('order', '');
-                $data['nextOrder'] = ( $data['currentOrder'] === 'asc') ? 'desc' : (( $data['currentOrder'] === 'desc') ? '' : 'asc');
+                $data['sortOrder'] = $sortOrder;
                 $data['route'] = "songs.list";
-                $data['fields'] = ['title', 'genre', 'length', 'releaseDate', 'authors', 'musician'];
+                $data['fields'] = array_keys($sortOrder);
             @endphp
             <div class="mb-3">
                 <x-filter :data="$data"/>

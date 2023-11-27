@@ -2,6 +2,7 @@
 
 use App\Models\Author;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 function printArray($data, $field): string {
         $html = "";
@@ -78,4 +79,36 @@ function printArray($data, $field): string {
             $author->name = trim($authorName); // Trim any whitespace around the author name
             $song->authors()->save($author);
         }
+    }
+
+    function getOrderMap($whichMap, $field, $defaultOrders): array {
+        $key = "";
+
+        switch($whichMap) {
+            case 'musicians':
+                $key = 'sortOrderMapMusicians';
+                break;
+            case 'events':
+                $key = 'sortOrderMapEvents';
+                break;
+            case 'songs':
+                $key = 'sortOrderMapSongs';
+                break;
+            default:
+                return [];
+        }
+
+        $sortOrderMap = Session::get($key, []);
+
+        if ($field) {
+            $sortOrderMap[$field] = ($sortOrderMap[$field] === 'asc') ? 'desc' : (($sortOrderMap[$field] === 'desc') ? '' : 'asc');
+        } else {
+            foreach ($defaultOrders as $defaultField) {
+                $sortOrderMap[$defaultField] = 'asc';
+            }
+        }
+
+        Session::put($key, $sortOrderMap);
+
+        return $sortOrderMap;
     }
