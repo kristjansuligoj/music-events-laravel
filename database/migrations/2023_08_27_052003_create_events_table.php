@@ -14,14 +14,16 @@ return new class extends Migration
     public function up()
     {
         Schema::create('events', function (Blueprint $table) {
-            $table->string('id');
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('address');
             $table->date('date');
             $table->time('time');
             $table->string('description');
             $table->integer('ticketPrice');
-            $table->string('user_id');
+            $table->uuid('user_id');
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

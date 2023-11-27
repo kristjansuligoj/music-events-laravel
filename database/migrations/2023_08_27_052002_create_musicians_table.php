@@ -13,9 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('songs_genres', function (Blueprint $table) {
-            $table->string('song_id');
-            $table->foreignId('genre_id');
+        Schema::create('musicians', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('name');
+            $table->string('image');
+            $table->uuid('user_id');
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('songs_genres');
+        Schema::dropIfExists('musicians');
     }
 };

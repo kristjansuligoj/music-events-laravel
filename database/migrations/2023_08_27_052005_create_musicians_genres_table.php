@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('musicians_genres', function (Blueprint $table) {
             $table->string('musician_id');
-            $table->integer('genre_id');
+            $table->foreignId('genre_id');
+
+            $table->foreign('genre_id')->references('id')->on('genres')->onDelete('cascade');
         });
     }
 

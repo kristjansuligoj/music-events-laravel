@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('musicians', function (Blueprint $table) {
-            $table->string('id');
-            $table->string('name');
-            $table->string('image');
-            $table->string('user_id');
+        Schema::create('songs_genres', function (Blueprint $table) {
+            $table->string('song_id');
+            $table->foreignId('genre_id');
+
+            $table->foreign('genre_id')->references('id')->on('genres')->onDelete('cascade');
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('musicians');
+        Schema::dropIfExists('songs_genres');
     }
 };

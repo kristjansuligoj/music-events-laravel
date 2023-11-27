@@ -14,12 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('songs', function (Blueprint $table) {
-            $table->string('id');
-            $table->string('musician_id');
+            $table->uuid('id')->primary();
+            $table->uuid('musician_id');
             $table->string('title');
             $table->integer('length');
             $table->date('releaseDate');
-            $table->string('user_id');
+            $table->uuid('user_id');
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('musician_id')->references('id')->on('musicians')->onDelete('cascade');
         });
     }
 
