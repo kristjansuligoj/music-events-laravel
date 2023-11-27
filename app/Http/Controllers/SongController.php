@@ -31,7 +31,7 @@ class SongController extends Controller
 
     public function getSong($id) {
         return view('songs/song',[
-            'song' => Song::with('musician', 'genres', 'authors')->findOrFail($id)
+            'song' => Song::with('musician', 'genres', 'authors', 'user')->findOrFail($id)
         ]);
     }
 

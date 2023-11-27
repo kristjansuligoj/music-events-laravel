@@ -13,6 +13,11 @@
         @endif
 
         <div class="container">
+            <div>
+                Added by user: <b>{{$song->user->name}}</b>
+            </div>
+            <hr>
+
             <b>Name:</b> {{ $song->title }}<br>
 
             <b>Genre:</b><br>
