@@ -3,6 +3,8 @@
     <div class="container w-full sm:max-w-md mt-6 p-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
         <x-button :href="$event ? url('events/' . $event->id) : url('events')" :buttonText="'Back'"/>
 
+        <h6 class="mt-3">Fields that have * are required!</h6>
+
         <form method="post" class="mt-4">
             @csrf <!-- Validates the request for cross-site request forgery (session token) -->
             @isset($event['id'])
@@ -10,7 +12,7 @@
             @endisset
 
             <div class="mb-3">
-                <label for="date" class="block font-medium text-sm text-gray-700 mb-2">Date: </label>
+                <label for="date" class="block font-medium text-sm text-gray-700 mb-2">* Date: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="date" name="date" required value="{{ old('date', $event?->date) }}"
@@ -22,7 +24,7 @@
 
 
             <div class="mb-3">
-                <label for="time" class="block font-medium text-sm text-gray-700 mb-2">Time: </label>
+                <label for="time" class="block font-medium text-sm text-gray-700 mb-2">* Time: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="time" name="time" required value="{{ old('time', $event?->time) }}"
@@ -33,7 +35,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="name" class="block font-medium text-sm text-gray-700 mb-2">Name: </label>
+                <label for="name" class="block font-medium text-sm text-gray-700 mb-2">* Name: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="text" name="name" required value="{{ old('name', $event?->name) }}"
@@ -44,7 +46,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="address" class="block font-medium text-sm text-gray-700 mb-2">Address: </label>
+                <label for="address" class="block font-medium text-sm text-gray-700 mb-2">* Address: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="text" name="address" required value="{{ old('address', $event?->address) }}"
@@ -55,7 +57,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="ticketPrice" class="block font-medium text-sm text-gray-700 mb-2">Ticket price: </label>
+                <label for="ticketPrice" class="block font-medium text-sm text-gray-700 mb-2">* Ticket price: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="number" min="0" name="ticketPrice" required
@@ -67,7 +69,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="description" class="block font-medium text-sm text-gray-700 mb-2">Description: </label>
+                <label for="description" class="block font-medium text-sm text-gray-700 mb-2">* Description: </label>
                 <textarea
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     name="description">{{ old('description', $event?->description) }}</textarea>
@@ -85,6 +87,8 @@
                     $data['selectedOption'] = old('musician', $event?->musicians[0]->id); // String or array
                     $data['errors'] = $errors;
                 @endphp
+
+                <label for="musician" class="block font-medium text-sm text-gray-700 mb-2">* Musician: </label>
                 <x-select2-dropdown :data="$data"/>
             </div>
 

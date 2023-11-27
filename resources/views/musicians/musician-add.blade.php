@@ -3,6 +3,8 @@
     <div class="container w-full sm:max-w-md mt-6 p-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
         <x-button :href="$musician ? url('musicians/' . $musician->id) : url('musicians')" :buttonText="'Back'"/>
 
+        <h6 class="mt-3">Fields that have * are required!</h6>
+
         <form method="post" enctype="multipart/form-data" class="mt-4">
             @csrf <!-- Validates the request for cross-site request forgery (session token) -->
             @isset($musician['id'])
@@ -10,7 +12,7 @@
             @endisset
 
             <div class="mb-3">
-                <label for="image" class="block font-medium text-sm text-gray-700 mb-2">Image </label>
+                <label for="image" class="block font-medium text-sm text-gray-700 mb-2">* Image </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="file"
@@ -20,7 +22,7 @@
 
 
             <div class="mb-3">
-                <label for="name" class="block font-medium text-sm text-gray-700 mb-2">Name </label>
+                <label for="name" class="block font-medium text-sm text-gray-700 mb-2">* Name </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"
                     required

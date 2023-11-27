@@ -1,7 +1,7 @@
 @props(['data'])
 
 <div>
-    <label for="{{$data['name']}}">{{ucfirst($data['name'])}}: </label><br>
+    <label for="{{$data['name']}}">* {{ucfirst($data['name'])}}: </label><br>
     @foreach($data['options'] as $option)
         <input
             class="m-2"
