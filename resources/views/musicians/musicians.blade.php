@@ -21,11 +21,12 @@
         @foreach($musicians as $musician)
             <article class="p-3 border mt-5 justify-content-between align-items-center sm:p-8 bg-gray-100 shadow sm:rounded-lg"
                      style="background-color: #F2F1F1">
-
-                <div class="d-flex justify-content-between">
-                    <h5>{{ $musician->name }}</h5>
-
-                    <x-button :href="'/musicians/' . $musician->id" :buttonText="'More details'"/>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <img class="m-2" src="{{ asset('images/musicians/' .  $musician->image) }}" style="width: 50px; height:50px; border-radius: 30%">
+                        <h5>{{ $musician->name }}</h5>
+                    </div>
+                    <x-button :href="'/musicians/' . $musician->id" :buttonText="'More details!'"/>
                 </div>
 
                 @php
