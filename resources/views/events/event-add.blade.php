@@ -18,7 +18,7 @@
                     type="date" name="date" required value="{{ old('date', $event?->date) }}"
                 >
                 @error('date')
-                <span class="fw-bold">{{ $errors->first('date') }}</span>
+                <span class="fw-bold text-red-500">{{ $errors->first('date') }}</span>
                 @enderror <br>
             </div>
 
@@ -30,7 +30,7 @@
                     type="time" name="time" required value="{{ old('time', $event?->time) }}"
                 >
                 @error('time')
-                <span class="fw-bold">{{ $errors->first('time') }}</span>
+                <span class="fw-bold text-red-500">{{ $errors->first('time') }}</span>
                 @enderror <br>
             </div>
 
@@ -41,7 +41,7 @@
                     type="text" name="name" required value="{{ old('name', $event?->name) }}"
                 >
                 @error('name')
-                <span class="fw-bold">{{ $errors->first('name') }}</span>
+                <span class="fw-bold text-red-500">{{ $errors->first('name') }}</span>
                 @enderror <br>
             </div>
 
@@ -52,7 +52,7 @@
                     type="text" name="address" required value="{{ old('address', $event?->address) }}"
                 >
                 @error('address')
-                <span class="fw-bold">{{ $errors->first('address') }}</span>
+                <span class="fw-bold text-red-500">{{ $errors->first('address') }}</span>
                 @enderror <br>
             </div>
 
@@ -64,7 +64,7 @@
                     value="{{ old('ticketPrice', $event?->ticketPrice) }}"
                 >
                 @error('ticketPrice')
-                <span class="fw-bold">{{ $errors->first('ticketPrice') }}</span>
+                <span class="fw-bold text-red-500">{{ $errors->first('ticketPrice') }}</span>
                 @enderror <br>
             </div>
 
@@ -74,7 +74,7 @@
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     name="description">{{ old('description', $event?->description) }}</textarea>
                 @error('description')
-                <span class="fw-bold">{{ $errors->first('description') }}</span>
+                <span class="fw-bold text-red-500">{{ $errors->first('description') }}</span>
                 @enderror <br>
             </div>
 

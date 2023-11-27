@@ -30,7 +30,7 @@
                     name="name"
                     value="{{ old('name', $musician?->name) }}">
                 @error('name')
-                <span class="fw-bold">{{ $errors->first('name') }}</span>
+                <span class="fw-bold text-red-500">{{ $errors->first('name') }}</span>
                 @enderror
                 <br>
             </div>
