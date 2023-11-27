@@ -3,7 +3,7 @@
 <div>
     @if(count($data['elements']) > 0)
         <span>
-            {{ count($data['elements']) === 1 ? ($data['text'] . ":") : ($data['text'] . "s:")  }}
+            <b>{{ count($data['elements']) === 1 ? ($data['text'] . ":") : ($data['text'] . "s:")  }}</b>
         </span> <br>
 
         <ul>
