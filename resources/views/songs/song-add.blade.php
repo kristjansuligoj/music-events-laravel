@@ -3,6 +3,8 @@
     <div class="container w-full sm:max-w-md mt-6 p-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
         <x-button :href="$song ? url('songs/' . $song->id) : url('songs')" :buttonText="'Back'"/>
 
+        <h6 class="mt-3">Fields that have * are required!</h6>
+
         <form method="post" class="mt-4">
             @csrf <!-- Validates the request for cross-site request forgery (session token) -->
             @isset($song['id'])
@@ -10,7 +12,7 @@
             @endisset
 
             <div class="mb-3">
-                <label for="musician" class="block font-medium text-sm text-gray-700 mb-2">Musician: </label>
+                <label for="musician" class="block font-medium text-sm text-gray-700 mb-2">* Musician: </label>
                 @php
                     $data = [];
                     $data['dropdown-items'] = $musicians;
@@ -23,7 +25,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="title" class="block font-medium text-sm text-gray-700 mb-2">Title: </label>
+                <label for="title" class="block font-medium text-sm text-gray-700 mb-2">* Title: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     required
@@ -31,12 +33,12 @@
                     name="title"
                     value="{{ old('title', $song?->title) }}">
                 @error('title')
-                <span class="fw-bold">{{ $errors->first('title') }}</span>
+                <span class="fw-bold text-red-500">{{ $errors->first('title') }}</span>
                 @enderror <br>
             </div>
 
             <div class="mb-3">
-                <label for="length" class="block font-medium text-sm text-gray-700 mb-2">Length: </label>
+                <label for="length" class="block font-medium text-sm text-gray-700 mb-2">* Length: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="number"
@@ -44,31 +46,31 @@
                     name="length"
                     value="{{ old('length', $song?->length) }}">
                 @error('length')
-                <span class="fw-bold">{{ $errors->first('length') }}</span>
+                <span class="fw-bold text-red-500">{{ $errors->first('length') }}</span>
                 @enderror <br>
             </div>
 
             <div class="mb-3">
-                <label for="releaseDate" class="block font-medium text-sm text-gray-700 mb-2">Release date: </label>
+                <label for="releaseDate" class="block font-medium text-sm text-gray-700 mb-2">* Release date: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="date"
                     name="releaseDate"
                     value="{{ old('releaseDate', $song?->releaseDate) }}">
                 @error('releaseDate')
-                <span class="fw-bold">{{ $errors->first('releaseDate') }}</span>
+                <span class="fw-bold text-red-500">{{ $errors->first('releaseDate') }}</span>
                 @enderror <br>
             </div>
 
             <div class="mb-3">
-                <label for="authors" class="block font-medium text-sm text-gray-700 mb-2">Authors: </label>
+                <label for="authors" class="block font-medium text-sm text-gray-700 mb-2">* Authors: </label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="text"
                     name="authors"
                     value="{{ old('authors', $song?->authors) }}">
                 @error('authors')
-                <span class="fw-bold">{{ $errors->first('authors') }}</span>
+                <span class="fw-bold text-red-500">{{ $errors->first('authors') }}</span>
                 @enderror <br>
             </div>
 

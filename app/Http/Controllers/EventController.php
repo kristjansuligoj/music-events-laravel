@@ -8,10 +8,17 @@ use App\Models\EventParticipant;
 use App\Models\Musician;
 use App\Models\User;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Session;
 
 class EventController extends Controller
 {
     public function allEvents(EventRequest $request) {
+        $sortOrderMap = getOrderMap(
+            "events",
+            $request->input('field'),
+            ["name", "address", "date", "time", "description", "ticketPrice", "musician"]
+        );
+
         if ($request->has('keyword')) {
             $events = $this->searchEventsByKeyword($request->keyword);
         } else {
@@ -19,7 +26,8 @@ class EventController extends Controller
         }
 
         return view('events/events',[
-            'events' => $events
+            'events' => $events,
+            'sortOrder' => $sortOrderMap,
         ]);
     }
 

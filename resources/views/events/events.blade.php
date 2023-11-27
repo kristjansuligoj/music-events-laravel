@@ -4,9 +4,9 @@
         <div>
             @php
                 $data['currentOrder'] = request()->input('order', '');
-                $data['nextOrder'] = ( $data['currentOrder'] === 'asc') ? 'desc' : (( $data['currentOrder'] === 'desc') ? '' : 'asc');
+                $data['sortOrder'] = $sortOrder;
                 $data['route'] = "events.list";
-                $data['fields'] = ['name', 'address', 'date', 'time', 'description', 'ticketPrice', 'musician'];
+                $data['fields'] = array_keys($sortOrder);
             @endphp
             <div class="mb-3">
                 <x-filter :data="$data"/>
@@ -28,7 +28,7 @@
                         <b>Musician:</b> {{ $event->musicians[0]->name }} <br>
                     </div>
                     <div class="text-center">
-                        <x-button :href="'/events/' . $event->id" :buttonText="'More details!'"/>
+                        <x-button :href="'/events/' . $event->id" :buttonText="'More details'"/>
                     </div>
                 </div>
             </article>
