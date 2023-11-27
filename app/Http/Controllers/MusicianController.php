@@ -31,7 +31,7 @@ class MusicianController extends Controller
 
     public function getMusician($id) {
         return view('musicians/musician',[
-            'musician' => Musician::with('genres')->findOrFail($id),
+            'musician' => Musician::with('genres', 'user')->findOrFail($id),
             'usedElsewhere' => $this->checkMusicianUsage($id)
         ]);
     }

@@ -15,6 +15,11 @@
         @endif
 
         <div class="container">
+            <div>
+                Added by user: <b>{{$musician->user->name}}</b>
+            </div>
+            <hr>
+
             <div class="d-flex align-items-center">
                 <img
                     class="m-2"
