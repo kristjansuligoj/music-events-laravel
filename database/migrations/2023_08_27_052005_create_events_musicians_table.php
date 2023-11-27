@@ -14,8 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('events_musicians', function (Blueprint $table) {
-            $table->string('event_id');
-            $table->string('musician_id');
+            $table->uuid('event_id');
+            $table->uuid('musician_id');
+
+            $table->foreign('musician_id')->references('id')->on('musicians')->onDelete('cascade');
         });
     }
 

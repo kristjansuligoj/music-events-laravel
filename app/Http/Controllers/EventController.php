@@ -8,6 +8,7 @@ use App\Models\EventParticipant;
 use App\Models\Musician;
 use App\Models\User;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class EventController extends Controller
@@ -39,7 +40,7 @@ class EventController extends Controller
     }
 
     public function getEvent($id) {
-        $event = Event::with('musicians', 'participants')->findOrFail($id);
+        $event = Event::with('musicians', 'participants', 'user')->findOrFail($id);
         $event->time = Carbon::parse($event->time)->format("H:i");
 
         return view('events/event',[
@@ -98,6 +99,7 @@ class EventController extends Controller
 
     public function addEvent(EventRequest $request) {
         $eventData = $request->all();
+        $eventData['user_id'] = Auth::user()->id;
         $event = Event::create($eventData);
 
         // Adds genres to the pivot table

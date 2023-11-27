@@ -6,6 +6,7 @@ use App\Http\Requests\SongRequest;
 use App\Models\Author;
 use App\Models\Musician;
 use App\Models\Song;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class SongController extends Controller
@@ -38,7 +39,7 @@ class SongController extends Controller
 
     public function getSong($id) {
         return view('songs/song',[
-            'song' => Song::with('musician', 'genres', 'authors')->findOrFail($id)
+            'song' => Song::with('musician', 'genres', 'authors', 'user')->findOrFail($id)
         ]);
     }
 
@@ -57,6 +58,7 @@ class SongController extends Controller
     public function addSong(SongRequest $request) {
         $songData = $request->except(['genre', 'authors']);
         $songData['musician_id'] = $request->musician;
+        $songData['user_id'] = Auth::user()->id;
         $song = Song::create($songData);
 
         // Adds genres to the pivot table

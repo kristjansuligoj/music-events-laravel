@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,13 +20,16 @@ class EventFactory extends Factory
      */
     public function definition()
     {
+        $user = User::first();
+
         return [
             'name' => $this->faker->words(5, true),
             'address' => str_replace(["\n", "\r"], '', $this->faker->address),
             'date' => $this->faker->dateTimeBetween('+0 days', '+30 days'),
             'time' => $this->faker->time("H:m"),
             'description' => $this->faker->sentence,
-            'ticketPrice' => $this->faker->numberBetween(10,300)
+            'ticketPrice' => $this->faker->numberBetween(10,300),
+            'user_id' => $user->id,
         ];
     }
 }

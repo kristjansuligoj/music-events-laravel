@@ -19,6 +19,7 @@ class Song extends Model
         'title',
         'length',
         'releaseDate',
+        'user_id',
     ];
 
     protected $casts = [
@@ -43,5 +44,10 @@ class Song extends Model
     public function musician()
     {
         return $this->belongsTo(Musician::class, 'musician_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

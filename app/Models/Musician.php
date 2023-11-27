@@ -18,6 +18,7 @@ class Musician extends Model
         'name',
         'age',
         'image',
+        'user_id',
     ];
 
     public function genres()
@@ -33,5 +34,10 @@ class Musician extends Model
     public function songs()
     {
         return $this->hasMany(Song::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

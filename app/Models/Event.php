@@ -21,6 +21,7 @@ class Event extends Model
         'time',
         'description',
         'ticketPrice',
+        'user_id',
     ];
 
     protected $casts = [
@@ -40,5 +41,10 @@ class Event extends Model
     public function participants()
     {
         return $this->belongsToMany(User::class, 'event_participants');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

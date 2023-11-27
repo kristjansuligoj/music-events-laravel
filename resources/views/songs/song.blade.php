@@ -1,16 +1,23 @@
 @extends('layout.main')
 @section('page-content')
     @props(['song'])
-    <div class="container">
-        @php
-            $data['name'] = 'song';
-            $data['id'] = $song->id;
-        @endphp
+    <div class="container p-5 sm:p-8 bg-white shadow sm:rounded-lg">
+        @if(Auth::check() && Auth::user()->id === $song->user_id)
+            @php
+                $data['name'] = 'song';
+                $data['id'] = $song->id;
+            @endphp
 
-        <x-buttons :data="$data"/>
-        <hr>
+            <x-buttons :data="$data"/>
+            <hr>
+        @endif
 
         <div class="container">
+            <div>
+                Added by user: <b>{{$song->user->name}}</b>
+            </div>
+            <hr>
+
             <b>Name:</b> {{ $song->title }}<br>
 
             <b>Genre:</b><br>

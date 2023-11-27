@@ -16,7 +16,9 @@
         <div class="d-flex justify-content-between align-items-baseline mt-5">
             <h4>Events:</h4>
 
-            <x-button :route="'events.add'" :buttonText="'Add event'"/>
+            @if(Auth::check())
+                <x-button :route="'events.add'" :buttonText="'Add event'"/>
+            @endif
         </div>
         @foreach($events as $event)
             <article class="p-3 border mt-5 bg-gray-100 shadow sm:rounded-lg">

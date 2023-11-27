@@ -6,6 +6,7 @@ use App\Http\Requests\MusicianRequest;
 use App\Models\Event;
 use App\Models\Musician;
 use App\Models\Song;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 
@@ -38,7 +39,7 @@ class MusicianController extends Controller
 
     public function getMusician($id) {
         return view('musicians/musician',[
-            'musician' => Musician::with('genres')->findOrFail($id),
+            'musician' => Musician::with('genres', 'user')->findOrFail($id),
             'usedElsewhere' => $this->checkMusicianUsage($id)
         ]);
     }
@@ -56,6 +57,8 @@ class MusicianController extends Controller
         // Create the musician
         $musicianData = $request->all();
         $musicianData['image'] = $fileName;
+        $musicianData['user_id'] = Auth::user()->id;
+
         $musician = Musician::create($musicianData);
 
         // Adds genres to the pivot table
