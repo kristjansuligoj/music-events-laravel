@@ -16,7 +16,7 @@
         @endforeach
     </select>
     @error($data['name'])
-    <span>{{ $errors->first($data['name']) }}</span>
+    <span class="fw-bold text-red-500">{{ $errors->first($data['name']) }}</span>
     @enderror
 </div>
 

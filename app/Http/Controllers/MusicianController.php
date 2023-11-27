@@ -8,10 +8,17 @@ use App\Models\Musician;
 use App\Models\Song;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 class MusicianController extends Controller
 {
     public function allMusicians(MusicianRequest $request) {
+        $sortOrderMap = getOrderMap(
+            "musicians",
+            $request->input('field'),
+            ["name", "genre"]
+        );
+
         if ($request->has('keyword')) {
             $musicians = $this->searchMusiciansByKeyword($request->keyword);
         } else {
@@ -19,7 +26,8 @@ class MusicianController extends Controller
         }
 
         return view('musicians/musicians', [
-            'musicians' => $musicians
+            'musicians' => $musicians,
+            'sortOrder' => $sortOrderMap,
         ]);
     }
 
