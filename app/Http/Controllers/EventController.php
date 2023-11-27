@@ -32,7 +32,7 @@ class EventController extends Controller
     }
 
     public function getEvent($id) {
-        $event = Event::with('musicians', 'participants')->findOrFail($id);
+        $event = Event::with('musicians', 'participants', 'user')->findOrFail($id);
         $event->time = Carbon::parse($event->time)->format("H:i");
 
         return view('events/event',[

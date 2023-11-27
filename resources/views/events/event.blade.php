@@ -13,6 +13,11 @@
         @endif
 
         <div class="container">
+            <div>
+                Added by user: <b>{{$event->user->name}}</b>
+            </div>
+            <hr>
+
             <b>Name:</b> {{ $event->name }} <br>
 
             <b>Address:</b> {{ $event->address  }}<br>
