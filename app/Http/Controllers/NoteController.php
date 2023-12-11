@@ -61,50 +61,24 @@ class NoteController extends Controller
 
     public function addNote(NoteRequest $request) {
         try {
-            $client = new Client();
-
-            $boundary = uniqid();
+            $client = new Client(['allow_redirects' => false]);
 
             $response = $client->request('POST', 'http://localhost:8001/api/note/store', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . session('luka-app-token'),
-                    'Content-Type' => 'multipart/form-data; boundary=' . $boundary,
+                    'Content-Type' => 'application/json',
                     'Accept' => 'application/json',
                 ],
-                'body' => new MultipartStream([
-                    [
-                        'name'     => 'user_id',
-                        'contents' => $request->user_id,
-                    ],
-                    [
-                        'name'     => 'category_id',
-                        'contents' => $request->category_id,
-                    ],
-                    [
-                        'name'     => 'title',
-                        'contents' => $request->title,
-                    ],
-                    [
-                        'name'     => 'content',
-                        'contents' => $request->noteContent,
-                    ],
-                    [
-                        'name'     => 'priority',
-                        'contents' => $request->priority,
-                    ],
-                    [
-                        'name'     => 'deadline',
-                        'contents' => $request->deadline,
-                    ],
-                    [
-                        'name'     => 'tags',
-                        'contents' => $request->tags,
-                    ],
-                    [
-                        'name'     => 'public',
-                        'contents' => $request->public,
-                    ]
-                ], $boundary),
+                'body' => json_encode([
+                    'user_id' => $request->user_id,
+                    'category_id' => $request->category_id,
+                    'title' => $request->title,
+                    'content' => $request->noteContent,
+                    'priority' => $request->priority,
+                    'deadline' => $request->deadline,
+                    'tags' => $request->tags,
+                    'public' => $request->public,
+                ])
             ]);
 
             $this->fetchNotes();
@@ -118,7 +92,7 @@ class NoteController extends Controller
 
     public function editNote(NoteRequest $request) {
         try {
-            $client = new Client();
+            $client = new Client(['allow_redirects' => FALSE]);
 
             $response = $client->request('PATCH', 'http://localhost:8001/api/note/store', [
                 'headers' => [
