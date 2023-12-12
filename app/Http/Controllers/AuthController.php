@@ -10,6 +10,12 @@ use mysql_xdevapi\Exception;
 
 class AuthController extends Controller
 {
+    /**
+     * Registers the user and returns a token
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function register(Request $request) {
 
         $request->validate([
@@ -24,8 +30,6 @@ class AuthController extends Controller
             'password' => $request->password,
         ]);
 
-        return response($user);
-
         $token = $user->createToken('myapptoken')->plainTextToken;
 
         $response = [
@@ -35,6 +39,12 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
+    /**
+     * Authenticates the user and returns a token
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function login(Request $request) {
 
         $validated = $request->validate([
@@ -50,8 +60,6 @@ class AuthController extends Controller
             ], 401);
         }
 
-        return response($user);
-
         $token = $user->createToken('myapptoken')->plainTextToken;
 
         $response = [
@@ -61,6 +69,12 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
+    /**
+     * Logs out the user and deletes the tokens
+     *
+     * @param Request $request
+     * @return \Exception|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function logout(Request $request) {
         try {
             auth()->user()->tokens()->delete();

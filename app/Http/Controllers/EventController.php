@@ -15,6 +15,12 @@ use PHPUnit\Exception;
 
 class EventController extends Controller
 {
+    /**
+     * Fetches all events
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function getAllEvents(Request $request) {
         $keyword = $request->query('keyword');
 
@@ -27,7 +33,12 @@ class EventController extends Controller
         return response($events);
     }
 
-
+    /**
+     * Adds a user to the attendees of an event
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function addAttendee(Request $request) {
         try {
             $event_id = $request->event_id;
@@ -56,6 +67,12 @@ class EventController extends Controller
         }
     }
 
+    /**
+     * Removes a user from the attendees of an event
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function removeAttendee(Request $request) {
         try {
             $event_id = $request->event_id;
@@ -84,6 +101,12 @@ class EventController extends Controller
         }
     }
 
+    /**
+     * Fetches a single event
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function getEventApi($id) {
         $event = Event::with('musicians', 'participants', 'user')->findOrFail($id);
         $event->time = Carbon::parse($event->time)->format("H:i");
