@@ -7,12 +7,89 @@ use App\Models\Event;
 use App\Models\EventParticipant;
 use App\Models\Musician;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use PHPUnit\Exception;
 
 class EventController extends Controller
 {
+    public function getAllEvents(Request $request) {
+        $keyword = $request->query('keyword');
+
+        if ($keyword != null) {
+            $events = $this->searchEventsByKeyword($keyword);
+        } else {
+            $events = Event::with('musicians')->get();
+        }
+
+        return response($events);
+    }
+
+
+    public function addAttendee(Request $request) {
+        try {
+            $event_id = $request->event_id;
+            $email = $request->email;
+
+            $event = Event::find($event_id);
+
+            if (!$event) {
+                return response(['error' => 'Event not found']);
+            }
+
+            $user = User::where('email', $email)->first();
+
+            if (!$user) {
+                return response(['error' => 'User not found']);
+            }
+
+            $eventParticipant = EventParticipant::firstOrCreate([
+                'user_id' => $user->id,
+                'event_id' => $event->id,
+            ]);
+
+            return response('Added successfully');
+        } catch (\Exception $exception) {
+            return response($exception);
+        }
+    }
+
+    public function removeAttendee(Request $request) {
+        try {
+            $event_id = $request->event_id;
+            $email = $request->email;
+
+            $event = Event::find($event_id);
+
+            if (!$event) {
+                return response(['error' => 'Event not found']);
+            }
+
+            $user = User::where('email', $email)->first();
+
+            if (!$user) {
+                return response(['error' => 'User not found']);
+            }
+
+            EventParticipant::where([
+                'user_id' => $user->id,
+                'event_id' => $event_id,
+            ])->delete();
+
+            return response('Removed successfully');
+        } catch (\Exception $exception) {
+            return response($exception);
+        }
+    }
+
+    public function getEventApi($id) {
+        $event = Event::with('musicians', 'participants', 'user')->findOrFail($id);
+        $event->time = Carbon::parse($event->time)->format("H:i");
+
+        return response($event);
+    }
     public function allEvents(EventRequest $request) {
         $sortOrderMap = getOrderMap(
             "events",
@@ -151,7 +228,7 @@ class EventController extends Controller
             ->orWhere('ticketPrice', 'LIKE', '%' . $keyword . '%')
             ->orWhereHas('musicians', function ($query) use ($keyword) {
                 $query->where('name', 'LIKE', '%' . $keyword . '%');
-            })
-            ->paginate(7);
+            })->with('musicians')
+            ->get();
     }
 }
