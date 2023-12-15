@@ -6,7 +6,7 @@
         </div>
         <br>
 
-        @if ($notes && !empty($notes['notes']))
+        @if (count($notes) > 0)
             <hr>
             <h4>Your notes:</h4>
 
@@ -43,7 +43,7 @@
                                     href="/notes/edit/{{ $note['id'] }}"
                                 >Edit note</a>
 
-                                <form method="post" action="/notes/remove/{{ $note['id'] }}">
+                                <form method="post" action="{{ route('notes.remove', $note['id']) }}">
                                     @csrf
                                     @method('DELETE')
                                     <input

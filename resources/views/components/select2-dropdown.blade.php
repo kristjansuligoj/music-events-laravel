@@ -7,9 +7,7 @@
                 id="{{ $item[$data['property']] }}"
                 name="{{ $data['name'] }}"
                 value="{{ $item['id'] }}"
-                @if(isset($data['selectedOption']) && $data['selectedOption'] === $item->id))
-                    selected
-                @endif
+                @selected(isset($data['selectedOption']) && $data['selectedOption'] === $item->id)
             >
                 {{ $item[$data['property']] }}
             </option>

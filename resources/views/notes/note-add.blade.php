@@ -5,92 +5,85 @@
 
         <h6 class="mt-3">Fields that have * are required!</h6>
 
-        <form method="post" class="mt-4">
+        <form method="post" class="mt-4" action="{{ isset($note->id) ? route('notes.edit', $note->id) : route('notes.add') }}">
             @csrf <!-- Validates the request for cross-site request forgery (session token) -->
             @isset($note->id)
                 @method('PATCH')
-                <input hidden name="id" value="{{ old('id', $note?->id)}}">
             @endisset
 
-            <input hidden name="user_id" value="{{ session('user_id') }}">
-            <input hidden name="category_id" value="9ad11014-626e-4858-b926-2281005dab76">
-            <input hidden name="public" value="1">
-
             <div class="mb-3">
-                <label for="title" class="block font-medium text-sm text-gray-700 mb-2">* Title: </label>
-                <input
+                <x-input-label for="title">* Title:</x-input-label>
+                <x-text-input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     required
                     type="text"
                     name="title"
-                    value="{{ old('title', $note?->title) }}">
+                    value="{{ old('title', $note?->title) }}"/>
                 @error('title')
-                <span class="fw-bold text-red-500">{{ $errors->first('title') }}</span>
+                    <x-input-error :messages="$errors->first('title')" class="mt-2"/>
                 @enderror <br>
             </div>
 
             <div class="mb-3">
-                <label for="noteContent" class="block font-medium text-sm text-gray-700 mb-2">* Content: </label>
-                <input
+                <x-input-label for="noteContent">* Content: </x-input-label>
+                <x-text-input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="text"
                     name="noteContent"
-                    value="{{ old('noteContent', $note?->content) }}">
+                    value="{{ old('noteContent', $note?->content) }}"/>
                 @error('noteContent')
-                <span class="fw-bold text-red-500">{{ $errors->first('noteContent') }}</span>
+                    <x-input-error :messages="$errors->first('noteContent')" class="mt-2"/>
                 @enderror <br>
             </div>
 
             <div class="mb-3">
-                <label for="priority" class="block font-medium text-sm text-gray-700 mb-2">* Priority: </label>
-                <input
+                <x-input-label for="priority">* Priority: </x-input-label>
+                <x-text-input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="number"
                     min="1"
                     max="5"
                     name="priority"
-                    value="{{ old('priority', $note?->priority) }}">
+                    value="{{ old('priority', $note?->priority) }}"/>
                 @error('priority')
-                <span class="fw-bold text-red-500">{{ $errors->first('priority') }}</span>
+                    <x-input-error :messages="$errors->first('priority')" class="mt-2"/>
                 @enderror <br>
             </div>
 
             <div class="mb-3">
-                <label for="deadline" class="block font-medium text-sm text-gray-700 mb-2">* Deadline: </label>
+                <x-input-label for="deadline">* Deadline: </x-input-label>
                 <input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="date"
                     name="deadline"
-                    value="{{ old('deadline', $note?->deadline) }}">
+                    value="{{ old('deadline', $note?->deadline) }}"/>
                 @error('deadline')
-                <span class="fw-bold text-red-500">{{ $errors->first('deadline') }}</span>
+                    <x-input-error :messages="$errors->first('deadline')" class="mt-2"/>
                 @enderror <br>
             </div>
 
             <div class="mb-3">
-                <label for="tags" class="block font-medium text-sm text-gray-700 mb-2">* Tags: </label>
-                <input
+                <x-input-label for="tags">* Tags: </x-input-label>
+                <x-text-input
                     class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
                     type="text"
                     name="tags"
-                    value="{{ old('tags', $note?->tags) }}">
+                    value="{{ old('tags', $note?->tags) }}"/>
                 @error('tags')
-                <span class="fw-bold text-red-500">{{ $errors->first('tags') }}</span>
+                    <x-input-error :messages="$errors->first('tags')" class="mt-2"/>
                 @enderror <br>
             </div>
 
             <div class="mb-3">
-                <label for="public" class="block font-medium text-sm text-gray-700 mb-2">* Public: </label>
+                <x-input-label for="public">* Public: </x-input-label>
 
                 <label>
                     <input
                         type="radio"
                         name="public"
                         value="1"
-                        @if(!isset($note->public) || isset($note->public) && $note->public)
-                            checked
-                        @endif
-                    >
+                        @checked(old('public', $note?->public) == 1)
+                    />
                     Public
                 </label><br>
 
@@ -99,37 +92,33 @@
                         type="radio"
                         name="public"
                         value="0"
-                        @if(isset($note->public) && !$note->public)
-                            checked
-                        @endif
-                    >
+                        @checked(old('public', $note?->public) == 0)
+                    />
                     Private
-                </label>
+                </label><br>
 
                 @error('public')
-                <span class="fw-bold text-red-500">{{ $errors->first('public') }}</span>
-                @enderror <br>
+                    <x-input-error :messages="$errors->first('public')" class="mt-2"/>
+                @enderror
             </div>
 
             <div class="mb-3">
-                <label for="category" class="block font-medium text-sm text-gray-700 mb-2">* Category: </label>
+                <x-input-label for="category">* Category: </x-input-label>
                 <div>
-                    <select class="form-control w-100" name="category">
+                    <select class="form-control w-100" name="category_id">
                         @foreach($categories['categories'] as $category)
                             <option
                                 id="{{ $category['id'] }}"
-                                name="category"
+                                name="category_id"
                                 value="{{ $category['id'] }}"
-                                @if(old('category', $note?->category_id) !== null && old('category', $note?->category_id) === $category['id'])
-                                    selected
-                                @endif
+                                @selected(old('category_id', $note?->category_id) === $category['id'])
                             >
                                 {{ $category['title'] }}
                             </option>
                         @endforeach
                     </select>
                     @error('category_id')
-                    <span class="fw-bold text-red-500">{{ $errors->first('category_id') }}</span>
+                        <x-input-error :messages="$errors->first('category_id')" class="mt-2"/>
                     @enderror
                 </div>
 
