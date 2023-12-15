@@ -1,7 +1,11 @@
 <?php
 
 use App\Models\Author;
+use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 function printArray($data, $field): string {
@@ -125,4 +129,49 @@ function printArray($data, $field): string {
         if (!$user) {
             throw new Exception("User is not logged in.");
         }
+    }
+
+    /**
+     * Handles GuzzleExceptions based on the status code
+     *
+     * @param GuzzleException $e
+     * @return RedirectResponse|View
+     */
+    function handleGuzzleException(GuzzleException $e): RedirectResponse | View
+    {
+        Log::error('Guzzle exception occurred: ' . $e->getMessage());
+
+        switch($e->getCode()) {
+            case 401:
+                return view('auth.login');
+            case 403:
+                abort(403, 'You are can not access this note.');
+            case 404:
+                abort(404, 'Note not found.');
+            case 422:
+                $response = json_decode($e->getResponse()->getBody(), true);
+
+                if (isset($response['errors'])) {
+                    $errorMessages = $response['errors'];
+                    return redirect()->route('notes.add')->with('serverErrors', $errorMessages);
+                }
+
+                abort(422, 'Provided data is invalid.');
+            default:
+                abort(500, 'Something went wrong.');
+        }
+    }
+
+    /**
+     * Handles exception when user is not logged in
+     *
+     * @param Exception $e
+     * @return View
+     *
+     */
+    function handleException(Exception $e): View
+    {
+        Log::error('Exception occurred: ' . $e->getMessage());
+
+        return view('auth.login');
     }

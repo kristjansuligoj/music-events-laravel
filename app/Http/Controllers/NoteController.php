@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Helpers\NoteClient;
 use App\Http\Requests\NoteRequest;
 use GuzzleHttp\Psr7\MultipartStream;
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use GuzzleHttp\Client;
@@ -28,10 +30,15 @@ class NoteController extends Controller
             ]);
         }
     public function allNotes()
+        try {
                     'notes' => $this->noteClient->fetchNotes(),
 
         if (auth()->user()) {
             return view('notes.authentication-form');
+        } catch (Exception $e) {
+            handleException($e);
+        } catch (GuzzleException $e) {
+            handleGuzzleException($e);
         }
 
         return view('auth.login');
@@ -39,20 +46,33 @@ class NoteController extends Controller
     public function addNoteForm(Request $request) {
         $categories = $this->fetchCategories();
     public function addNoteForm()
+        try {
             $categories = $this->noteClient->fetchCategories();
 
         return view('notes.note-add', [
             'note' => null,
             'categories' => $categories
         ]);
+        } catch (Exception $e) {
+            handleException($e);
+        } catch (GuzzleException $e) {
+            handleGuzzleException($e);
+        }
     }
 
     public function editNoteForm($note) {
         $note = $this->fetchNote($note);
         $categories = $this->fetchCategories();
     public function addNote(NoteRequest $request)
+        try {
             $this->noteClient->addNote($request);
+        } catch (GuzzleException $e) {
+            return handleGuzzleException($e);
+        } catch (Exception $e) {
+            handleException($e);
+        }
     public function editNoteForm($noteId)
+        try {
             $note = $this->noteClient->fetchNote($noteId);
             $categories = $this->noteClient->fetchCategories();
 
@@ -60,6 +80,11 @@ class NoteController extends Controller
             'note' => $note,
             'categories' => $categories,
         ]);
+        } catch (Exception $e) {
+            handleException($e);
+        } catch (GuzzleException $e) {
+            handleGuzzleException($e);
+        }
     }
 
     public function addNote(NoteRequest $request) {
@@ -71,6 +96,10 @@ class NoteController extends Controller
         } catch(\Exception $e) {
             info($e);
             return $e;
+        } catch (Exception $e) {
+            handleException($e);
+        } catch (GuzzleException $e) {
+            handleGuzzleException($e);
         }
     }
 
@@ -83,6 +112,10 @@ class NoteController extends Controller
         } catch(\Exception $e) {
             info($e);
             return $e;
+        } catch (Exception $e) {
+            handleException($e);
+        } catch (GuzzleException $e) {
+            handleGuzzleException($e);
         }
     }
 
@@ -201,6 +234,10 @@ class NoteController extends Controller
             return true;
         } catch(\Exception $e) {
             return false;
+        } catch (Exception $e) {
+            handleException($e);
+        } catch (GuzzleException $e) {
+            handleGuzzleException($e);
         }
     }
 }
