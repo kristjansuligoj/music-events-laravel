@@ -22,6 +22,9 @@
                 @error('title')
                     <x-input-error :messages="$errors->first('title')" class="mt-2"/>
                 @enderror <br>
+                @if(session()->has('serverErrors') && isset(session('serverErrors')['title']))
+                    <x-input-error :messages="session('serverErrors')['title']" class="mt-2"/>
+                @endif
             </div>
 
             <div class="mb-3">
