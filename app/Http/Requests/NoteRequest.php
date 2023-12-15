@@ -25,7 +25,6 @@ class NoteRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required',
             'category_id' => 'required',
             'title' => ['required', 'min:5', 'max:30'],
             'noteContent' => ['required', 'max:500'],
