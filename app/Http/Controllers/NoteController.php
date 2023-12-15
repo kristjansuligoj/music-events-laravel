@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\NoteClient;
 use App\Http\Requests\NoteRequest;
 use GuzzleHttp\Psr7\MultipartStream;
 use Illuminate\Http\Request;
@@ -11,20 +12,13 @@ use Illuminate\Support\MessageBag;
 
 class NoteController extends Controller
 {
-    public function authentication(Request $request) {
-        $authenticate = $this->authenticate($request->password);
-
-        $errors = new MessageBag();
-
-        $errors->add('password', "User credentials are not valid. Are you sure you are registered on both sites?");
-
-        if (!$authenticate) {
-            return view('notes.authentication-form')->withErrors($errors);
-        }
+    protected NoteClient $noteClient;
 
         return view('notes.notes', [
             'notes' => $this->fetchNotes(),
         ]);
+    public function __construct(NoteClient $noteClient) {
+        $this->noteClient = $noteClient;
     }
 
     public function allNotes() {
@@ -33,6 +27,8 @@ class NoteController extends Controller
                 'notes' => $this->fetchNotes(),
             ]);
         }
+    public function allNotes()
+                    'notes' => $this->noteClient->fetchNotes(),
 
         if (auth()->user()) {
             return view('notes.authentication-form');
@@ -42,6 +38,8 @@ class NoteController extends Controller
     }
     public function addNoteForm(Request $request) {
         $categories = $this->fetchCategories();
+    public function addNoteForm()
+            $categories = $this->noteClient->fetchCategories();
 
         return view('notes.note-add', [
             'note' => null,
@@ -52,6 +50,11 @@ class NoteController extends Controller
     public function editNoteForm($note) {
         $note = $this->fetchNote($note);
         $categories = $this->fetchCategories();
+    public function addNote(NoteRequest $request)
+            $this->noteClient->addNote($request);
+    public function editNoteForm($noteId)
+            $note = $this->noteClient->fetchNote($noteId);
+            $categories = $this->noteClient->fetchCategories();
 
         return view('notes.note-add', [
             'note' => $note,
@@ -60,28 +63,9 @@ class NoteController extends Controller
     }
 
     public function addNote(NoteRequest $request) {
+    public function editNote($noteId, NoteRequest $request)
         try {
-            $client = new Client(['allow_redirects' => false]);
-
-            $response = $client->request('POST', 'http://localhost:8001/api/note/store', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . session('luka-app-token'),
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ],
-                'body' => json_encode([
-                    'user_id' => $request->user_id,
-                    'category_id' => $request->category_id,
-                    'title' => $request->title,
-                    'content' => $request->noteContent,
-                    'priority' => $request->priority,
-                    'deadline' => $request->deadline,
-                    'tags' => $request->tags,
-                    'public' => $request->public,
-                ])
-            ]);
-
-            $this->fetchNotes();
+            $this->noteClient->editNote($noteId, $request);
 
             return redirect()->route('notes.list');
         } catch(\Exception $e) {
@@ -91,29 +75,9 @@ class NoteController extends Controller
     }
 
     public function editNote(NoteRequest $request) {
+    public function authenticate(Request $request)
         try {
-            $client = new Client(['allow_redirects' => FALSE]);
-
-            $response = $client->request('PATCH', 'http://localhost:8001/api/note/store', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . session('luka-app-token'),
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ],
-                'body' => json_encode([
-                    'id' => $request->id,
-                    'user_id' => $request->user_id,
-                    'category_id' => $request->category_id,
-                    'title' => $request->title,
-                    'content' => $request->noteContent,
-                    'priority' => $request->priority,
-                    'deadline' => $request->deadline,
-                    'tags' => $request->tags,
-                    'public' => $request->public,
-                ])
-            ]);
-
-            $this->fetchNotes();
+            $this->noteClient->authenticate($request->password);
 
             return redirect()->route('notes.list');
         } catch(\Exception $e) {
@@ -123,15 +87,9 @@ class NoteController extends Controller
     }
 
     public function removeNote($id) {
+    public function removeNote($noteId)
         try {
-            $client = new Client();
-
-            $response = $client->request('DELETE', 'http://localhost:8001/api/note/destroy/' . $id, [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . session('luka-app-token'),
-                    'Accept' => 'application/json',
-                ],
-            ]);
+            $this->noteClient->removeNote($noteId);
 
             return redirect()->route('notes.list');
         } catch(\Exception $e) {
