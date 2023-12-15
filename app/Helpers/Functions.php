@@ -112,3 +112,17 @@ function printArray($data, $field): string {
 
         return $sortOrderMap;
     }
+
+    /**
+     * Checks if user is logged in, and throws an exception if not
+     *
+     * @throws Exception
+     */
+    function checkLoggedIn(): void
+    {
+        $user = auth()->user();
+
+        if (!$user) {
+            throw new Exception("User is not logged in.");
+        }
+    }
