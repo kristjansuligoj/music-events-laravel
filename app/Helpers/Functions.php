@@ -118,20 +118,6 @@ function printArray($data, $field): string {
     }
 
     /**
-     * Checks if user is logged in, and throws an exception if not
-     *
-     * @throws Exception
-     */
-    function checkLoggedIn(): void
-    {
-        $user = auth()->user();
-
-        if (!$user) {
-            throw new Exception("User is not logged in.");
-        }
-    }
-
-    /**
      * Handles GuzzleExceptions based on the status code
      *
      * @param GuzzleException $e
@@ -139,7 +125,7 @@ function printArray($data, $field): string {
      */
     function handleGuzzleException(GuzzleException $e): RedirectResponse | View
     {
-        Log::error('Guzzle exception occurred: ' . $e->getMessage());
+        Log::error('Guzzle exception occurred: ', ['stacktrace' => debug_backtrace()]);
 
         switch($e->getCode()) {
             case 401:
@@ -171,7 +157,7 @@ function printArray($data, $field): string {
      */
     function handleException(Exception $e): View
     {
-        Log::error('Exception occurred: ' . $e->getMessage());
+        Log::error('Exception occurred: ', ['stacktrace' => debug_backtrace()]);
 
         return view('auth.login');
     }

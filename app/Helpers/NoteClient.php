@@ -91,10 +91,10 @@ class NoteClient
     /**
      * Fetches all categories
      *
+     * @return mixed
      * @throws GuzzleException
-     * @throws Exception
      */
-    public function fetchCategories()
+    public function fetchCategories(): mixed
     {
         $response = $this->client->request('GET', $this->baseUrl . 'categories', [
             'headers' => [
