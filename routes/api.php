@@ -19,10 +19,10 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/events', [EventController::class, 'getAllEvents']);
-Route::get('/event/{id}', [EventController::class, 'getEventApi']);
+Route::get('/events/{id}', [EventController::class, 'getEventApi']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/addAttendee', [EventController::class, 'addAttendee']);
-    Route::post('/removeAttendee', [EventController::class, 'removeAttendee']);
+    Route::post('/events/{id}/attendees', [EventController::class, 'addAttendee']);
+    Route::delete('/events/{id}/attendees/{attendeesId}', [EventController::class, 'removeAttendee']);
 });

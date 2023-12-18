@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
-use mysql_xdevapi\Exception;
 
 class AuthController extends Controller
 {
