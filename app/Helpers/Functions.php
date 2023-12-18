@@ -125,7 +125,7 @@ function printArray($data, $field): string {
      */
     function handleGuzzleException(GuzzleException $e): RedirectResponse | View
     {
-        Log::error('Guzzle exception occurred: ', ['stacktrace' => debug_backtrace()]);
+        Log::error($e);
 
         switch($e->getCode()) {
             case 401:
@@ -139,7 +139,7 @@ function printArray($data, $field): string {
 
                 if (isset($response['errors'])) {
                     $errorMessages = $response['errors'];
-                    return redirect()->route('notes.add')->with('serverErrors', $errorMessages);
+                    return redirect()->route('notes.authenticationForm')->with('serverErrors', $errorMessages);
                 }
 
                 abort(422, 'Provided data is invalid.');
@@ -157,7 +157,7 @@ function printArray($data, $field): string {
      */
     function handleException(Exception $e): View
     {
-        Log::error('Exception occurred: ', ['stacktrace' => debug_backtrace()]);
+        Log::error($e);
 
         return view('auth.login');
     }

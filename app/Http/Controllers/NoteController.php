@@ -23,27 +23,27 @@ class NoteController extends Controller
     /**
      * Fetches all notes from the logged user or prompts for authentication
      *
-     * @return View
+     * @return View|RedirectResponse
      */
-    public function allNotes()
+    public function allNotes(): View | RedirectResponse
     {
         try {
             return view('notes.notes', [
                 'notes' => $this->noteClient->fetchNotes(),
             ]);
-        } catch (Exception $e) {
-            handleException($e);
         } catch (GuzzleException $e) {
-            handleGuzzleException($e);
+            return handleGuzzleException($e);
+        } catch (Exception $e) {
+            return handleException($e);
         }
     }
 
     /**
      * Returns a view for adding a new note
      *
-     * @return View
+     * @return View|RedirectResponse
      */
-    public function addNoteForm()
+    public function addNoteForm(): View | RedirectResponse
     {
         try {
             $categories = $this->noteClient->fetchCategories();
@@ -52,10 +52,10 @@ class NoteController extends Controller
                 'note' => null,
                 'categories' => $categories
             ]);
-        } catch (Exception $e) {
-            handleException($e);
         } catch (GuzzleException $e) {
-            handleGuzzleException($e);
+            return handleGuzzleException($e);
+        } catch (Exception $e) {
+            return handleException($e);
         }
     }
 
@@ -63,9 +63,9 @@ class NoteController extends Controller
      * Adds a note
      *
      * @param NoteRequest $request
-     * @return RedirectResponse
+     * @return View|RedirectResponse
      */
-    public function addNote(NoteRequest $request)
+    public function addNote(NoteRequest $request): View | RedirectResponse
     {
         try {
             $this->noteClient->addNote($request);
@@ -74,7 +74,7 @@ class NoteController extends Controller
         } catch (GuzzleException $e) {
             return handleGuzzleException($e);
         } catch (Exception $e) {
-            handleException($e);
+            return handleException($e);
         }
     }
 
@@ -82,9 +82,9 @@ class NoteController extends Controller
      * Returns a view for editing a note
      *
      * @param $noteId
-     * @return View
+     * @return View|RedirectResponse
      */
-    public function editNoteForm($noteId)
+    public function editNoteForm($noteId): View | RedirectResponse
     {
         try {
             $note = $this->noteClient->fetchNote($noteId);
@@ -94,10 +94,10 @@ class NoteController extends Controller
                 'note' => $note,
                 'categories' => $categories,
             ]);
-        } catch (Exception $e) {
-            handleException($e);
         } catch (GuzzleException $e) {
-            handleGuzzleException($e);
+            return handleGuzzleException($e);
+        } catch (Exception $e) {
+            return handleException($e);
         }
     }
 
@@ -106,22 +106,27 @@ class NoteController extends Controller
      *
      * @param $noteId
      * @param NoteRequest $request
-     * @return RedirectResponse
+     * @return View|RedirectResponse
      */
-    public function editNote($noteId, NoteRequest $request)
+    public function editNote($noteId, NoteRequest $request): View | RedirectResponse
     {
         try {
             $this->noteClient->editNote($noteId, $request);
 
             return redirect()->route('notes.list');
-        } catch (Exception $e) {
-            handleException($e);
         } catch (GuzzleException $e) {
-            handleGuzzleException($e);
+            return handleGuzzleException($e);
+        } catch (Exception $e) {
+            return handleException($e);
         }
     }
 
-    public function authenticationForm(Request $request)
+    /**
+     * Returns authentication form
+     *
+     * @return View
+     */
+    public function authenticationForm(): View
     {
         return view('notes.authentication-form');
     }
@@ -130,18 +135,18 @@ class NoteController extends Controller
      * Tries to authenticate with Lukas' app, so his API can be used
      *
      * @param Request $request
-     * @return RedirectResponse
+     * @return View|RedirectResponse
      */
-    public function authenticate(Request $request)
+    public function authenticate(Request $request): View | RedirectResponse
     {
         try {
             $this->noteClient->authenticate($request->password);
 
             return redirect()->route('notes.list');
-        } catch (Exception $e) {
-            handleException($e);
         } catch (GuzzleException $e) {
-            handleGuzzleException($e);
+            return handleGuzzleException($e);
+        } catch (Exception $e) {
+            return handleException($e);
         }
     }
 
@@ -149,18 +154,18 @@ class NoteController extends Controller
      * Removes note with the given id
      *
      * @param $noteId
-     * @return RedirectResponse
+     * @return View|RedirectResponse
      */
-    public function removeNote($noteId)
+    public function removeNote($noteId): View | RedirectResponse
     {
         try {
             $this->noteClient->removeNote($noteId);
 
             return redirect()->route('notes.list');
-        } catch (Exception $e) {
-            handleException($e);
         } catch (GuzzleException $e) {
-            handleGuzzleException($e);
+            return handleGuzzleException($e);
+        } catch (Exception $e) {
+            return handleException($e);
         }
     }
 }

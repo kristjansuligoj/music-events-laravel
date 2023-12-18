@@ -14,6 +14,9 @@
                           required autocomplete="current-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            @if(session()->has('serverErrors') && isset(session('serverErrors')['email']))
+                <x-input-error :messages="session('serverErrors')['email']" class="mt-2"/>
+            @endif
         </div>
 
         <div class="flex items-center justify-end mt-4">
