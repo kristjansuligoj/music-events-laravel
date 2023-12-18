@@ -16,11 +16,9 @@ use Illuminate\Http\Request;
  */
 class NoteController extends Controller
 {
-    protected NoteClient $noteClient;
-
-    public function __construct(NoteClient $noteClient) {
-        $this->noteClient = $noteClient;
-    }
+    public function __construct(
+        protected NoteClient $noteClient
+    ) {}
 
     /**
      * Fetches all notes from the logged user or prompts for authentication
