@@ -12,12 +12,13 @@ use GuzzleHttp\Exception\GuzzleException;
  */
 class NoteClient
 {
-    protected mixed $baseUrl;
-    protected Client $client;
+    protected string $baseUrl;
 
-    public function __construct()
+    public function __construct(
+        protected Client $client
+    )
     {
-        $this->baseUrl = env('LUKA_APP_URL');
+        $this->baseUrl = config('luka-app.base_url');
         $this->client = new Client([
             'base_uri' => $this->baseUrl,
             'allow_redirects' => false,
