@@ -42,13 +42,17 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'notes', 'middleware' => ['auth']], function() {
-    Route::get('/', [NoteController::class, 'allNotes'])->name('notes.list');
+    Route::get('/authenticationForm', [NoteController::class, 'authenticationForm'])->name('notes.authenticationForm');
     Route::post('/authenticate', [NoteController::class, 'authenticate'])->name('notes.authenticate');
-    Route::get('/add', [NoteController::class, 'addNoteForm'])->name('notes.addForm');
-    Route::post('/add', [NoteController::class, 'addNote'])->name('notes.add');
-    Route::get('/edit/{note}', [NoteController::class, 'editNoteForm'])->whereUuid('note')->name('notes.editForm');
-    Route::patch('/edit/{note}', [NoteController::class, 'editNote'])->whereUuid('note')->name('notes.edit');
-    Route::delete('/remove/{note}', [NoteController::class, 'removeNote'])->whereUuid('note')->name('notes.remove');
+
+    Route::middleware('auth.luka-app')->group(function() {
+        Route::get('/', [NoteController::class, 'allNotes'])->name('notes.list');
+        Route::get('/add', [NoteController::class, 'addNoteForm'])->name('notes.addForm');
+        Route::post('/add', [NoteController::class, 'addNote'])->name('notes.add');
+        Route::get('/edit/{note}', [NoteController::class, 'editNoteForm'])->whereUuid('note')->name('notes.editForm');
+        Route::patch('/edit/{note}', [NoteController::class, 'editNote'])->whereUuid('note')->name('notes.edit');
+        Route::delete('/remove/{note}', [NoteController::class, 'removeNote'])->whereUuid('note')->name('notes.remove');
+    });
 });
 
 Route::prefix('musicians')->group(function() {

@@ -30,13 +30,9 @@ class NoteController extends Controller
     public function allNotes()
     {
         try {
-            if (session('luka-app-token')) {
-                return view('notes.notes', [
-                    'notes' => $this->noteClient->fetchNotes(),
-                ]);
-            }
-
-            return view('notes.authentication-form');
+            return view('notes.notes', [
+                'notes' => $this->noteClient->fetchNotes(),
+            ]);
         } catch (Exception $e) {
             handleException($e);
         } catch (GuzzleException $e) {
@@ -125,6 +121,11 @@ class NoteController extends Controller
         } catch (GuzzleException $e) {
             handleGuzzleException($e);
         }
+    }
+
+    public function authenticationForm(Request $request)
+    {
+        return view('notes.authentication-form');
     }
 
     /**
