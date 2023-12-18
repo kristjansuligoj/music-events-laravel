@@ -35,25 +35,18 @@ class NoteClient
      */
     public function authenticate($password): void
     {
-        checkLoggedIn();
+        $response = $this->client->request('POST', $this->baseUrl . 'tokens/authenticate', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            'json' => [
+                'email' => auth()->user()->email,
+                'password' => $password
+            ]
+        ]);
 
-        try {
-            $response = $this->client->request('POST', $this->baseUrl . 'tokens/authenticate', [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ],
-                'json' => [
-                    'email' => $user->email,
-                    'password' => $password
-                ]
-            ]);
-
-            session(['luka-app-token' => json_decode($response->getBody(), true)['token']]);
-            session(['user_id' => json_decode($response->getBody(), true)['user_id']]);
-        } catch(GuzzleException $e) {
-            throw $e;
-        }
+        session(['luka-app-token' => json_decode($response->getBody(), true)['token']]);
     }
 
     /**
@@ -65,20 +58,14 @@ class NoteClient
      */
     public function fetchNotes(): array
     {
-        checkLoggedIn();
+        $response = $this->client->request('GET', $this->baseUrl . 'notes', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . session('luka-app-token'),
+                'Accept' => 'application/json',
+            ],
+        ]);
 
-        try {
-            $response = $this->client->request('GET', $this->baseUrl . 'notes', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . session('luka-app-token'),
-                    'Accept' => 'application/json',
-                ],
-            ]);
-
-            return json_decode($response->getBody(), true);
-        } catch(GuzzleException $e) {
-            throw $e;
-        }
+        return json_decode($response->getBody(), true);
     }
 
     /**
@@ -91,20 +78,14 @@ class NoteClient
      */
     public function fetchNote($noteId): object
     {
-        checkLoggedIn();
+        $response = $this->client->request('GET', $this->baseUrl . 'notes/' . $noteId, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . session('luka-app-token'),
+                'Accept' => 'application/json',
+            ],
+        ]);
 
-        try {
-            $response = $this->client->request('GET', $this->baseUrl . 'notes/' . $noteId, [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . session('luka-app-token'),
-                    'Accept' => 'application/json',
-                ],
-            ]);
-
-            return json_decode($response->getBody());
-        } catch(GuzzleException $e) {
-            throw $e;
-        }
+        return json_decode($response->getBody());
     }
 
     /**
@@ -115,20 +96,14 @@ class NoteClient
      */
     public function fetchCategories()
     {
-        checkLoggedIn();
+        $response = $this->client->request('GET', $this->baseUrl . 'categories', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . session('luka-app-token'),
+                'Accept' => 'application/json',
+            ],
+        ]);
 
-        try {
-            $response = $this->client->request('GET', $this->baseUrl . 'categories', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . session('luka-app-token'),
-                    'Accept' => 'application/json',
-                ],
-            ]);
-
-            return json_decode($response->getBody(), true);
-        } catch(GuzzleException $e) {
-            throw $e;
-        }
+        return json_decode($response->getBody(), true);
     }
 
     /**
@@ -141,30 +116,24 @@ class NoteClient
      */
     public function addNote(NoteRequest $request): int
     {
-        checkLoggedIn();
+        $response = $this->client->request('POST',  $this->baseUrl . 'notes', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . session('luka-app-token'),
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            'json' => [
+                'category_id' => $request->category_id,
+                'title' => $request->title,
+                'content' => $request->noteContent,
+                'priority' => $request->priority,
+                'deadline' => $request->deadline,
+                'tags' => $request->tags,
+                'public' => $request->public,
+            ]
+        ]);
 
-        try {
-            $response = $this->client->request('POST',  $this->baseUrl . 'notes', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . session('luka-app-token'),
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ],
-                'json' => [
-                    'category_id' => $request->category_id,
-                    'title' => $request->title,
-                    'content' => $request->noteContent,
-                    'priority' => $request->priority,
-                    'deadline' => $request->deadline,
-                    'tags' => $request->tags,
-                    'public' => $request->public,
-                ]
-            ]);
-
-            return $response->getStatusCode();
-        } catch(GuzzleException $e) {
-            throw $e;
-        }
+        return $response->getStatusCode();
     }
 
     /**
@@ -175,30 +144,24 @@ class NoteClient
      */
     public function editNote($noteId, NoteRequest $request): int
     {
-        checkLoggedIn();
+        $response = $this->client->request('PATCH',  $this->baseUrl . 'notes/' . $noteId, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . session('luka-app-token'),
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            'json' => [
+                'category_id' => $request->category_id,
+                'title' => $request->title,
+                'content' => $request->noteContent,
+                'priority' => $request->priority,
+                'deadline' => $request->deadline,
+                'tags' => $request->tags,
+                'public' => $request->public,
+            ]
+        ]);
 
-        try {
-            $response = $this->client->request('PATCH',  $this->baseUrl . 'notes/' . $noteId, [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . session('luka-app-token'),
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ],
-                'json' => [
-                    'category_id' => $request->category_id,
-                    'title' => $request->title,
-                    'content' => $request->noteContent,
-                    'priority' => $request->priority,
-                    'deadline' => $request->deadline,
-                    'tags' => $request->tags,
-                    'public' => $request->public,
-                ]
-            ]);
-
-            return $response->getStatusCode();
-        } catch(GuzzleException $e) {
-            throw $e;
-        }
+        return $response->getStatusCode();
     }
 
     /**
@@ -211,19 +174,13 @@ class NoteClient
      */
     public function removeNote($noteId): int
     {
-        checkLoggedIn();
+        $response = $this->client->request('DELETE', $this->baseUrl . 'notes/' . $noteId, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . session('luka-app-token'),
+                'Accept' => 'application/json',
+            ],
+        ]);
 
-        try {
-            $response = $this->client->request('DELETE', $this->baseUrl . 'notes/' . $noteId, [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . session('luka-app-token'),
-                    'Accept' => 'application/json',
-                ],
-            ]);
-
-            return $response->getStatusCode();
-        } catch(GuzzleException $e) {
-            throw $e;
-        }
+        return $response->getStatusCode();
     }
 }
