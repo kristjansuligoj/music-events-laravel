@@ -37,6 +37,8 @@
             <x-button :route="'songs.list'" :buttonText="'Songs'"/>
 
             <x-button :route="'events.list'" :buttonText="'Events'"/>
+
+            <x-button :route="'notes.list'" :buttonText="'Notes'"/>
         </div>
 
         @yield('page-content')
