@@ -24,5 +24,5 @@ Route::get('/events/{id}', [EventController::class, 'getEventApi']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/events/{id}/attendees', [EventController::class, 'addAttendee']);
-    Route::delete('/events/{id}/attendees/{attendeesId}', [EventController::class, 'removeAttendee']);
+    Route::delete('/events/{id}/attendees/{attendeesEmail}', [EventController::class, 'removeAttendee']);
 });

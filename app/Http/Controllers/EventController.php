@@ -19,7 +19,7 @@ class EventController extends Controller
      * Fetches all events
      *
      * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getAllEvents(Request $request) {
         $keyword = $request->query('keyword');
@@ -30,40 +30,45 @@ class EventController extends Controller
             $events = Event::with('musicians')->get();
         }
 
-        return response($events);
+        return response()->json($events);
     }
 
     /**
      * Adds a user to the attendees of an event
      *
      * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function addAttendee(Request $request) {
         try {
-            $event_id = $request->event_id;
-            $email = $request->email;
+            $validated = $request->validate([
+                'event_id' => ['required', 'exists:events,id'],
+                'email' => ['required', 'email', 'exists:users,email']
+            ]);
 
-            $event = Event::find($event_id);
+            $event_id = $validated['event_id'];
+            $email = $validated['email'];
+
+            $event = Event::findOrFail($event_id);
 
             if (!$event) {
-                return response(['error' => 'Event not found']);
+                return response()->json(['error' => 'Event not found']);
             }
 
             $user = User::where('email', $email)->first();
 
             if (!$user) {
-                return response(['error' => 'User not found']);
+                return response()->json(['error' => 'User not found']);
             }
 
-            $eventParticipant = EventParticipant::firstOrCreate([
+            EventParticipant::firstOrCreate([
                 'user_id' => $user->id,
                 'event_id' => $event->id,
             ]);
 
-            return response('Added successfully');
+            return response()->json(['message' => 'Added successfully']);
         } catch (\Exception $exception) {
-            return response($exception);
+            return response()->json($exception);
         }
     }
 
@@ -71,23 +76,28 @@ class EventController extends Controller
      * Removes a user from the attendees of an event
      *
      * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function removeAttendee(Request $request) {
         try {
-            $event_id = $request->event_id;
-            $email = $request->email;
+            $validated = $request->validate([
+                'event_id' => ['required', 'exists:events,id'],
+                'email' => ['required', 'email', 'exists:users,email']
+            ]);
 
-            $event = Event::find($event_id);
+            $event_id = $validated['event_id'];
+            $email = $validated['email'];
+
+            $event = Event::findOrFail($event_id);
 
             if (!$event) {
-                return response(['error' => 'Event not found']);
+                return response()->json(['error' => 'Event not found']);
             }
 
             $user = User::where('email', $email)->first();
 
             if (!$user) {
-                return response(['error' => 'User not found']);
+                return response()->json(['error' => 'User not found']);
             }
 
             EventParticipant::where([
@@ -95,9 +105,9 @@ class EventController extends Controller
                 'event_id' => $event_id,
             ])->delete();
 
-            return response('Removed successfully');
+            return response()->json(['message' => 'Removed successfully']);
         } catch (\Exception $exception) {
-            return response($exception);
+            return response()->json($exception);
         }
     }
 
@@ -105,13 +115,10 @@ class EventController extends Controller
      * Fetches a single event
      *
      * @param $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function getEventApi($id) {
-        $event = Event::with('musicians', 'participants', 'user')->findOrFail($id);
-        $event->time = Carbon::parse($event->time)->format("H:i");
-
-        return response($event);
+    public function getEventApi(string $id) {
+        return response()->json(Event::with('musicians', 'participants', 'user')->findOrFail($id));
     }
     public function allEvents(EventRequest $request) {
         $sortOrderMap = getOrderMap(
