@@ -6,6 +6,7 @@
             @php
                 $data['name'] = 'event';
                 $data['id'] = $event->id;
+                $eventInFuture = \Carbon\Carbon::parse($event->date)->gt(\Carbon\Carbon::now());
             @endphp
 
             <x-buttons :data="$data"/>
@@ -62,7 +63,7 @@
             <b>Musician:</b> {{$event->musicians[0]->name}}<br>
 
             @if(isset($event->participants[0]))
-                <b>Users that are going to this event: </b><br>
+                <b>Users that {{ $eventInFuture ? "are going" : "went" }} to this event: </b><br>
                 <ul>
                     @foreach($event->participants as $participant)
                         <li>
@@ -75,7 +76,7 @@
             @endif
         </div>
 
-        @if(Auth::id())
+        @if(Auth::id() && $eventInFuture)
             @if($event->participants->contains('id', Auth::id()))
                 <form action="/events/{{$event->id}}/remove-user/{{Auth::id()}}" method="post">
                     @csrf
