@@ -88,6 +88,7 @@ Route::prefix('events')->group(function() {
     Route::get('/{event}', [EventController::class, 'getEvent'])->whereUuid('event')->name('events.get');
 
     Route::middleware('auth')->group(function() {
+        Route::get('/history', [EventController::class, 'eventHistory'])->name('events.eventsHistory');
         Route::get('/add', [EventController::class, 'addEventForm'])->name('events.addForm');
         Route::get('/edit/{event}', [EventController::class, 'editEventForm'])->whereUuid('event')->name('events.editForm');
         Route::post('/add', [EventController::class, 'addEvent'])->name('events.add');
