@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\EventParticipant;
 use App\Models\Musician;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -155,10 +156,27 @@ class EventController extends Controller
         ]);
     }
 
+    /**
+     * This function returns all the events the user has attended
+     *
+     * @return View
+     */
+    public function eventHistory(): View {
+        $events = Event::join('event_participants', 'events.id', '=', 'event_participants.event_id')
+            ->where('event_participants.user_id', auth()->user()->id)
+            ->whereDate('events.date', '<', now())
+            ->select('events.*')
+            ->paginate(7);
+
+        return view('profile/events-history', [
+            'events' => $events
+        ]);
+    }
+
     public function addUserToEvent($eventId, $userId) {
         $event = Event::find($eventId);
 
-        if (!$event) {
+        if (!$event || Carbon::parse($event->date)->lt(Carbon::now())) {
             return redirect()->route('events.list');
         }
 
