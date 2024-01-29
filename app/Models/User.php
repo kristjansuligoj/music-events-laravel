@@ -21,4 +21,9 @@ class User extends Authenticatable
     ];
 
     public $timestamps = false;
+
+    public function attending()
+    {
+        return $this->belongsToMany(Event::class, 'event_participants', 'user_id', 'event_id');
+    }
 }

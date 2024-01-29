@@ -112,6 +112,19 @@ class EventController extends Controller
     }
 
     /**
+     * Fetches all the events that a certain user is attending
+     *
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUsersEvents($email)
+    {
+        $user = User::where('email', $email)->first();
+
+        return response()->json($user->attending()->get());
+    }
+
+    /**
      * Fetches a single event
      *
      * @param $id
