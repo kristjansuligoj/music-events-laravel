@@ -118,6 +118,9 @@ class MusicianController extends Controller
             ->orWhereHas('genres', function ($query) use ($keyword) {
                 $query->where('name', 'LIKE', '%' . $keyword . '%');
             })
+            ->orWhereHas('songs', function ($query) use ($keyword) {
+                $query->where('title', 'LIKE', '%' . $keyword . '%');
+            })
             ->with('songs')
             ->with('events')
             ->paginate(7);
