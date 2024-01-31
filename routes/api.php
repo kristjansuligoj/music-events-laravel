@@ -20,6 +20,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/events', [EventController::class, 'getAllEvents']);
 Route::get('/events/{id}', [EventController::class, 'getEventApi']);
+Route::get('/attending/{id}', [EventController::class, 'getUsersEvents']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
