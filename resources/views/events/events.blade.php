@@ -9,7 +9,46 @@
                 $data['fields'] = array_keys($sortOrder);
             @endphp
             <div class="mb-3">
-                <x-filter :data="$data"/>
+                <x-filter :data="$data"/><br>
+                @if(Auth::check())
+                    <form id="filterForm" action="{{ route('events.list') }}" method="get">
+                        <label for="showAttending">
+                            @php
+                                $order = request('order');
+                                $field = request('field');
+                                $keyword = request('keyword');
+                            @endphp
+
+                            @if(isset($order))
+                                <input type="hidden" name="order" value="{{ $order }}">
+                            @endif
+
+                            @if(isset($field))
+                                <input type="hidden" name="field" value="{{ $field }}">
+                            @endif
+
+                            @if(isset($keyword))
+                                <input type="hidden" name="keyword" value="{{ $keyword }}">
+                            @endif
+
+                            <input
+                                type="checkbox"
+                                class="m-2"
+                                name="showAttending"
+                                id="showAttending"
+                                {{ request()->has('showAttending') ? 'checked' : '' }}
+                                onchange="submitForm()"
+                            >
+                            Only show events I'm attending
+                        </label>
+                    </form>
+
+                    <script>
+                        function submitForm() {
+                            document.getElementById('filterForm').submit();
+                        }
+                    </script>
+                @endif
                 <x-searchbar/>
             </div>
         </div>
