@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import {RouterLink} from "@angular/router";
+import {RouterLink, RouterLinkActive} from "@angular/router";
 import {ButtonComponent} from "../../shared/button/button.component";
-import {NgIf} from "@angular/common";
+import {JsonPipe, NgIf} from "@angular/common";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-navigation-bar',
@@ -9,7 +10,9 @@ import {NgIf} from "@angular/common";
   imports: [
     RouterLink,
     ButtonComponent,
-    NgIf
+    NgIf,
+    RouterLinkActive,
+    JsonPipe
   ],
   templateUrl: './navigation-bar.component.html',
   styleUrl: './navigation-bar.component.css'
@@ -17,11 +20,15 @@ import {NgIf} from "@angular/common";
 export class NavigationBarComponent {
   loggedIn: boolean = true;
 
+  constructor(
+    public authService: AuthService,
+  ) {}
+
   /**
    * Logs the user out
    */
   public logout(): void {
-    console.log("user is not logged out");
+    this.authService.setAuthToken(null);
     this.loggedIn = false;
   }
 }

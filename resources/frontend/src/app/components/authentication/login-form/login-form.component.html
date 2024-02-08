@@ -1,8 +1,7 @@
-<div class="container">
+<div class="mb-4">
   <h2>Login</h2>
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-    <div class="container">
       <app-input-form
         name="email"
         inputType="text"
@@ -13,9 +12,7 @@
           maxlength: 'Max length is 255 characters!',
         }"
       />
-    </div>
 
-    <div class="container">
       <app-input-form
         name="password"
         inputType="password"
@@ -24,8 +21,8 @@
           required: 'Password is required!',
           minlength: 'Min length is 8 characters!',
         }"
+
       />
-    </div>
 
     <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>
 
