@@ -29,12 +29,12 @@ class MusicianRequest extends FormRequest
             'image' => ['required'],
         ];
 
-        if ($this->route()->uri === 'musicians/edit/{musician}') {
+        if ($this->route()->uri === 'api/musicians/edit/{musician}') {
             // If the route name is 'edit-event', add the unique validation rule with the event ID.
             $rules['name'] = ['required', 'unique:musicians,name,' . $this->route('musician')];
         }
 
-        if ($this->route()->uri === 'musicians') {
+        if ($this->route()->uri === 'api/musicians') {
             $rules = [];
         }
 

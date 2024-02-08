@@ -25,9 +25,13 @@ class MusicianController extends Controller
             $musicians = $this->searchMusiciansByFilter($request->order, $request->field);
         }
 
-        return view('musicians/musicians', [
-            'musicians' => $musicians,
-            'sortOrder' => $sortOrderMap,
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'musicians' => $musicians,
+                'sortOrder' => $sortOrderMap,
+            ],
+            'message' => 'Musicians received',
         ]);
     }
 
@@ -38,9 +42,13 @@ class MusicianController extends Controller
     }
 
     public function getMusician($id) {
-        return view('musicians/musician',[
-            'musician' => Musician::with('genres', 'user')->findOrFail($id),
-            'usedElsewhere' => $this->checkMusicianUsage($id)
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'musician' => Musician::with('genres', 'songs', 'events', 'user')->findOrFail($id),
+                'usedElsewhere' => $this->checkMusicianUsage($id)
+            ],
+            'message' => 'Musicians received',
         ]);
     }
 
@@ -92,12 +100,21 @@ class MusicianController extends Controller
 
         deleteImage($musician->image);
 
-        return redirect()->route('musicians.list');
+        return response()->json([
+            'success' => true,
+            'data' => $id,
+            'message' => 'Musician removed',
+        ]);
     }
 
     public function searchMusiciansByFilter($sortOrder, $sortField) {
         if ($sortOrder === null) {
-            return Musician::paginate(7);
+            return Musician::join('musicians_genres', 'musicians.id', '=', 'musicians_genres.musician_id')
+                ->join('genres', 'musicians_genres.genre_id', '=', 'genres.id')
+                ->select('musicians.*')
+                ->with('songs')
+                ->with('events')
+                ->paginate(7);
         } else {
             if ($sortField === "genre") {
                 return Musician::join('musicians_genres', 'musicians.id', '=', 'musicians_genres.musician_id')
@@ -108,7 +125,13 @@ class MusicianController extends Controller
                     ->with('events')
                     ->paginate(7);
             } else {
-                return Musician::orderBy($sortField, $sortOrder)->paginate(7);
+                return Musician::join('musicians_genres', 'musicians.id', '=', 'musicians_genres.musician_id')
+                    ->join('genres', 'musicians_genres.genre_id', '=', 'genres.id')
+                    ->orderBy($sortField, $sortOrder)
+                    ->select('musicians.*')
+                    ->with('songs')
+                    ->with('events')
+                    ->paginate(7);
             }
         }
     }
