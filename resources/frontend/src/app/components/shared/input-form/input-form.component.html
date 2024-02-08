@@ -1,0 +1,19 @@
+<div [formGroup]="formGroup">
+  <div class="form-group">
+
+    <label for="{{name}}">
+      <span id="{{name}}">{{name | titleCase}}:</span>
+    </label><br/>
+
+    <input type="{{inputType}}" class="form-control" formControlName="{{name}}" />
+
+    <div *ngIf="formGroup.get(name)?.invalid && (formGroup.get(name)?.dirty || formGroup.get(name)?.touched)" class="error">
+      <div *ngFor="let key of Object.keys(errors)">
+        <div *ngIf="formGroup.get(name)?.errors?.[key]">
+          {{ errors[key] }}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
