@@ -1,0 +1,34 @@
+<article class="p-3 border mt-5 justify-content-between align-items-center sm:p-8 bg-gray-100 shadow sm:rounded-lg">
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <img
+        [ngSrc]="'http://localhost:8000/images/musicians/' + musician.image"
+        style="border-radius: 30%"
+        alt="Musician Image"
+        width="50"
+        height="50"
+      >
+      <h5><b>{{ musician.name }}</b></h5>
+
+
+    </div>
+    <app-button
+      [route]="'/musicians/' + musician.id"
+      buttonText="More details"
+    />
+  </div>
+
+  <div class="mb-3">
+    <h6><b>This musician has written the following songs:</b></h6>
+    <ul>
+      <li class="ml-3" *ngFor="let song of musician.songs">{{ song.title }}</li>
+    </ul>
+  </div>
+
+  <div class="mb-3">
+    <h6><b>This musician is performing in the following events:</b></h6>
+    <ul>
+      <li class="ml-3" *ngFor="let event of musician.events">{{ event.name }}</li>
+    </ul>
+  </div>
+</article>
