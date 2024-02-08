@@ -7,6 +7,8 @@ import {LoginComponent} from "./components/authentication/login/login.component"
 import {RegisterComponent} from "./components/authentication/register/register.component";
 import {ProfileComponent} from "./components/user/profile/profile.component";
 import {HomepageComponent} from "./components/home/homepage/homepage.component";
+import {MusicianViewComponent} from "./components/musicians/musician-view/musician-view.component";
+import {MusicianFormComponent} from "./components/musicians/musician-form/musician-form.component";
 
 export const routes: Routes = [
   {
@@ -18,6 +20,21 @@ export const routes: Routes = [
     path: 'musicians',
     component: MusicianListComponent,
     title: 'Musicians'
+  },
+  {
+    path: 'musicians/add',
+    component: MusicianFormComponent,
+    title: 'Musician'
+  },
+  {
+    path: 'musicians/:id',
+    component: MusicianViewComponent,
+    title: 'Musician'
+  },
+  {
+    path: 'musicians/edit/:id',
+    component: MusicianFormComponent,
+    title: 'Musician'
   },
   {
     path: 'events',

@@ -8,7 +8,7 @@ export class AuthService {
 
   constructor() {}
 
-  setAuthToken(token: string): void {
+  setAuthToken(token: string | null): void {
     this.authToken = token;
   }
 
