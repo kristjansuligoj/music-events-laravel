@@ -1,0 +1,61 @@
+<div class="container">
+  <h2>Login</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+    <div class="container">
+      <app-input-form
+        name="name"
+        inputType="text"
+        [formGroup]="registerForm"
+        [errors]="{
+          required: 'Name is required!',
+          maxlength: 'Max length is 255 characters!',
+        }"
+      />
+    </div>
+
+    <div class="container">
+      <app-input-form
+        name="email"
+        inputType="text"
+        [formGroup]="registerForm"
+        [errors]="{
+          required: 'Email is required!',
+          email: 'This input should be an email!',
+          maxlength: 'Max length is 255 characters!',
+        }"
+      />
+    </div>
+
+    <div class="container">
+      <app-input-form
+        name="password"
+        inputType="password"
+        [formGroup]="registerForm"
+        [errors]="{
+          required: 'Password is required!',
+          minlength: 'Min length is 8 characters!',
+        }"
+      />
+    </div>
+
+    <div class="container">
+      <app-input-form
+        name="confirmPassword"
+        inputType="password"
+        [formGroup]="registerForm"
+        [errors]="{
+          required: 'Confirmation password is required!',
+          minlength: 'Min length is 8 characters!',
+        }"
+      />
+    </div>
+
+    <div *ngIf="registerForm.hasError('passwordMismatch')">
+      Passwords do not match
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Register</button>
+
+  </form>
+</div>
