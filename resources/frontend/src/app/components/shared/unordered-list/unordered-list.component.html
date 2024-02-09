@@ -1,4 +1,6 @@
-<b>{{ title | titleCase }}: </b><br>
-<ul *ngFor="let item of items">
-  <li>{{ item[target] }}</li>
-</ul>
+<div class="my-2">
+  <b>{{ title }}</b>
+  <ul class="list-disc list-inside pl-2">
+    <li *ngFor="let item of items">{{ item[target] }}</li>
+  </ul>
+</div>

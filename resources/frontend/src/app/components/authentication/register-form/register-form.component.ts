@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, TemplateRef, ViewChild} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {UserService} from "../../../services/user.service";
 import {AuthService} from "../../../services/auth.service";
 import {HttpErrorResponse} from "@angular/common/http";
-import {InputFormComponent} from "../../shared/input-form/input-form.component";
+import {TextInputComponent} from "../../shared/input-form/text-input.component";
 import {passwordMatchValidator} from "../../../validators/passwordMatchValidator";
 
 @Component({
@@ -15,11 +15,11 @@ import {passwordMatchValidator} from "../../../validators/passwordMatchValidator
     NgIf,
     ReactiveFormsModule,
     NgForOf,
-    InputFormComponent,
+    TextInputComponent,
   ],
   providers: [
     UserService,
-    AuthService
+    AuthService,
   ],
   templateUrl: './register-form.component.html',
   styleUrl: './register-form.component.css'
@@ -39,6 +39,12 @@ export class RegisterFormComponent {
     private userService: UserService,
   ) { }
 
+  public getAdditionalErrors() {
+    if (this.registerForm.hasError('passwordMismatch')) {
+      return { confirmPassword: ['Passwords do not match'] };
+    } else return this.errors;
+  }
+
   onSubmit(): void {
     if (this.registerForm.valid) {
       const name = this.registerForm.value.name;
@@ -47,7 +53,9 @@ export class RegisterFormComponent {
       this.userService.register({name: name, email: email, password: password})
         .subscribe({
           next: (): void => { this.router.navigate(['/login']); },
-          error: (response: HttpErrorResponse): void => { this.errors = response.error.errors; },
+          error: (response: HttpErrorResponse): void => {
+            this.errors = response.error.errors;
+          },
         });
     }
   }

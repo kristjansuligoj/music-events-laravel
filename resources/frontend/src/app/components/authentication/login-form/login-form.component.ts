@@ -4,8 +4,9 @@ import { UserService } from '../../../services/user.service';
 import {NgIf} from "@angular/common";
 import {AuthService} from "../../../services/auth.service";
 import {Router} from '@angular/router';
-import {InputFormComponent} from "../../shared/input-form/input-form.component";
+import {TextInputComponent} from "../../shared/input-form/text-input.component";
 import {HttpErrorResponse} from "@angular/common/http";
+import {ButtonComponent} from "../../shared/button/button.component";
 
 @Component({
   selector: 'app-login-form',
@@ -14,7 +15,8 @@ import {HttpErrorResponse} from "@angular/common/http";
   imports: [
     ReactiveFormsModule,
     NgIf,
-    InputFormComponent
+    TextInputComponent,
+    ButtonComponent
   ],
   providers: [
     UserService,
@@ -22,7 +24,7 @@ import {HttpErrorResponse} from "@angular/common/http";
   styleUrls: ['./login-form.component.css']
 })
 export class LoginFormComponent {
-  public errors: any = {};
+  public errors: string = "";
 
   public loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(255)]),
@@ -42,8 +44,12 @@ export class LoginFormComponent {
       this.userService.login({email: email, password: password})
         .subscribe({
           next: (response: any): void => {
-            this.authService.setAuthToken(response.token);
-            this.router.navigate(['/']).then(r => {});
+            if (response.success) {
+              this.authService.setAuthToken(response.data);
+              this.router.navigate(['/']).then(r => {});
+            } else {
+              this.errors = response.message;
+            }
           },
           error: (response: HttpErrorResponse): void => { this.errors = response.message; },
         })

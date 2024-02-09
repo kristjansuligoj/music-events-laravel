@@ -1,30 +1,46 @@
-<div class="mb-4">
-  <h2>Login</h2>
+<div class="bg-white p-5">
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
       <app-input-form
-        name="email"
-        inputType="text"
-        [formGroup]="loginForm"
+        [additionalErrors]="errors"
         [errors]="{
           required: 'Email is required!',
           email: 'This input should be an email!',
           maxlength: 'Max length is 255 characters!',
         }"
+        [formGroup]="loginForm"
+        inputType="text"
+        name="email"
       />
 
       <app-input-form
-        name="password"
-        inputType="password"
-        [formGroup]="loginForm"
+        [additionalErrors]="errors"
         [errors]="{
           required: 'Password is required!',
           minlength: 'Min length is 8 characters!',
         }"
-
+        [formGroup]="loginForm"
+        inputType="password"
+        name="password"
       />
 
-    <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>
+      <div class="h-1 mb-8">
+        <span class="text-red-600">
+          <small>{{errors}}</small>
+        </span>
+      </div>
+
+    <button
+      type="submit"
+      [disabled]="loginForm.invalid"
+      class="
+        inline-flex items-center
+        px-3 py-2 m-3 bg-gray-800
+        border border-transparent text-xs rounded text-white uppercase
+        hover:bg-gray-700 focus:bg-gray-700
+        active:bg-gray-900 focus:outline-none
+      "
+    >Login</button>
 
   </form>
 </div>
