@@ -13,4 +13,7 @@ import { RouterLink } from "@angular/router";
 export class ButtonComponent {
   @Input() route: string = "";
   @Input() buttonText: string = "";
+  @Input() disabled: boolean = false;
+  @Input() type: string = "";
+  @Input() buttonStyle: string = "";
 }

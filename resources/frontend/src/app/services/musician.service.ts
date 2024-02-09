@@ -25,7 +25,7 @@ export class MusicianService {
   }
 
   public addMusician(musicianData: any): Observable<any[]> {
-    return this.http.post<any[]>(`${this.apiUrl}`, musicianData);
+    return this.http.post<any[]>(`${this.apiUrl}/add`, musicianData);
   }
 
   public editMusicians(musicianData: any): Observable<any[]> {
