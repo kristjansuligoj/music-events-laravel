@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MusicianController;
 use App\Http\Controllers\NoteController;
@@ -24,6 +25,10 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/events', [EventController::class, 'getAllEvents']);
 Route::get('/events/{id}', [EventController::class, 'getEventApi']);
 Route::get('/attending/{id}', [EventController::class, 'getUsersEvents']);
+
+Route::group(['prefix' => 'images', 'middleware' => ['auth:sanctum']], function() {
+    Route::post('/', [ImageController::class, 'addImage']);
+});
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -56,9 +61,7 @@ Route::prefix('musicians')->group(function () {
     Route::get('/{musician}', [MusicianController::class, 'getMusician'])->whereUuid('musician')->name('musicians.get');;
 
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/add', [MusicianController::class, 'addMusicianForm'])->name('musicians.addForm');
         Route::post('/add', [MusicianController::class, 'addMusician'])->name('musicians.add');
-        Route::get('/edit/{musician}', [MusicianController::class, 'editMusicianForm'])->whereUuid('musician')->name('musicians.editForm');
         Route::patch('/edit/{musician}', [MusicianController::class, 'editMusician'])->whereUuid('musician')->name('musicians.edit');
         Route::delete('/remove/{musician}', [MusicianController::class, 'deleteMusician'])->whereUuid('musician')->name('musicians.delete');
     });
