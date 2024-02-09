@@ -1,7 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {RouterLink} from "@angular/router";
-import {JsonPipe, NgForOf, NgOptimizedImage} from "@angular/common";
+import {JsonPipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {ButtonComponent} from "../../shared/button/button.component";
+import {UnorderedListComponent} from "../../shared/unordered-list/unordered-list.component";
 
 @Component({
   selector: 'app-musician-preview',
@@ -11,7 +12,9 @@ import {ButtonComponent} from "../../shared/button/button.component";
     NgForOf,
     JsonPipe,
     NgOptimizedImage,
-    ButtonComponent
+    ButtonComponent,
+    NgIf,
+    UnorderedListComponent
   ],
   templateUrl: './musician-preview.component.html',
   styleUrl: './musician-preview.component.css'

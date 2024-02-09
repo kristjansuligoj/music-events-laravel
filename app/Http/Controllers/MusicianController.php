@@ -59,20 +59,21 @@ class MusicianController extends Controller
     }
 
     public function addMusician(MusicianRequest $request) {
-        // Save the image
-        $fileName = saveImage($request);
-
         // Create the musician
         $musicianData = $request->all();
-        $musicianData['image'] = $fileName;
+        $musicianData['image'] = $request->get('image');
         $musicianData['user_id'] = Auth::user()->id;
 
         $musician = Musician::create($musicianData);
 
         // Adds genres to the pivot table
-        $musician->genres()->sync(genreToIndex($musicianData['genre']));
+        $musician->genres()->sync($musicianData['genre']);
 
-        return redirect()->route('musicians.list');
+        return response()->json([
+            'success' => true,
+            'data' => $musician,
+            'message' => "Musician successfully added."
+        ]);
     }
 
     public function editMusician($id, MusicianRequest $request) {

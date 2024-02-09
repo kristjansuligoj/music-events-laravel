@@ -1,64 +1,68 @@
 <div class="container p-5 sm:p-8 bg-white shadow sm:rounded-lg">
-  <div class="container">
-    <div *ngIf="authService.getAuthToken()">
+  <div *ngIf="authService.getAuthToken()">
+    <div class="flex justify-between items-center mb-4">
       <app-button
         [route]="'/musicians/edit/' + musician.id"
-        buttonText="Edit musician"
-      />
+        buttonText="Edit Musician"
+      ></app-button>
 
       <button
+        (click)="removeMusician(musician.id)"
         class="
           inline-flex items-center
-          px-3 py-2 m-3 bg-gray-800
+          px-3 py-2 m-3 bg-red-800
           border border-transparent text-xs rounded text-white uppercase
-          hover:bg-gray-700 focus:bg-gray-700
-          active:bg-gray-900 focus:outline-none
+          hover:bg-red-700 focus:bg-red-700
+          active:bg-red-900 focus:outline-none
         "
-        (click)="removeMusician(musician.id)"
-      >Remove musician</button>
+      >Remove Musician</button>
     </div>
+  </div>
 
-    <div class="container">
-      <span>Added by user: <b>{{ musician?.user?.name }}</b></span>
-    </div>
-    <hr>
+  <div class="p-3">
+    <p>Added by user: <strong>{{ musician?.user?.name }}</strong></p>
+  </div>
 
-    <div class="d-flex align-items-center">
-      <img
-        [ngSrc]="'http://localhost:8000/images/musicians/' + musician.image"
-        style="border-radius: 30%"
-        alt="Musician Image"
-        width="50"
-        height="50"
-      >
-      <b>{{ musician.name }}</b>
-    </div>
-    <hr>
+  <hr>
 
-    <div class="container">
-      <app-unordered-list
-        [items]="musician.genres"
-        target="name"
-        title="genres"
-      />
-    </div>
-    <hr>
+  <div class="flex items-center p-3">
+    <img
+      [ngSrc]="'http://localhost:8000/images/musicians/' + musician.image"
+      alt="Musician Image"
+      width="50"
+      height="50"
+      style="border-radius: 50%"
+    >
+    <h2 class="ml-3">{{ musician.name }}</h2>
+  </div>
 
-    <div *ngIf="musician?.events?.length > 0" class="container">
-      <app-unordered-list
-        [items]="musician.events"
-        target="name"
-        title="performing in events"
-      />
-    </div>
-    <hr>
+  <hr>
 
-    <div *ngIf="musician?.songs?.length > 0" class="container">
-      <app-unordered-list
-        [items]="musician.songs"
-        target="title"
-        title="performing in songs"
-      />
-    </div>
+  <div class="p-3">
+    <app-unordered-list
+      [items]="musician.genres"
+      target="name"
+      title="Genres:"
+    ></app-unordered-list>
+  </div>
+
+  <hr>
+
+  <div *ngIf="musician?.events?.length > 0" class="p-3">
+    <app-unordered-list
+      [items]="musician.events"
+      target="name"
+      title="Performing in events:"
+    ></app-unordered-list>
+  </div>
+
+  <hr>
+
+  <div *ngIf="musician?.songs?.length > 0" class="p-3">
+    <app-unordered-list
+      [items]="musician.songs"
+      target="title"
+      title="Performing in songs:"
+    ></app-unordered-list>
   </div>
 </div>
