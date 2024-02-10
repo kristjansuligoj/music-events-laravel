@@ -65,11 +65,13 @@ class AuthController extends Controller
             ]);
         }
 
-        $token = $user->createToken('myapptoken')->plainTextToken;
 
         return response()->json([
             'success' => true,
-            'data' => $token,
+            'data' => [
+                'user' => $user,
+                'token' => $user->createToken('myapptoken')->plainTextToken
+            ],
             'message' => 'Log in successful',
         ]);
     }

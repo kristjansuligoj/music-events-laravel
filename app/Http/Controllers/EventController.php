@@ -8,6 +8,7 @@ use App\Models\EventParticipant;
 use App\Models\Musician;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +32,9 @@ class EventController extends Controller
             $events = Event::with('musicians')->get();
         }
 
-        return response()->json($events);
+        return response()->json([
+            $events
+        ]);
     }
 
     /**
@@ -148,16 +151,13 @@ class EventController extends Controller
             $events = $this->searchEventsByFilter($request->order, $request->field, (bool)$request->showAttending);
         }
 
-        return view('events/events',[
-            'events' => $events,
-            'sortOrder' => $sortOrderMap,
-        ]);
-    }
-
-    public function addEventForm() {
-        return view('events/event-add', [
-            'event' => null,
-            'musicians' => Musician::all(),
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'events' => $events,
+                'sortOrder' => $sortOrderMap,
+            ],
+            'message' => 'Events successfully retrieved.'
         ]);
     }
 
@@ -165,25 +165,34 @@ class EventController extends Controller
         $event = Event::with('musicians', 'participants', 'user')->findOrFail($id);
         $event->time = Carbon::parse($event->time)->format("H:i");
 
-        return view('events/event',[
-            'event' => $event
+        return response()->json([
+            'success' => true,
+            'data' => [
+              'event' => $event,
+            ],
+            'message' => "Event successfully retrieved",
         ]);
     }
 
     /**
      * This function returns all the events the user has attended
      *
-     * @return View
+     * @return JsonResponse
      */
-    public function eventHistory(): View {
+    public function eventHistory($user): JsonResponse
+    {
         $events = Event::join('event_participants', 'events.id', '=', 'event_participants.event_id')
-            ->where('event_participants.user_id', auth()->user()->id)
+            ->where('event_participants.user_id', $user)
             ->whereDate('events.date', '<', now())
             ->select('events.*')
             ->paginate(7);
 
-        return view('profile/events-history', [
-            'events' => $events
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'events' => $events
+            ],
+            'message' => "Event history successfully retrieved."
         ]);
     }
 
@@ -191,34 +200,65 @@ class EventController extends Controller
         $event = Event::find($eventId);
 
         if (!$event || Carbon::parse($event->date)->lt(Carbon::now())) {
-            return redirect()->route('events.list');
+            return response()->json([
+                'success' => false,
+                'data' => [
+                    'event' => $eventId,
+                ],
+                'message' => "Event does not exist."
+            ]);
         }
 
         $user = User::find($userId);
 
         if (!$user) {
-            return redirect()->route('events.list');
+            return response()->json([
+                'success' => false,
+                'data' => [
+                    'user' => $userId,
+                ],
+                'message' => "User does not exist."
+            ]);
         }
 
-        $eventParticipant = EventParticipant::firstOrCreate([
+        EventParticipant::firstOrCreate([
             'user_id' => $userId,
             'event_id' => $eventId,
         ]);
 
-        return redirect('events/' . $eventId);
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'user' => $user,
+                'event' => $event,
+            ],
+            'message' => "User successfully added to event."
+        ]);
     }
 
     public function removeUserFromEvent($eventId, $userId) {
         $event = Event::find($eventId);
 
         if (!$event) {
-            redirect('events/' . $eventId);
+            return response()->json([
+                'success' => false,
+                'data' => [
+                    'event' => $eventId,
+                ],
+                'message' => "Event does not exist."
+            ]);
         }
 
         $user = User::find($userId);
 
         if (!$user) {
-            redirect('events/' . $eventId);
+            return response()->json([
+                'success' => false,
+                'data' => [
+                    'user' => $userId,
+                ],
+                'message' => "User does not exist."
+            ]);
         }
 
         EventParticipant::where([
@@ -226,13 +266,13 @@ class EventController extends Controller
             'event_id' => $eventId,
         ])->delete();
 
-        return redirect('events/' . $eventId);
-    }
-
-    public function editEventForm($id) {
-        return view('events/event-add', [
-            'event' => Event::with('musicians')->findOrFail($id),
-            'musicians' => Musician::all(),
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'user' => $user,
+                'event' => $event,
+            ],
+            'message' => "User successfully removed from event."
         ]);
     }
 
@@ -244,7 +284,13 @@ class EventController extends Controller
         // Adds genres to the pivot table
         $event->musicians()->sync($eventData['musician']);
 
-        return redirect()->route('events.list');
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'event' => $event,
+            ],
+            'message' => "Event successfully added."
+        ]);
     }
 
     public function editEvent($id, EventRequest $request) {
@@ -255,14 +301,26 @@ class EventController extends Controller
 
         $event->musicians()->sync($request->musician);
 
-        return redirect()->route('events.list');
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'event' => $event,
+            ],
+            'message' => "Event successfully edited."
+        ]);
     }
 
     public function deleteEvent($id) {
         $event = Event::findOrFail($id);
         $event->delete();
 
-        return redirect()->route('events.list');
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'event' => $id,
+            ],
+            'message' => "Event successfully removed."
+        ]);
     }
 
     public function searchEventsByFilter($sortOrder, $sortField, $showAttending = false)
@@ -285,7 +343,7 @@ class EventController extends Controller
             $query->orderBy($sortField, $sortOrder);
         }
 
-        return $query->select('events.*')->paginate(7);
+        return $query->with('musicians')->select('events.*')->paginate(7);
     }
 
     public function searchEventsByKeyword($keyword, $showAttending = false) {

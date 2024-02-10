@@ -33,13 +33,13 @@ class EventRequest extends FormRequest
             'musician' => ['required'],
         ];
 
-        if ($this->route()->uri === 'events/edit/{event}') {
+        if ($this->route()->uri === 'api/events/edit/{event}') {
             // If the route name is 'edit-event', add the unique validation rule with the event ID.
             $rules['name'] = ['required', 'unique:events,name,' . $this->route('event')];
             $rules['address'] = ['required', 'unique:events,address,' . $this->route('event')];
         }
 
-        if ($this->route()->uri === 'events') {
+        if ($this->route()->uri === 'api/events') {
             $rules = [];
         }
 

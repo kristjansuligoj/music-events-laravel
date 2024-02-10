@@ -24,34 +24,23 @@ class SongController extends Controller
             $songs = $this->searchSongsByFilter($request->order, $request->field);
         }
 
-        return view('songs/songs', [
-            'songs' => $songs,
-            'sortOrder' => $sortOrderMap,
-        ]);
-    }
-
-    public function addSongForm() {
-        return view('songs/song-add', [
-            'song' => null,
-            'musicians' => Musician::all(),
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'songs' => $songs,
+                'sortOrder' => $sortOrderMap,
+            ],
+            'message' => 'Song successfully added.'
         ]);
     }
 
     public function getSong($id) {
-        return view('songs/song',[
-            'song' => Song::with('musician', 'genres', 'authors', 'user')->findOrFail($id)
-        ]);
-    }
-
-    public function editSongForm($id) {
-        $song = Song::with('musician', 'genres', 'authors')->findOrFail($id);
-
-        // Save the authors as a single string
-        $song['authors'] = authorsToString($song->authors);
-
-        return view('songs/song-add', [
-            'song' => $song,
-            'musicians' => Musician::all(),
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'song' => Song::with('musician', 'genres', 'authors', 'user')->findOrFail($id)
+            ],
+            'message' => 'Song successfully added.'
         ]);
     }
 
@@ -62,11 +51,17 @@ class SongController extends Controller
         $song = Song::create($songData);
 
         // Adds genres to the pivot table
-        $song->genres()->sync(genreToIndex($request->genre));
+        $song->genres()->sync($request->genre);
 
         saveAuthorsToTable($request->authors, $song);
 
-        return redirect()->route('songs.list');
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'songs' => $song
+            ],
+            'message' => 'Song successfully added.'
+        ]);
     }
 
     public function editSong($id, SongRequest $request) {
@@ -77,16 +72,28 @@ class SongController extends Controller
         $song = Song::findOrFail($id);
         $song->update($songData);
 
-        $song->genres()->sync(genreToIndex($request->genre));
+        $song->genres()->sync($request->genre);
 
-        return redirect()->route('songs.list');
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'songs' => $song
+            ],
+            'message' => 'Song successfully edited.'
+        ]);
     }
 
     public function deleteSong($id) {
         $song = Song::findOrFail($id);
         $song->delete();
 
-        return redirect()->route('songs.list');
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'song' => $id
+            ],
+            'message' => 'Song successfully removed.'
+        ]);
     }
 
     public function searchSongsByFilter($sortOrder, $sortField) {

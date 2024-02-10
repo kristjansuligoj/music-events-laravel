@@ -13,4 +13,12 @@ class ImageController extends Controller
             'message' => "Image successfully saved",
         ]);
     }
+
+    function removeImage($image) {
+        return response()->json([
+            'success' => true,
+            'data' => deleteImage($image),
+            'message' => "Image successfully deleted",
+        ]);
+    }
 }
