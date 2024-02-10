@@ -35,6 +35,16 @@ class MusicianController extends Controller
         ]);
     }
 
+    public function allMusiciansUnpaginated(MusicianRequest $request) {
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'musicians' => Musician::all(),
+            ],
+            'message' => 'Musicians received',
+        ]);
+    }
+
     public function addMusicianForm() {
         return view('musicians/musician-add', [
             'musician' => null,
@@ -79,20 +89,23 @@ class MusicianController extends Controller
     public function editMusician($id, MusicianRequest $request) {
         $musicianData = $request->except(['_token', "_method"]);
 
-        // Save the image
-        $fileName = saveImage($request);
-        $musicianData['image'] = $fileName;
+        $musicianData['image'] = $request->get('image');
 
         $musician = Musician::findOrFail($id);
 
         // Deletes the old image
         deleteImage($musician->image);
+
         $musician->update($musicianData);
 
         // Updates genres in the pivot table
-        $musician->genres()->sync(genreToIndex($request->genre));
+        $musician->genres()->sync($request->genre);
 
-        return redirect()->route('musicians.list');
+        return response()->json([
+            'success' => true,
+            'data' => $musician,
+            'message' => "Musician successfully edited."
+        ]);
     }
 
     public function deleteMusician($id) {

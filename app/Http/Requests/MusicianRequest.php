@@ -38,7 +38,7 @@ class MusicianRequest extends FormRequest
             $rules['name'] = ['required', 'unique:musicians,name,' . $this->route('musician')];
         }
 
-        if ($this->route()->uri === 'api/musicians') {
+        if ($this->route()->uri === 'api/musicians' || $this->route()->uri === 'api/musicians/unpaginated') {
             $rules = [];
         }
 
