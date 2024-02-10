@@ -23,15 +23,24 @@ function printArray($data, $field): string {
         $imageData = $request->image;
         $data = substr($imageData, strpos($imageData, ',') + 1);
         $decodedImage = base64_decode($data);
-        $fileName = time() . '.' . explode("/", $request->type)[1];
+        if ($request->type) {
+            $fileName = time() . '.' . explode("/", $request->type)[1];
+        } else {
+            $fileName = $request->image;
+        }
+
+        info($fileName);
+
         File::put(public_path('images/musicians/' . $fileName), $decodedImage);
         return $fileName;
     }
 
-    function deleteImage($path): void {
-        if(File::exists('images/musicians' . $path)) {
-            File::delete('images/musicians' . $path);
+    function deleteImage($path): bool {
+        if(File::exists('images/musicians/' . $path)) {
+            File::delete('images/musicians/' . $path);
+            return true;
         }
+        return false;
     }
 
     function genreToIndex($genres): array {
