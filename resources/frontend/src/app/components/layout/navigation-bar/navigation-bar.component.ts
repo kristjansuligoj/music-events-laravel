@@ -29,6 +29,7 @@ export class NavigationBarComponent {
    */
   public logout(): void {
     this.authService.setAuthToken(null);
+    this.authService.setLoggedUser(null);
     this.loggedIn = false;
   }
 }

@@ -2,7 +2,7 @@
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
     <div class="container">
-      <app-input-form
+      <app-text-input
         name="name"
         inputType="text"
         [formGroup]="registerForm"
@@ -15,7 +15,7 @@
     </div>
 
     <div class="mb-5">
-      <app-input-form
+      <app-text-input
         name="email"
         inputType="text"
         [formGroup]="registerForm"
@@ -29,7 +29,7 @@
     </div>
 
     <div class="container">
-      <app-input-form
+      <app-text-input
         name="password"
         inputType="password"
         [formGroup]="registerForm"
@@ -42,7 +42,7 @@
     </div>
 
     <div class="container">
-      <app-input-form
+      <app-text-input
         name="confirmPassword"
         inputType="password"
         [formGroup]="registerForm"

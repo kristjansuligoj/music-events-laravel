@@ -5,7 +5,7 @@ import {Router} from "@angular/router";
 import {UserService} from "../../../services/user.service";
 import {AuthService} from "../../../services/auth.service";
 import {HttpErrorResponse} from "@angular/common/http";
-import {TextInputComponent} from "../../shared/input-form/text-input.component";
+import {TextInputComponent} from "../../shared/text-input/text-input.component";
 import {passwordMatchValidator} from "../../../validators/passwordMatchValidator";
 
 @Component({

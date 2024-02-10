@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import {NgIf} from "@angular/common";
 import {AuthService} from "../../../services/auth.service";
 import {Router} from '@angular/router';
-import {TextInputComponent} from "../../shared/input-form/text-input.component";
+import {TextInputComponent} from "../../shared/text-input/text-input.component";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ButtonComponent} from "../../shared/button/button.component";
 
@@ -24,6 +24,9 @@ import {ButtonComponent} from "../../shared/button/button.component";
   styleUrls: ['./login-form.component.css']
 })
 export class LoginFormComponent {
+  // This makes the component log in on Lukas' app
+  @Input() lukaApp: boolean = false;
+
   public errors: string = "";
 
   public loginForm: FormGroup = new FormGroup({
@@ -41,17 +44,26 @@ export class LoginFormComponent {
     if (this.loginForm.valid) {
       const email = this.loginForm.value.email;
       const password = this.loginForm.value.password;
-      this.userService.login({email: email, password: password})
+
+      this.userService.login({email: email, password: password}, this.lukaApp)
         .subscribe({
           next: (response: any): void => {
             if (response.success) {
-              this.authService.setAuthToken(response.data);
-              this.router.navigate(['/']).then(r => {});
+              if (this.lukaApp) {
+                this.authService.setLukaLoggedUser(response.data.user);
+                this.authService.setLukaAuthToken(response.data.token);
+              } else {
+                this.authService.setLoggedUser(response.data.user);
+                this.authService.setAuthToken(response.data.token);
+                this.router.navigate(['/']).then(r => {});
+              }
             } else {
+              console.log("AAAA");
+              console.log(response.message);
               this.errors = response.message;
             }
           },
-          error: (response: HttpErrorResponse): void => { this.errors = response.message; },
+          error: (response: HttpErrorResponse): void => { this.errors = response.message; console.log(response)},
         })
     }
   }

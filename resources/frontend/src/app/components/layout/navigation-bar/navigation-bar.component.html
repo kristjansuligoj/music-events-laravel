@@ -29,10 +29,10 @@
         routerLink="/events"
       />
 
-      <app-button
-        buttonText="Notes"
-        routerLink="/notes"
-      />
+      <ng-container *ngIf="authService.getAuthToken()">
+        <app-button buttonText="Notes" routerLink="/notes"></app-button>
+      </ng-container>
+
     </div>
   </ul>
 </nav>

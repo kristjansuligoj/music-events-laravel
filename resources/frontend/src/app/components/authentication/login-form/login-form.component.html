@@ -1,7 +1,7 @@
 <div class="bg-white p-5">
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-      <app-input-form
+      <app-text-input
         [additionalErrors]="errors"
         [errors]="{
           required: 'Email is required!',
@@ -13,7 +13,7 @@
         name="email"
       />
 
-      <app-input-form
+      <app-text-input
         [additionalErrors]="errors"
         [errors]="{
           required: 'Password is required!',
