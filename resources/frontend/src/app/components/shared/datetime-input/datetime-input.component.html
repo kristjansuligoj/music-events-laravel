@@ -1,0 +1,10 @@
+<div *ngIf="formGroup" [formGroup]="formGroup">
+  <mat-form-field class="w-full h-auto mb-8">
+    <input
+      matInput
+      type="datetime-local"
+      placeholder="start date"
+      [formControlName]="name"
+    >
+  </mat-form-field>
+</div>

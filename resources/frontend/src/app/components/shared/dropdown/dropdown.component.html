@@ -1,0 +1,8 @@
+<div *ngIf="formGroup" [formGroup]="formGroup">
+  <mat-form-field class="dropdown w-full">
+    <mat-label>{{ name | titleCase }}</mat-label>
+    <mat-select [formControlName]="name">
+      <mat-option *ngFor="let option of Object.keys(options)" [value]="options[option].key ">{{ options[option].value }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

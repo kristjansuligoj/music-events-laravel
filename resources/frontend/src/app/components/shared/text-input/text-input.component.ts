@@ -4,7 +4,7 @@ import {TitleCasePipe} from "../../../pipes/title-case.pipe";
 import {FormGroup, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
-  selector: 'app-input-form',
+  selector: 'app-text-input',
   standalone: true,
   imports: [
     NgForOf,
