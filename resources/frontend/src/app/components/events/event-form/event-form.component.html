@@ -1,0 +1,81 @@
+<div class="bg-white p-5">
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="p-5">
+    <ng-container *ngIf="formLoaded">
+
+      <app-text-input
+        [additionalErrors]="errors"
+        [errors]="{
+          required: 'Date is required!',
+          dateAfterToday: 'Date should be a date after today',
+        }"
+        [formGroup]="editForm"
+        inputType="date"
+        name="date"
+      />
+
+      <app-text-input
+        [additionalErrors]="errors"
+        [errors]="{
+          required: 'Time is required!',
+        }"
+        [formGroup]="editForm"
+        inputType="time"
+        name="time"
+      />
+
+      <app-text-input
+        [additionalErrors]="errors"
+        [errors]="{
+          required: 'Name is required!',
+        }"
+        [formGroup]="editForm"
+        inputType="text"
+        name="name"
+      />
+
+      <app-text-input
+        [additionalErrors]="errors"
+        [errors]="{
+          required: 'Address is required!',
+        }"
+        [formGroup]="editForm"
+        inputType="text"
+        name="address"
+      />
+
+      <app-text-input
+        [additionalErrors]="errors"
+        [errors]="{
+          required: 'Ticket price is required and should be a number!',
+          min: 'Minimum value is 10!',
+          max: 'Maximum value is 300!',
+        }"
+        [formGroup]="editForm"
+        inputType="number"
+        name="ticketPrice"
+      />
+
+      <app-textarea-input
+        [additionalErrors]="errors"
+        [errors]="{
+          required: 'Description is required!',
+        }"
+        [formGroup]="editForm"
+        name="description"
+      />
+
+      <app-dropdown
+        [options]="musicians"
+        [formGroup]="editForm"
+        name="musician"
+      />
+
+    </ng-container>
+
+    <app-submit-button
+      [formInvalid]="editForm.invalid"
+      [editing]="editing"
+    />
+
+  </form>
+</div>
