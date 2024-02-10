@@ -16,7 +16,17 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const authToken = this.authService.getAuthToken();
+    // Google api does not allow Authorization header in request
+    if (request.url.includes('/maps/api/geocode/json')) {
+      return next.handle(request);
+    }
+
+    let authToken: string | null = "";
+    if (request.url.includes('/api/notes') || request.url.includes('/api/categories')) {
+      authToken = this.authService.getLukaAuthToken();
+    } else {
+      authToken = this.authService.getAuthToken();
+    }
 
     if (authToken) {
       request = request.clone({

@@ -6,14 +6,12 @@ import {Observable} from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
-export class ImageService {
-  apiUrl: string = environment.API_URL + '/images'
+export class CategoryService {
+  apiUrl: string = environment.LUKA_API_URL + "/categories";
   constructor(
     private http: HttpClient,
-  ) { }
-
-  public uploadImage(image: any): Observable<any[]> {
-    return this.http.post<any[]>(`${this.apiUrl}`, image);
+  ) {}
+  public allCategories(userId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}`);
   }
-
 }
