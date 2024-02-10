@@ -35,6 +35,7 @@
 
     <app-login-form
       [lukaApp]="true"
+      (authenticated)="loadNotes()"
     />
   </ng-template>
 </div>

@@ -1,13 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {DropdownComponent} from "../../shared/dropdown/dropdown.component";
 import {JsonPipe, NgIf} from "@angular/common";
-import {FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {SubmitButtonComponent} from "../../shared/submit-button/submit-button.component";
 import {TextInputComponent} from "../../shared/text-input/text-input.component";
 import {TextareaInputComponent} from "../../shared/textarea-input/textarea-input.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {dateRelativeToTodayValidator} from "../../../validators/dateRelativeToTodayValidator";
-import {formatDate} from "../../../helpers/functions";
 import {HttpErrorResponse} from "@angular/common/http";
 import {NoteService} from "../../../services/note.service";
 import {CategoryService} from "../../../services/category.service";
@@ -80,8 +79,6 @@ export class NoteFormComponent implements OnInit {
               this.noteService.getNoteById(id).subscribe({
                 next: (response: any ) => {
                   this.note = response.data.note;
-
-                  console.log(this.note.public);
 
                   this.editForm.patchValue({
                     title: this.note.title,

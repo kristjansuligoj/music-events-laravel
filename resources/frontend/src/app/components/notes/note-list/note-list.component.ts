@@ -53,6 +53,19 @@ export class NoteListComponent {
     }
   }
 
+  public loadNotes() {
+    this.noteService.allNotes(this.authService.getLukaLoggedUser().id).subscribe({
+      next: (response: any) => {
+        this.notes = response.data.notes;
+        this.nextPageUrl = response.data.notes.next_page_url;
+        this.prevPageUrl = response.data.notes.prev_page_url;
+      },
+      error: (error) => {
+        console.error('Error fetching events:', error);
+      }
+    });
+  }
+
   goToNextPage(): void {
     if (this.nextPageUrl) {
       this.noteService.paginatedNotes(this.nextPageUrl).subscribe({

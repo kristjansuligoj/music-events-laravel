@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import {NgIf} from "@angular/common";
@@ -26,6 +26,7 @@ import {ButtonComponent} from "../../shared/button/button.component";
 export class LoginFormComponent {
   // This makes the component log in on Lukas' app
   @Input() lukaApp: boolean = false;
+  @Output() authenticated: EventEmitter<boolean> = new EventEmitter();
 
   public errors: string = "";
 
@@ -52,14 +53,13 @@ export class LoginFormComponent {
               if (this.lukaApp) {
                 this.authService.setLukaLoggedUser(response.data.user);
                 this.authService.setLukaAuthToken(response.data.token);
+                this.authenticated.emit(true);
               } else {
                 this.authService.setLoggedUser(response.data.user);
                 this.authService.setAuthToken(response.data.token);
                 this.router.navigate(['/']).then(r => {});
               }
             } else {
-              console.log("AAAA");
-              console.log(response.message);
               this.errors = response.message;
             }
           },
