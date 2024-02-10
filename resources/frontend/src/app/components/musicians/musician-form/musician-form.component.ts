@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {TextInputComponent} from "../../shared/input-form/text-input.component";
+import {TextInputComponent} from "../../shared/text-input/text-input.component";
 import {FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MusicianService} from "../../../services/musician.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -8,7 +8,8 @@ import {ImageService} from "../../../services/image.service";
 import {CheckboxesComponent} from "../../shared/checkboxes/checkboxes.component";
 import {genres} from "../../../config/genres";
 import {HttpErrorResponse} from "@angular/common/http";
-import {JsonPipe} from "@angular/common";
+import {JsonPipe, NgIf} from "@angular/common";
+import {SubmitButtonComponent} from "../../shared/submit-button/submit-button.component";
 
 @Component({
   selector: 'app-musician-form',
@@ -18,7 +19,9 @@ import {JsonPipe} from "@angular/common";
     ReactiveFormsModule,
     ImageInputComponent,
     CheckboxesComponent,
-    JsonPipe
+    JsonPipe,
+    NgIf,
+    SubmitButtonComponent
   ],
   providers: [
     MusicianService,
@@ -32,6 +35,7 @@ export class MusicianFormComponent implements OnInit {
   public editing: boolean = false;
   public musician: any = {};
   public selectedFile: any = {};
+  public formLoaded: boolean = false;
 
   constructor(
     public musicianService: MusicianService,
@@ -47,6 +51,10 @@ export class MusicianFormComponent implements OnInit {
   });
 
   public ngOnInit() {
+    this.getDefaultValues();
+  }
+
+  public getDefaultValues() {
     this.route.params.subscribe(params => {
       const id = params['id'];
 
@@ -56,14 +64,25 @@ export class MusicianFormComponent implements OnInit {
           next: (response: any ) => {
             this.musician = response.data.musician;
             this.editForm.patchValue({
-              image: this.musician.image,
               name: this.musician.name,
-            })
-          },
-          error: (response: HttpErrorResponse): void => {
-            this.router.navigate(['/musicians']).then(r => {});
+            });
+
+            this.genres.forEach((genre: any) => {
+              const formArray: FormArray = this.editForm.get('genre') as FormArray;
+              const checked = this.musician.genres?.some((item: any) => item.name === genre.label);
+              formArray.push(new FormControl(checked));
+            });
+
+            this.formLoaded = true;
           },
         })
+      } else {
+        this.genres.forEach((genre: any) => {
+          const formArray: FormArray = this.editForm.get('genre') as FormArray;
+          formArray.push(new FormControl(false));
+        });
+
+        this.formLoaded = true;
       }
     })
   }
@@ -83,21 +102,37 @@ export class MusicianFormComponent implements OnInit {
   }
 
   public onSubmit() {
-    const name = this.editForm.value.name;
-
     const genre: number[] = [];
     this.editForm.value.genre.forEach((value: boolean, index: number) => {
       if (value) { genre.push(genres[index].id); }
     });
 
+    const musicianData: any = {
+      name: this.editForm.value.name,
+      genre: genre,
+    }
+
     this.imageService.uploadImage(this.selectedFile).subscribe({
       next: (response: any) => {
-        this.musicianService.addMusician({image: response.data, name: name, genre: genre}).subscribe({
-          next: (response: any) => { this.router.navigate(['/musicians']).then(r => {}); },
-          error: (response: HttpErrorResponse): void => {
-            this.errors = response.error.data;
-          },
-        })
+        musicianData.image = response.data;
+
+        if (this.editing) {
+          musicianData.id = this.musician.id;
+
+          this.musicianService.editMusicians(musicianData).subscribe({
+            next: (response: any) => { this.router.navigate(['/musicians']).then(r => {}); },
+            error: (response: HttpErrorResponse): void => {
+              this.errors = response.error.data;
+            },
+          })
+        } else {
+          this.musicianService.addMusician(musicianData).subscribe({
+            next: (response: any) => { this.router.navigate(['/musicians']).then(r => {}); },
+            error: (response: HttpErrorResponse): void => {
+              this.errors = response.error.data;
+            },
+          })
+        }
       },
     })
   }

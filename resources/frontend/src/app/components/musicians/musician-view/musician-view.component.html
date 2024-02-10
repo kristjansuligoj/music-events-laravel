@@ -19,12 +19,6 @@
     </div>
   </div>
 
-  <div class="p-3">
-    <p>Added by user: <strong>{{ musician?.user?.name }}</strong></p>
-  </div>
-
-  <hr>
-
   <div class="flex items-center p-3">
     <img
       [ngSrc]="'http://localhost:8000/images/musicians/' + musician.image"
@@ -36,7 +30,7 @@
     <h2 class="ml-3">{{ musician.name }}</h2>
   </div>
 
-  <hr>
+  <hr class="mb-3">
 
   <div class="p-3">
     <app-unordered-list
@@ -44,25 +38,21 @@
       target="name"
       title="Genres:"
     ></app-unordered-list>
-  </div>
 
-  <hr>
+    <div *ngIf="musician?.events?.length > 0">
+      <app-unordered-list
+        [items]="musician.events"
+        target="name"
+        title="Performing in events:"
+      ></app-unordered-list>
+    </div>
 
-  <div *ngIf="musician?.events?.length > 0" class="p-3">
-    <app-unordered-list
-      [items]="musician.events"
-      target="name"
-      title="Performing in events:"
-    ></app-unordered-list>
-  </div>
-
-  <hr>
-
-  <div *ngIf="musician?.songs?.length > 0" class="p-3">
-    <app-unordered-list
-      [items]="musician.songs"
-      target="title"
-      title="Performing in songs:"
-    ></app-unordered-list>
+    <div *ngIf="musician?.songs?.length > 0">
+      <app-unordered-list
+        [items]="musician.songs"
+        target="title"
+        title="Performing in songs:"
+      ></app-unordered-list>
+    </div>
   </div>
 </div>

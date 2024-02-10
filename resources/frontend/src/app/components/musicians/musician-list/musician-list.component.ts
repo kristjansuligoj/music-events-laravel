@@ -49,6 +49,10 @@ export class MusicianListComponent implements OnInit {
     });
   }
 
+  public search() {
+
+  }
+
   goToNextPage(): void {
     if (this.nextPageUrl) {
       this.musicianService.paginatedMusicians(this.nextPageUrl).subscribe({

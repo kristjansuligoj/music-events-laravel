@@ -1,44 +1,40 @@
 <div class="bg-white p-5">
   <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="p-5">
-    {{ musician | json }}
+    <ng-container *ngIf="formLoaded">
 
-    <app-image-input
-      [formGroup]="editForm"
-      (selectedImage)="onFileSelected($event)"
-      name="image"
-    />
+      <app-image-input
+        [formGroup]="editForm"
+        (selectedImage)="onFileSelected($event)"
+        name="image"
+      />
 
-    <app-input-form
-      [additionalErrors]="errors"
-      [errors]="{
-          required: 'Name is required!',
+      <app-text-input
+        [additionalErrors]="errors"
+        [errors]="{
+            required: 'Name is required!',
+          }"
+        [formGroup]="editForm"
+        inputType="text"
+        name="name"
+      />
+
+      <app-checkboxes
+        [options]="genres"
+        [formGroup]="editForm"
+        [errors]="{
+          required: 'Genre is required!',
+          atLeastOneChecked: 'Genre is required!',
         }"
-      [formGroup]="editForm"
-      inputType="text"
-      name="name"
-    />
+        [additionalErrors]="errors"
+        name="genre"
+      />
 
-    <app-checkboxes
-      [defaultValues]="musician?.genres"
-      [formGroup]="editForm"
-      [options]="genres"
-      [errors]="{
-        required: 'Genre is required!',
-      }"
-      name="genre"
-    />
+    </ng-container>
 
-    <button
-      type="submit"
-      [disabled]="editForm.invalid"
-      class="
-        inline-flex items-center
-        px-3 py-2 m-3 bg-gray-800
-        border border-transparent text-xs rounded text-white uppercase
-        hover:bg-gray-700 focus:bg-gray-700
-        active:bg-gray-900 focus:outline-none
-      "
-    >{{editing ? "Save" : "Add"}}</button>
+    <app-submit-button
+      [formInvalid]="editForm.invalid"
+      [editing]="editing"
+    />
 
   </form>
 </div>

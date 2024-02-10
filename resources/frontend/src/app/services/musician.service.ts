@@ -8,7 +8,7 @@ import {AuthInterceptor} from "../interceptors/auth.interceptor";
   providedIn: 'root'
 })
 export class MusicianService {
-  apiUrl: string = environment.apiUrl + "/musicians";
+  apiUrl: string = environment.API_URL + "/musicians";
   constructor(
     private http: HttpClient,
   ) {}
@@ -18,6 +18,10 @@ export class MusicianService {
   }
   public allMusicians(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}`);
+  }
+
+  public allMusiciansUnpaginated(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/unpaginated`);
   }
 
   public getMusicianById(id: string): Observable<any[]> {
