@@ -139,12 +139,6 @@ class EventController extends Controller
     }
 
     public function allEvents(EventRequest $request) {
-        $sortOrderMap = getOrderMap(
-            "events",
-            $request->input('field'),
-            ["name", "address", "date", "time", "description", "ticketPrice", "musician"]
-        );
-
         if ($request->has('keyword')) {
             $events = $this->searchEventsByKeyword($request->keyword, (bool)$request->showAttending);
         } else {
@@ -155,7 +149,6 @@ class EventController extends Controller
             'success' => true,
             'data' => [
                 'events' => $events,
-                'sortOrder' => $sortOrderMap,
             ],
             'message' => 'Events successfully retrieved.'
         ]);
@@ -374,7 +367,8 @@ class EventController extends Controller
                 ->orWhereHas('musicians', function ($query) use ($keyword) {
                     $query->where('name', 'LIKE', '%' . $keyword . '%');
                 })->with('musicians')
-                ->get();
+                ->select('events.*')
+                ->paginate(7);
         }
     }
 }

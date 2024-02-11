@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {getFilterQuery} from "../helpers/functions";
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,8 @@ export class EventService {
   public paginatedEvents(url: string): Observable<any[]> {
     return this.http.get<any[]>(url);
   }
-  public allEvents(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}`);
+  public allEvents(keyword: string, filter: any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}${getFilterQuery(keyword, filter)}`);
   }
 
   public getEventById(id: string): Observable<any[]> {

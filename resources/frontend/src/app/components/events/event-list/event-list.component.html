@@ -5,7 +5,11 @@
   </div>
 
   <div>
-    <app-search-bar/>
+    <app-search-bar
+      [fields]="['name', 'address', 'date', 'time', 'description', 'ticketPrice', 'musician']"
+      (searchItemEmitter)="search($event)"
+      (filterEmitter)="filter($event)"
+    />
   </div>
 
   <ng-container *ngIf="authService.getAuthToken()">

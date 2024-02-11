@@ -34,7 +34,19 @@ export class EventListComponent implements OnInit {
     public authService: AuthService,
   ) {}
   public ngOnInit() {
-    this.eventService.allEvents().subscribe({
+    this.getEvents("", null);
+  }
+
+  public search(event: any) {
+    this.getEvents(event, null);
+  }
+
+  public filter(event: any) {
+    this.getEvents("", event);
+  }
+
+  public getEvents(keyword: string, filter: any) {
+    this.eventService.allEvents(keyword, filter).subscribe({
       next: (response: any) => {
         this.events = response.data.events.data;
         this.nextPageUrl = response.data.events.next_page_url;
