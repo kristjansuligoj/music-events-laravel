@@ -3,6 +3,7 @@ import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {AuthInterceptor} from "../interceptors/auth.interceptor";
+import {getFilterQuery} from "../helpers/functions";
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,8 @@ export class MusicianService {
   public paginatedMusicians(url: string): Observable<any[]> {
     return this.http.get<any[]>(url);
   }
-  public allMusicians(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}`);
+  public allMusicians(keyword: string, filter: any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}${getFilterQuery(keyword, filter)}`);
   }
 
   public allMusiciansUnpaginated(): Observable<any[]> {

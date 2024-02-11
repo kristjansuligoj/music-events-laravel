@@ -13,11 +13,6 @@ use Illuminate\Support\Facades\Session;
 class MusicianController extends Controller
 {
     public function allMusicians(MusicianRequest $request) {
-        $sortOrderMap = getOrderMap(
-            "musicians",
-            $request->input('field'),
-            ["name", "genre"]
-        );
 
         if ($request->has('keyword')) {
             $musicians = $this->searchMusiciansByKeyword($request->keyword);
@@ -29,7 +24,6 @@ class MusicianController extends Controller
             'success' => true,
             'data' => [
                 'musicians' => $musicians,
-                'sortOrder' => $sortOrderMap,
             ],
             'message' => 'Musicians received',
         ]);

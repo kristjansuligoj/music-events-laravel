@@ -28,6 +28,7 @@ import {AuthService} from "../../../services/auth.service";
 })
 export class MusicianListComponent implements OnInit {
   musicians: any[] = [];
+  sortOrder: any = {};
   nextPageUrl: string | null = null;
   prevPageUrl: string | null = null;
 
@@ -37,7 +38,19 @@ export class MusicianListComponent implements OnInit {
   ) {}
 
   public ngOnInit() {
-    this.musicianService.allMusicians().subscribe({
+    this.getMusicians("", null);
+  }
+
+  public search(event: any) {
+    this.getMusicians(event, null);
+  }
+
+  public filter(event: any) {
+    this.getMusicians("", event);
+  }
+
+  public getMusicians(keyword: string, filter: any) {
+    this.musicianService.allMusicians(keyword, filter).subscribe({
       next: (response: any) => {
         this.musicians = response.data.musicians.data;
         this.nextPageUrl = response.data.musicians.next_page_url;
@@ -47,10 +60,6 @@ export class MusicianListComponent implements OnInit {
         console.error('Error fetching musicians:', error);
       }
     });
-  }
-
-  public search() {
-
   }
 
   goToNextPage(): void {
