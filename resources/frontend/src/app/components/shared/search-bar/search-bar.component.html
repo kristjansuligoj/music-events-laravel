@@ -1,14 +1,41 @@
-<form action="" class="flex items-center w-full mb-5">
-  <input
-    type="text"
-    placeholder="Search by keyword . . ."
-    name="keyword"
-    class="border border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block p-2 text-sm w-full"
-  >
-  <input type="submit" value="Search" class="inline-flex items-center px-4 py-2 bg-gray-800 border
-        border-transparent rounded-md text-xs text-white
-        tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900
-        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
-        transition ease-in-out duration-150 ml-4 text-decoration-none uppercase"
-  >
-</form>
+<div class="w-full mb-5">
+  <div class="">
+    <div class="mb-3">
+      <label class="block font-medium text-sm text-gray-700 mb-2">
+        <b>Sort by: </b>
+        <ng-container *ngFor="let field of fields">
+          <span
+            (click)="filter(field)"
+            style="cursor: pointer"
+            [class]="ordersMap[currentField] !== '' && field === currentField ? 'uppercase' : ''"
+          >{{field}} </span>
+        </ng-container>
+      </label>
+    </div>
+
+    <app-span
+      title="Order"
+      [data]="ordersMap[currentField]"
+    />
+  </div>
+
+  <div class="flex items-center ">
+    <input
+      #SearchItem
+      [(ngModel)]="searchItem"
+      type="text"
+      placeholder="Search by keyword . . ."
+      name="keyword"
+      class="border border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block p-2 text-sm w-full"
+    >
+    <button
+      class="inline-flex items-center px-4 py-2 bg-gray-800 border
+          border-transparent rounded-md text-xs text-white
+          tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900
+          focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
+          transition ease-in-out duration-150 ml-4 text-decoration-none uppercase
+      "
+      (click)="search(SearchItem.value)"
+    >Search</button>
+  </div>
+</div>
