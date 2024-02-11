@@ -7,6 +7,7 @@ import {MusicianPreviewComponent} from "../musician-preview/musician-preview.com
 import {ButtonComponent} from "../../shared/button/button.component";
 import {RouterLink} from "@angular/router";
 import {AuthService} from "../../../services/auth.service";
+import {EventPreviewComponent} from "../../events/event-preview/event-preview.component";
 
 @Component({
   selector: 'app-musician-list',
@@ -18,7 +19,8 @@ import {AuthService} from "../../../services/auth.service";
     MusicianPreviewComponent,
     ButtonComponent,
     NgIf,
-    RouterLink
+    RouterLink,
+    EventPreviewComponent
   ],
   providers: [
     MusicianService

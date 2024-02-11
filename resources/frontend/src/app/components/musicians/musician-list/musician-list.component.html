@@ -19,12 +19,22 @@
     />
   </ng-container>
 
-  <div *ngFor="let musician of musicians" class="mt-5">
-    <app-musician-preview [musician]="musician"/>
-  </div>
+  <div *ngIf="musicians.length > 0; else noContentMessage">
+    <div *ngFor="let musician of musicians" class="mt-5">
+      <app-musician-preview [musician]="musician"/>
+    </div>
 
-  <div class="d-flex justify-content-center m-5">
-    <button (click)="goToPrevPage()" [disabled]="!prevPageUrl">Previous Page</button>
-    <button (click)="goToNextPage()" [disabled]="!nextPageUrl">Next Page</button>
+    <div
+      *ngIf="musicians.length > 7"
+      class="d-flex justify-content-center m-5"
+    >
+      <button (click)="goToPrevPage()" [disabled]="!prevPageUrl">Previous Page</button>
+      <button (click)="goToNextPage()" [disabled]="!nextPageUrl">Next Page</button>
+    </div>
   </div>
+  <ng-template #noContentMessage>
+    <div class="no-content-message">
+      There are no musician with the given criteria.
+    </div>
+  </ng-template>
 </div>
