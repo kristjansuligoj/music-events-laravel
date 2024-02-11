@@ -175,6 +175,7 @@ class EventController extends Controller
     public function eventHistory($user): JsonResponse
     {
         $events = Event::join('event_participants', 'events.id', '=', 'event_participants.event_id')
+            ->with('musicians')
             ->where('event_participants.user_id', $user)
             ->whereDate('events.date', '<', now())
             ->select('events.*')

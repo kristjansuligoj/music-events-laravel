@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ButtonComponent} from "../../shared/button/button.component";
 import {MusicianPreviewComponent} from "../../musicians/musician-preview/musician-preview.component";
-import {NgForOf, NgIf} from "@angular/common";
+import {JsonPipe, NgForOf, NgIf} from "@angular/common";
 import {SearchBarComponent} from "../../shared/search-bar/search-bar.component";
 import {EventService} from "../../../services/event.service";
 import {AuthService} from "../../../services/auth.service";
 import {EventPreviewComponent} from "../event-preview/event-preview.component";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 
 @Component({
   selector: 'app-event-list',
@@ -16,7 +17,8 @@ import {EventPreviewComponent} from "../event-preview/event-preview.component";
     NgForOf,
     NgIf,
     SearchBarComponent,
-    EventPreviewComponent
+    EventPreviewComponent,
+    JsonPipe
   ],
   providers: [
     EventService
@@ -26,14 +28,21 @@ import {EventPreviewComponent} from "../event-preview/event-preview.component";
 })
 export class EventListComponent implements OnInit {
   events: any[] = [];
+  getHistory: boolean = false;
   nextPageUrl: string | null = null;
   prevPageUrl: string | null = null;
 
   constructor(
     public eventService: EventService,
     public authService: AuthService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) {}
   public ngOnInit() {
+    if (this.authService.getLoggedUser() && this.router.url === "/events/history") {
+      this.getHistory = true;
+    }
+
     this.getEvents("", null);
   }
 
@@ -46,16 +55,29 @@ export class EventListComponent implements OnInit {
   }
 
   public getEvents(keyword: string, filter: any) {
-    this.eventService.allEvents(keyword, filter).subscribe({
-      next: (response: any) => {
-        this.events = response.data.events.data;
-        this.nextPageUrl = response.data.events.next_page_url;
-        this.prevPageUrl = response.data.events.prev_page_url;
-      },
-      error: (error) => {
-        console.error('Error fetching events:', error);
-      }
-    });
+    if (this.authService.getLoggedUser() && this.getHistory) {
+      this.eventService.userEventHistory(this.authService.getLoggedUser().id).subscribe({
+        next: (response: any) => {
+          this.events = response.data.events.data;
+          this.nextPageUrl = response.data.events.next_page_url;
+          this.prevPageUrl = response.data.events.prev_page_url;
+        },
+        error: (error) => {
+          console.error('Error fetching events:', error);
+        }
+      })
+    } else {
+      this.eventService.allEvents(keyword, filter).subscribe({
+        next: (response: any) => {
+          this.events = response.data.events.data;
+          this.nextPageUrl = response.data.events.next_page_url;
+          this.prevPageUrl = response.data.events.prev_page_url;
+        },
+        error: (error) => {
+          console.error('Error fetching events:', error);
+        }
+      });
+    }
   }
 
   goToNextPage(): void {

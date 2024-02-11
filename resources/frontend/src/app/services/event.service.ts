@@ -37,7 +37,7 @@ export class EventService {
   }
 
   public userEventHistory(userId: string): Observable<any[]> {
-    return this.http.delete<any[]>(`${this.apiUrl}/history/${userId}`);
+    return this.http.get<any[]>(`${this.apiUrl}/history/${userId}`);
   }
 
   public addUserToEvent(eventId: string, userId: string): Observable<any[]> {

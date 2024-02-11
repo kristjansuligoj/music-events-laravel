@@ -53,6 +53,11 @@ export const routes: Routes = [
     title: 'event'
   },
   {
+    path: 'events/history',
+    component: EventListComponent,
+    title: 'event'
+  },
+  {
     path: 'events/:id',
     component: EventViewComponent,
     title: 'event'

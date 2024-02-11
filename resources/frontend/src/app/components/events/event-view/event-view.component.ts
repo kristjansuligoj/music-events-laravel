@@ -31,6 +31,7 @@ import {isDateAfterToday} from "../../../helpers/functions";
   styleUrl: './event-view.component.css'
 })
 export class EventViewComponent implements OnInit {
+  public eventHappened: boolean = false;
   public attending: boolean = false;
   public event: any = {};
   public coordinates: any = {};
@@ -55,6 +56,7 @@ export class EventViewComponent implements OnInit {
     this.eventService.getEventById(id).subscribe({
       next: (response: any) => {
         this.event = response.data.event;
+        this.eventHappened = isDateAfterToday(this.event.date);
 
         const index = this.event.participants.findIndex(
           (participant: any) => participant.id === this.authService.getLoggedUser().id);
@@ -123,6 +125,4 @@ export class EventViewComponent implements OnInit {
       }
     })
   }
-
-  protected readonly isDateAfterToday = isDateAfterToday;
 }
