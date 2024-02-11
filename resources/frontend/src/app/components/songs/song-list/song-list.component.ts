@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ButtonComponent} from "../../shared/button/button.component";
 import {MusicianPreviewComponent} from "../../musicians/musician-preview/musician-preview.component";
 import {NgForOf, NgIf} from "@angular/common";
@@ -27,7 +27,7 @@ import {SongPreviewComponent} from "../song-preview/song-preview.component";
   templateUrl: './song-list.component.html',
   styleUrl: './song-list.component.css'
 })
-export class SongListComponent {
+export class SongListComponent implements OnInit {
   songs: any[] = [];
   nextPageUrl: string | null = null;
   prevPageUrl: string | null = null;
@@ -38,7 +38,19 @@ export class SongListComponent {
   ) {}
 
   public ngOnInit() {
-    this.songService.allSongs().subscribe({
+    this.getSongs("", null);
+  }
+
+  public search(event: any) {
+    this.getSongs(event, null);
+  }
+
+  public filter(event: any) {
+    this.getSongs("", event);
+  }
+
+  public getSongs(keyword: string, filter: any) {
+    this.songService.allSongs(keyword, filter).subscribe({
       next: (response: any) => {
         this.songs = response.data.songs.data;
         this.nextPageUrl = response.data.songs.next_page_url;

@@ -12,12 +12,6 @@ use Illuminate\Support\Facades\Session;
 class SongController extends Controller
 {
     public function allSongs(SongRequest $request) {
-        $sortOrderMap = getOrderMap(
-            "songs",
-            $request->input('field'),
-            ["title", "genre", "length", "releaseDate", "authors", "musician"]
-        );
-
         if ($request->has('keyword')) {
             $songs = $this->searchSongsByKeyword($request->keyword);
         } else {
@@ -28,7 +22,6 @@ class SongController extends Controller
             'success' => true,
             'data' => [
                 'songs' => $songs,
-                'sortOrder' => $sortOrderMap,
             ],
             'message' => 'Song successfully added.'
         ]);
