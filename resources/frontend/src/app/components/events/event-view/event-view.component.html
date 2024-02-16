@@ -22,7 +22,7 @@
   <div class="flex justify-between items-center p-3">
     <h2><strong>{{ event.name }}</strong></h2>
 
-    <div *ngIf="authService.getLoggedUser() && !eventHappened">
+    <div *ngIf="authService.getLoggedUser() && futureEvent">
       <button
         (click)="attendEvent(event.id)"
         class="
@@ -80,7 +80,7 @@
     <div *ngIf="event.participants?.length > 0">
       <app-unordered-list
         target="name"
-        [title]="eventHappened ? 'Users that went to this event:' : 'Users that are going to this event:'"
+        [title]="futureEvent ? 'Users that are going to this event:' : 'Users that went to this event:' "
         [items]="event.participants"
       />
     </div>

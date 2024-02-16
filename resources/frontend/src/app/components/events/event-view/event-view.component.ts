@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
 import {SpanComponent} from "../../shared/span/span.component";
 import {GoogleMap, MapMarker} from "@angular/google-maps";
 import {GoogleAPIService} from "../../../services/google-api.service";
-import {isDateAfterToday} from "../../../helpers/functions";
+import {formatDate, isEventInFuture} from "../../../helpers/functions";
 
 @Component({
   selector: 'app-event-view',
@@ -31,7 +31,7 @@ import {isDateAfterToday} from "../../../helpers/functions";
   styleUrl: './event-view.component.css'
 })
 export class EventViewComponent implements OnInit {
-  public eventHappened: boolean = false;
+  public futureEvent: boolean = false;
   public attending: boolean = false;
   public event: any = {};
   public coordinates: any = {};
@@ -56,13 +56,15 @@ export class EventViewComponent implements OnInit {
     this.eventService.getEventById(id).subscribe({
       next: (response: any) => {
         this.event = response.data.event;
-        this.eventHappened = isDateAfterToday(this.event.date);
+        this.futureEvent = isEventInFuture(formatDate(this.event.date));
 
-        const index = this.event.participants.findIndex(
-          (participant: any) => participant.id === this.authService.getLoggedUser().id);
+        if (this.authService.getLoggedUser()) {
+          const index = this.event.participants.findIndex(
+            (participant: any) => participant.id === this.authService.getLoggedUser().id);
 
-        if (index !== -1) {
-          this.attending = true;
+          if (index !== -1) {
+            this.attending = true;
+          }
         }
 
         this.googleApiService.getCoordinates(this.event.address).subscribe({
