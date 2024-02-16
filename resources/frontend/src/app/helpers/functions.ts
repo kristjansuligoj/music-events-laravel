@@ -19,12 +19,13 @@ export function extractAuthorNames(authors: any[]): string {
 }
 
 /**
- * Checks if date is after today
+ * Checks if event is in the future
  *
  * @param date
+ * @return boolean
  */
-export function isDateAfterToday(date: any) {
-  return new Date(new Date(date).toDateString()) > new Date(new Date().toDateString());
+export function isEventInFuture(date: any): boolean {
+  return new Date(date).getTime() > new Date().getTime();
 }
 
 /**
