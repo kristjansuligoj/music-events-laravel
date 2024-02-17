@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -26,17 +24,15 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::create([
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => Hash::make($request->password),
         ]);
-
-        $token = $user->createToken('myapptoken')->plainTextToken;
 
         return response()->json([
             'success' => true,
-            'data' => $token,
+            'data' => $request->name . " created",
             'message' => 'Registration successful',
         ]);
     }
@@ -64,7 +60,6 @@ class AuthController extends Controller
                 'message' => 'Incorrect credentials',
             ]);
         }
-
 
         return response()->json([
             'success' => true,
