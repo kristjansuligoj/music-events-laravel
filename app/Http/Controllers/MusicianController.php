@@ -80,12 +80,12 @@ class MusicianController extends Controller
         ]);
     }
 
-    public function editMusician($id, MusicianRequest $request) {
+    public function editMusician($musicianId, MusicianRequest $request) {
         $musicianData = $request->except(['_token', "_method"]);
 
         $musicianData['image'] = $request->get('image');
 
-        $musician = Musician::findOrFail($id);
+        $musician = Musician::findOrFail($musicianId);
 
         // Deletes the old image
         deleteImage($musician->image);
@@ -102,15 +102,15 @@ class MusicianController extends Controller
         ]);
     }
 
-    public function deleteMusician($id) {
-        $musician = Musician::findOrFail($id);
+    public function deleteMusician($musicianId) {
+        $musician = Musician::findOrFail($musicianId);
         $musician->delete();
 
         deleteImage($musician->image);
 
         return response()->json([
             'success' => true,
-            'data' => $id,
+            'data' => $musicianId,
             'message' => 'Musician removed',
         ]);
     }

@@ -50,48 +50,48 @@ Route::group(['prefix' => 'notes', 'middleware' => ['auth:sanctum']], function (
         Route::get('/', [NoteController::class, 'allNotes'])->name('notes.list');
         Route::get('/add', [NoteController::class, 'addNoteForm'])->name('notes.addForm');
         Route::post('/add', [NoteController::class, 'addNote'])->name('notes.add');
-        Route::get('/edit/{note}', [NoteController::class, 'editNoteForm'])->whereUuid('note')->name('notes.editForm');
-        Route::patch('/edit/{note}', [NoteController::class, 'editNote'])->whereUuid('note')->name('notes.edit');
-        Route::delete('/remove/{note}', [NoteController::class, 'removeNote'])->whereUuid('note')->name('notes.remove');
+        Route::get('/edit/{noteId}', [NoteController::class, 'editNoteForm'])->whereUuid('note')->name('notes.editForm');
+        Route::patch('/edit/{noteId}', [NoteController::class, 'editNote'])->whereUuid('note')->name('notes.edit');
+        Route::delete('/remove/{noteId}', [NoteController::class, 'removeNote'])->whereUuid('note')->name('notes.remove');
     });
 });
 
 Route::prefix('musicians')->group(function () {
     Route::get('/', [MusicianController::class, 'allMusicians'])->name('musicians.list');
     Route::get('/unpaginated', [MusicianController::class, 'allMusiciansUnpaginated'])->name('musicians.listUnpaginated');
-    Route::get('/{musician}', [MusicianController::class, 'getMusician'])->whereUuid('musician')->name('musicians.get');;
+    Route::get('/{musicianId}', [MusicianController::class, 'getMusician'])->whereUuid('musician')->name('musicians.get');;
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/add', [MusicianController::class, 'addMusician'])->name('musicians.add');
-        Route::patch('/edit/{musician}', [MusicianController::class, 'editMusician'])->whereUuid('musician')->name('musicians.edit');
-        Route::delete('/remove/{musician}', [MusicianController::class, 'deleteMusician'])->whereUuid('musician')->name('musicians.delete');
+        Route::patch('/edit/{musicianId}', [MusicianController::class, 'editMusician'])->whereUuid('musician')->name('musicians.edit');
+        Route::delete('/remove/{musicianId}', [MusicianController::class, 'deleteMusician'])->whereUuid('musician')->name('musicians.delete');
     });
 });
 
 
 Route::prefix('songs')->group(function () {
     Route::get('/', [SongController::class, 'allSongs'])->name('songs.list');
-    Route::get('/{song}', [SongController::class, 'getSong'])->whereUuid('song')->name('songs.get');
+    Route::get('/{songId}', [SongController::class, 'getSong'])->whereUuid('song')->name('songs.get');
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/add', [SongController::class, 'addSong'])->name('songs.add');
-        Route::patch('/edit/{song}', [SongController::class, 'editSong'])->whereUuid('song')->name('songs.edit');
-        Route::delete('/remove/{song}', [SongController::class, 'deleteSong'])->whereUuid('song')->name('songs.delete');
+        Route::patch('/edit/{songId}', [SongController::class, 'editSong'])->whereUuid('song')->name('songs.edit');
+        Route::delete('/remove/{songId}', [SongController::class, 'deleteSong'])->whereUuid('song')->name('songs.delete');
     });
 });
 
 
 Route::prefix('events')->group(function () {
     Route::get('/', [EventController::class, 'allEvents'])->name('events.list');
-    Route::get('/{event}', [EventController::class, 'getEvent'])->whereUuid('event')->name('events.get');
+    Route::get('/{eventId}', [EventController::class, 'getEvent'])->whereUuid('event')->name('events.get');
 
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/history/{user}', [EventController::class, 'eventHistory'])->name('events.eventsHistory');
+        Route::get('/history/{userId}', [EventController::class, 'eventHistory'])->name('events.eventsHistory');
         Route::post('/add', [EventController::class, 'addEvent'])->name('events.add');
-        Route::post('/{event}/add-user/{user}', [EventController::class, 'addUserToEvent'])->whereUuid(['event', 'user'])->name('events.addUserToEvent');
-        Route::post('/{event}/remove-user/{user}', [EventController::class, 'removeUserFromEvent'])->whereUuid(['event', 'user'])->name('events.removeUserFromEvent');
-        Route::patch('/edit/{event}', [EventController::class, 'editEvent'])->whereUuid('event')->name('events.edit');
-        Route::delete('/remove/{event}', [EventController::class, 'deleteEvent'])->whereUuid('event')->name('events.delete');
+        Route::post('/{eventId}/add-user/{userId}', [EventController::class, 'addUserToEvent'])->whereUuid(['event', 'user'])->name('events.addUserToEvent');
+        Route::post('/{eventId}/remove-user/{userId}', [EventController::class, 'removeUserFromEvent'])->whereUuid(['event', 'user'])->name('events.removeUserFromEvent');
+        Route::patch('/edit/{eventId}', [EventController::class, 'editEvent'])->whereUuid('event')->name('events.edit');
+        Route::delete('/remove/{eventId}', [EventController::class, 'deleteEvent'])->whereUuid('event')->name('events.delete');
     });
 });
 

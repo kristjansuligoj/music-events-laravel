@@ -154,8 +154,8 @@ class EventController extends Controller
         ]);
     }
 
-    public function getEvent($id) {
-        $event = Event::with('musicians', 'participants', 'user')->findOrFail($id);
+    public function getEvent($eventId) {
+        $event = Event::with('musicians', 'participants', 'user')->findOrFail($eventId);
         $event->time = Carbon::parse($event->time)->format("H:i");
 
         return response()->json([
@@ -172,11 +172,11 @@ class EventController extends Controller
      *
      * @return JsonResponse
      */
-    public function eventHistory($user): JsonResponse
+    public function eventHistory($userId): JsonResponse
     {
         $events = Event::join('event_participants', 'events.id', '=', 'event_participants.event_id')
             ->with('musicians')
-            ->where('event_participants.user_id', $user)
+            ->where('event_participants.user_id', $userId)
             ->whereDate('events.date', '<', now())
             ->select('events.*')
             ->paginate(7);
@@ -287,10 +287,10 @@ class EventController extends Controller
         ]);
     }
 
-    public function editEvent($id, EventRequest $request) {
+    public function editEvent($eventId, EventRequest $request) {
         $eventData = $request->except(['_token', "_method"]);
 
-        $event = Event::findOrFail($id);
+        $event = Event::findOrFail($eventId);
         $event->update($eventData);
 
         $event->musicians()->sync($request->musician);
@@ -304,14 +304,14 @@ class EventController extends Controller
         ]);
     }
 
-    public function deleteEvent($id) {
-        $event = Event::findOrFail($id);
+    public function deleteEvent($eventId) {
+        $event = Event::findOrFail($eventId);
         $event->delete();
 
         return response()->json([
             'success' => true,
             'data' => [
-                'event' => $id,
+                'event' => $eventId,
             ],
             'message' => "Event successfully removed."
         ]);

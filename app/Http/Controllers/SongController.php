@@ -27,11 +27,11 @@ class SongController extends Controller
         ]);
     }
 
-    public function getSong($id) {
+    public function getSong($songId) {
         return response()->json([
             'success' => true,
             'data' => [
-                'song' => Song::with('musician', 'genres', 'authors', 'user')->findOrFail($id)
+                'song' => Song::with('musician', 'genres', 'authors', 'user')->findOrFail($songId)
             ],
             'message' => 'Song successfully added.'
         ]);
@@ -57,12 +57,12 @@ class SongController extends Controller
         ]);
     }
 
-    public function editSong($id, SongRequest $request) {
+    public function editSong($songId, SongRequest $request) {
         $songData = $request->except(['_token', "_method"]);
         $songData['musician_id'] = $songData['musician'];
         unset($songData['musician']);
 
-        $song = Song::findOrFail($id);
+        $song = Song::findOrFail($songId);
         $song->update($songData);
 
         $song->genres()->sync($request->genre);
@@ -76,14 +76,14 @@ class SongController extends Controller
         ]);
     }
 
-    public function deleteSong($id) {
-        $song = Song::findOrFail($id);
+    public function deleteSong($songId) {
+        $song = Song::findOrFail($songId);
         $song->delete();
 
         return response()->json([
             'success' => true,
             'data' => [
-                'song' => $id
+                'song' => $songId
             ],
             'message' => 'Song successfully removed.'
         ]);
