@@ -22,8 +22,6 @@ use App\Http\Controllers\SongController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/events', [EventController::class, 'getAllEvents']);
-Route::get('/attending/{id}', [EventController::class, 'getUsersEvents']);
 
 Route::group(['prefix' => 'images', 'middleware' => ['auth:sanctum']], function() {
     Route::post('/', [ImageController::class, 'addImage']);
@@ -32,8 +30,6 @@ Route::group(['prefix' => 'images', 'middleware' => ['auth:sanctum']], function(
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/events/{id}/attendees', [EventController::class, 'addAttendee']);
-    Route::delete('/events/{id}/attendees/{attendeesEmail}', [EventController::class, 'removeAttendee']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {

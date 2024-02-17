@@ -7,8 +7,6 @@ use App\Models\Event;
 use App\Models\Musician;
 use App\Models\Song;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Session;
 
 class MusicianController extends Controller
 {
@@ -39,12 +37,6 @@ class MusicianController extends Controller
         ]);
     }
 
-    public function addMusicianForm() {
-        return view('musicians/musician-add', [
-            'musician' => null,
-        ]);
-    }
-
     public function getMusician($id) {
         return response()->json([
             'success' => true,
@@ -53,12 +45,6 @@ class MusicianController extends Controller
                 'usedElsewhere' => $this->checkMusicianUsage($id)
             ],
             'message' => 'Musicians received',
-        ]);
-    }
-
-    public function editMusicianForm($id) {
-        return view('musicians/musician-add', [
-            'musician' => Musician::with('genres')->findOrFail($id),
         ]);
     }
 

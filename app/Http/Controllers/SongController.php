@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SongRequest;
-use App\Models\Author;
-use App\Models\Musician;
 use App\Models\Song;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class SongController extends Controller
 {
