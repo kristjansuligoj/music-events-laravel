@@ -51,8 +51,8 @@ export class LoginFormComponent {
           next: (response: any): void => {
             if (response.success) {
               if (this.lukaApp) {
-                this.authService.setLukaLoggedUser(response.data.user);
-                this.authService.setLukaAuthToken(response.data.token);
+                this.authService.setLukaLoggedUser(response.user);
+                this.authService.setLukaAuthToken(response.token);
                 this.authenticated.emit(true);
               } else {
                 this.authService.setLoggedUser(response.data.user);

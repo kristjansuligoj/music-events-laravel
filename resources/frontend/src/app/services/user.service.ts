@@ -13,7 +13,7 @@ export class UserService {
 
   public login(userData: any, lukaApp: boolean): Observable<any[]> {
     if (lukaApp) {
-      return this.http.post<any[]>(`${this.lukaApiUrl}/login`, userData);
+      return this.http.post<any[]>(`${this.lukaApiUrl}/tokens/authenticate`, userData);
     } else {
       return this.http.post<any[]>(`${this.apiUrl}/login`, userData);
     }
