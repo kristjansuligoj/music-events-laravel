@@ -18,11 +18,6 @@
     <div *ngFor="let note of notes" class="mt-5">
       <app-note-preview [note]="note"/>
     </div>
-
-    <div class="d-flex justify-content-center m-5">
-      <button (click)="goToPrevPage()" [disabled]="!prevPageUrl">Previous Page</button>
-      <button (click)="goToNextPage()" [disabled]="!nextPageUrl">Next Page</button>
-    </div>
   </div>
 
   <ng-template #loginComponent>
