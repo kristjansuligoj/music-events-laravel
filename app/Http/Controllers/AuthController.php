@@ -18,24 +18,25 @@ class AuthController extends Controller
     public function register(Request $request) {
 
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => 'required',
+            'password' => ['required', 'confirmed']
         ]);
 
         $user = User::create([
-            'name' => $request->name,
+            'name' => $request->username,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => Hash::make($request->password)
         ]);
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
-        $response = [
-            'token' => $token
-        ];
-
-        return response($response, 201);
+        return response([
+            'message' => 'Success',
+            'data' => [
+                'token' => $token
+            ]
+        ], 201);
     }
 
     /**
@@ -61,11 +62,12 @@ class AuthController extends Controller
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
-        $response = [
-            'token' => $token
-        ];
-
-        return response($response, 201);
+        return response([
+            'message' => 'Success',
+            'data' => [
+                'token' => $token
+            ]
+        ], 201);
     }
 
     /**
