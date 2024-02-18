@@ -49,7 +49,7 @@ export class LoginFormComponent {
       this.userService.login({email: email, password: password}, this.lukaApp)
         .subscribe({
           next: (response: any): void => {
-            if (response.success) {
+            if (response.token || response.success) {
               if (this.lukaApp) {
                 this.authService.setLukaLoggedUser(response.user);
                 this.authService.setLukaAuthToken(response.token);

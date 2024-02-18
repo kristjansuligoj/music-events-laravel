@@ -31,8 +31,6 @@ import {SpanComponent} from "../../shared/span/span.component";
 })
 export class NoteListComponent {
   notes: any[] = [];
-  nextPageUrl: string | null = null;
-  prevPageUrl: string | null = null;
 
   constructor(
     public noteService: NoteService,
@@ -40,11 +38,9 @@ export class NoteListComponent {
   ) {}
   public ngOnInit() {
     if (this.authService.getLukaLoggedUser()) {
-      this.noteService.allNotes(this.authService.getLukaLoggedUser().id).subscribe({
+      this.noteService.allNotes().subscribe({
         next: (response: any) => {
           this.notes = response.data.notes;
-          this.nextPageUrl = response.data.notes.next_page_url;
-          this.prevPageUrl = response.data.notes.prev_page_url;
         },
         error: (error) => {
           console.error('Error fetching events:', error);
@@ -54,45 +50,13 @@ export class NoteListComponent {
   }
 
   public loadNotes() {
-    this.noteService.allNotes(this.authService.getLukaLoggedUser().id).subscribe({
+    this.noteService.allNotes().subscribe({
       next: (response: any) => {
         this.notes = response.data.notes;
-        this.nextPageUrl = response.data.notes.next_page_url;
-        this.prevPageUrl = response.data.notes.prev_page_url;
       },
       error: (error) => {
         console.error('Error fetching events:', error);
       }
     });
-  }
-
-  goToNextPage(): void {
-    if (this.nextPageUrl) {
-      this.noteService.paginatedNotes(this.nextPageUrl).subscribe({
-        next: (response: any) => {
-          this.notes = response.data.notes.data;
-          this.nextPageUrl = response.data.notes.next_page_url;
-          this.prevPageUrl = response.data.notes.prev_page_url;
-        },
-        error: (error) => {
-          console.error('Error fetching events:', error);
-        }
-      });
-    }
-  }
-
-  goToPrevPage(): void {
-    if (this.prevPageUrl) {
-      this.noteService.paginatedNotes(this.prevPageUrl).subscribe({
-        next: (response: any) => {
-          this.notes = response.data.notes.data;
-          this.nextPageUrl = response.data.notes.next_page_url;
-          this.prevPageUrl = response.data.notes.prev_page_url;
-        },
-        error: (error) => {
-          console.error('Error fetching events:', error);
-        }
-      });
-    }
   }
 }

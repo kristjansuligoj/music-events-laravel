@@ -16,8 +16,8 @@ export class NoteService {
     return this.http.get<any[]>(url);
   }
 
-  public allNotes(userId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/byUser/${userId}`);
+  public allNotes(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/byUser`);
   }
 
   public getNoteById(id: string): Observable<any[]> {
@@ -25,7 +25,7 @@ export class NoteService {
   }
 
   public addNote(noteData: any): Observable<any[]> {
-    return this.http.post<any[]>(`${this.apiUrl}/add`, noteData);
+    return this.http.post<any[]>(`${this.apiUrl}`, noteData);
   }
 
   public editNote(noteData: any): Observable<any[]> {
