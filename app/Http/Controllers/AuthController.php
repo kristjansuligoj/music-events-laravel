@@ -1,12 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
-
 class AuthController extends Controller
 {
     /**
@@ -18,24 +15,25 @@ class AuthController extends Controller
     public function register(Request $request) {
 
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => 'required',
+            'password' => ['required', 'confirmed']
         ]);
 
         $user = User::create([
-            'name' => $request->name,
+            'name' => $request->username,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => Hash::make($request->password)
         ]);
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
-        $response = [
-            'token' => $token
-        ];
-
-        return response($response, 201);
+        return response([
+            'message' => 'Success',
+            'data' => [
+                'token' => $token
+            ]
+        ], 201);
     }
 
     /**
@@ -45,14 +43,11 @@ class AuthController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function login(Request $request) {
-
         $validated = $request->validate([
             'email' => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
-
         $user = User::where('email', $validated['email'])->first();
-
         if(!$user || !Hash::check($validated['password'], $user->password)) {
             return response([
                 'message' => 'Your credentials dont match'
@@ -61,11 +56,12 @@ class AuthController extends Controller
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
-        $response = [
-            'token' => $token
-        ];
-
-        return response($response, 201);
+        return response([
+            'message' => 'Success',
+            'data' => [
+                'token' => $token
+            ]
+        ], 201);
     }
 
     /**
