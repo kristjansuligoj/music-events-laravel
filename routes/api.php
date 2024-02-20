@@ -30,6 +30,8 @@ Route::group(['prefix' => 'images', 'middleware' => ['auth:sanctum']], function(
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/events/{eventId/attendees', [EventController::class, 'addAttendee']);
+    Route::delete('/events/{eventId/attendees/attendeesEmail', [EventController::class, 'removeAttendee']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -90,5 +92,7 @@ Route::prefix('events')->group(function () {
         Route::delete('/remove/{eventId}', [EventController::class, 'deleteEvent'])->whereUuid('event')->name('events.delete');
     });
 });
+
+Route::get('/attending/{id}', [EventController::class, 'getUsersEvents']);
 
 require __DIR__ . '/auth.php';

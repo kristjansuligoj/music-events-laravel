@@ -12,23 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
-    public function getAllEvents(Request $request) {
-        $keyword = $request->query('keyword');
-
-        if ($keyword != null) {
-            $events = $this->searchEventsByKeyword($keyword);
-        } else {
-            $events = Event::with('musicians')->get();
-        }
-
-        return response()->json([
-            'message' => 'Successful',
-            'data' => [
-                'events' => $events
-            ]
-        ]);
-    }
-  
     /**
      * Fetches all the events that a certain user is attending
      *
@@ -41,12 +24,16 @@ class EventController extends Controller
 
         return response()->json($user->attending()->with('musicians')->get());
     }
-  
+
     public function allEvents(EventRequest $request) {
         if ($request->has('keyword')) {
             $events = $this->searchEventsByKeyword($request->keyword, (bool)$request->showAttending);
         } else {
-            $events = $this->searchEventsByFilter($request->order, $request->field, (bool)$request->showAttending);
+            try {
+                $events = $this->searchEventsByFilter($request->order, $request->field, (bool)$request->showAttending);
+            } catch (\Exception $e){
+                $events = Event::with('musicians')->get();
+            }
         }
 
         return response()->json([
@@ -57,7 +44,7 @@ class EventController extends Controller
             'message' => 'Events successfully retrieved.'
         ]);
     }
-  
+
     /**
      * Fetches a single event
      *
@@ -72,7 +59,7 @@ class EventController extends Controller
             ]
         ]);
     }
-  
+
     /**
      * Adds a user to the attendees of an event
      *
@@ -111,7 +98,7 @@ class EventController extends Controller
             return response()->json($exception);
         }
     }
-      
+
     /**
      * Removes a user from the attendees of an event
      *
@@ -163,8 +150,8 @@ class EventController extends Controller
             'message' => "Event successfully retrieved",
         ]);
     }
-      
-    
+
+
 
     /**
      * This function returns all the events the user has attended
