@@ -30,7 +30,12 @@ class EventController extends Controller
             $events = Event::with('musicians')->get();
         }
 
-        return response()->json($events);
+        return response()->json([
+            'message' => 'Successful',
+            'data' => [
+                'events' => $events
+            ]
+        ]);
     }
 
     /**
@@ -121,7 +126,7 @@ class EventController extends Controller
     {
         $user = User::where('email', $email)->first();
 
-        return response()->json($user->attending()->get());
+        return response()->json($user->attending()->with('musicians')->get());
     }
 
     /**
@@ -131,7 +136,12 @@ class EventController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function getEventApi(string $id) {
-        return response()->json(Event::with('musicians', 'participants', 'user')->findOrFail($id));
+        return response()->json([
+            'message' => 'Success',
+            'data' => [
+                'event' => Event::with('musicians', 'participants', 'user')->findOrFail($id)
+            ]
+        ]);
     }
     public function allEvents(EventRequest $request) {
         $sortOrderMap = getOrderMap(
