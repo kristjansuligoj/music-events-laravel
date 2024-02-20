@@ -30,17 +30,10 @@
         </span>
       </div>
 
-    <button
-      type="submit"
-      [disabled]="loginForm.invalid"
-      class="
-        inline-flex items-center
-        px-3 py-2 m-3 bg-gray-800
-        border border-transparent text-xs rounded text-white uppercase
-        hover:bg-gray-700 focus:bg-gray-700
-        active:bg-gray-900 focus:outline-none
-      "
-    >Login</button>
+      <app-submit-button
+        [formInvalid]="loginForm.invalid"
+        customText="Login"
+      />
 
   </form>
 </div>

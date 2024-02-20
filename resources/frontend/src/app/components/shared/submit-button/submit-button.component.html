@@ -10,4 +10,4 @@
         hover:bg-gray-700 focus:bg-gray-700
         active:bg-gray-900 focus:outline-none
       "
->{{ editing ? "Save" : "Add" }}</button>
+>{{ customText !== "" ? customText : editing ? "Save" : "Add" }}</button>

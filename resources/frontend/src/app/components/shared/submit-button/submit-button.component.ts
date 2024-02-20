@@ -10,4 +10,5 @@ import {Component, Input} from '@angular/core';
 export class SubmitButtonComponent {
   @Input() editing: boolean = false;
   @Input() formInvalid: boolean = true;
+  @Input() customText: string = "";
 }
