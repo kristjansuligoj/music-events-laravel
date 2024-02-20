@@ -1,0 +1,38 @@
+<nav class="bg-gray-500">
+  <ul class="p-2">
+    <ng-container *ngIf="authService.getAuthToken(); else loggedOut">
+      <div>
+        <app-button (click)="logout()" buttonText="Logout"/>
+        <app-button buttonText="Profile" routerLink="/profile"/>
+      </div>
+    </ng-container>
+    <ng-template #loggedOut>
+      <div>
+        <app-button buttonText="Login" routerLink="/login"/>
+        <app-button buttonText="Register" routerLink="/register"/>
+      </div>
+    </ng-template>
+
+    <div class="d-flex justify-content-between p-4">
+      <app-button
+        buttonText="Musicians"
+        routerLink="/musicians"
+      />
+
+      <app-button
+        buttonText="Songs"
+        routerLink="/songs"
+      />
+
+      <app-button
+        buttonText="Events"
+        routerLink="/events"
+      />
+
+      <ng-container *ngIf="authService.getAuthToken()">
+        <app-button buttonText="Notes" routerLink="/notes"></app-button>
+      </ng-container>
+
+    </div>
+  </ul>
+</nav>

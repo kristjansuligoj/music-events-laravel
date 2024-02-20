@@ -1,0 +1,62 @@
+<div class="bg-white p-5">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+    <div class="container">
+      <app-text-input
+        name="username"
+        inputType="text"
+        [formGroup]="registerForm"
+        [errors]="{
+          required: 'Username is required!',
+          maxlength: 'Max length is 255 characters!',
+        }"
+        [additionalErrors]="this.errors"
+      />
+    </div>
+
+    <div class="mb-5">
+      <app-text-input
+        name="email"
+        inputType="text"
+        [formGroup]="registerForm"
+        [errors]="{
+          required: 'Email is required!',
+          email: 'This input should be an email!',
+          maxlength: 'Max length is 255 characters!',
+        }"
+        [additionalErrors]="this.errors"
+      />
+    </div>
+
+    <div class="container">
+      <app-text-input
+        name="password"
+        inputType="password"
+        [formGroup]="registerForm"
+        [errors]="{
+          required: 'Password is required!',
+          minlength: 'Min length is 8 characters!',
+        }"
+        [additionalErrors]="this.errors"
+      />
+    </div>
+
+    <div class="container">
+      <app-text-input
+        name="confirmPassword"
+        inputType="password"
+        [formGroup]="registerForm"
+        [errors]="{
+          required: 'Confirmation password is required!',
+          minlength: 'Min length is 8 characters!',
+        }"
+        [additionalErrors]="getAdditionalErrors()"
+      />
+    </div>
+
+    <app-submit-button
+      [formInvalid]="registerForm.invalid"
+      customText="Register"
+    />
+  </form>
+</div>

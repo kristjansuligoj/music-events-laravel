@@ -1,0 +1,40 @@
+<div class="container p-5 sm:p-8 bg-white shadow sm:rounded-lg">
+
+  <div class="text-center mb-5">
+    <h1 class="font-bold">Events</h1>
+  </div>
+
+  <div>
+    <app-search-bar
+      [fields]="['name', 'address', 'date', 'time', 'description', 'ticketPrice', 'musician']"
+      (searchItemEmitter)="search($event)"
+      (filterEmitter)="filter($event)"
+    />
+  </div>
+
+  <ng-container *ngIf="authService.getAuthToken()">
+    <app-button
+      route="/events/add"
+      buttonText="Add event"
+    />
+  </ng-container>
+
+  <div *ngIf="events.length > 0; else noContentMessage">
+    <div *ngFor="let event of events" class="mt-5">
+      <app-event-preview [event]="event"/>
+    </div>
+
+    <div
+      *ngIf="nextPageUrl || prevPageUrl"
+      class="d-flex justify-content-center m-5"
+    >
+      <button (click)="goToPrevPage()" [disabled]="!prevPageUrl">Previous Page</button>
+      <button (click)="goToNextPage()" [disabled]="!nextPageUrl">Next Page</button>
+    </div>
+  </div>
+  <ng-template #noContentMessage>
+    <div class="no-content-message">
+      There are no events with the given criteria.
+    </div>
+  </ng-template>
+</div>

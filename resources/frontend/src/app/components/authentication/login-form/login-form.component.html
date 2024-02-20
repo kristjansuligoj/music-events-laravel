@@ -1,0 +1,39 @@
+<div class="bg-white p-5">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <app-text-input
+        [additionalErrors]="errors"
+        [errors]="{
+          required: 'Email is required!',
+          email: 'This input should be an email!',
+          maxlength: 'Max length is 255 characters!',
+        }"
+        [formGroup]="loginForm"
+        inputType="text"
+        name="email"
+      />
+
+      <app-text-input
+        [additionalErrors]="errors"
+        [errors]="{
+          required: 'Password is required!',
+          minlength: 'Min length is 8 characters!',
+        }"
+        [formGroup]="loginForm"
+        inputType="password"
+        name="password"
+      />
+
+      <div class="h-1 mb-8">
+        <span class="text-red-600">
+          <small>{{errors}}</small>
+        </span>
+      </div>
+
+      <app-submit-button
+        [formInvalid]="loginForm.invalid"
+        customText="Login"
+      />
+
+  </form>
+</div>

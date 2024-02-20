@@ -1,0 +1,15 @@
+<div [formGroup]="formGroup" class="h-auto mb-8 w-full">
+  <label
+    [for]="name"
+    class="block font-medium text-sm text-gray-700 mb-2"
+  >{{required ? '*' : ''}} Image </label>
+
+  <input #imageInput
+    (change)="onFileSelected($event)"
+    class="form-control border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full"
+    type="file"
+    accept="image/*"
+    formControlName="image"
+    required
+  >
+</div>

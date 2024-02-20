@@ -7,17 +7,10 @@ use App\Models\Event;
 use App\Models\Musician;
 use App\Models\Song;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Session;
 
 class MusicianController extends Controller
 {
     public function allMusicians(MusicianRequest $request) {
-        $sortOrderMap = getOrderMap(
-            "musicians",
-            $request->input('field'),
-            ["name", "genre"]
-        );
 
         if ($request->has('keyword')) {
             $musicians = $this->searchMusiciansByKeyword($request->keyword);
@@ -25,79 +18,97 @@ class MusicianController extends Controller
             $musicians = $this->searchMusiciansByFilter($request->order, $request->field);
         }
 
-        return view('musicians/musicians', [
-            'musicians' => $musicians,
-            'sortOrder' => $sortOrderMap,
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'musicians' => $musicians,
+            ],
+            'message' => 'Musicians received',
         ]);
     }
 
-    public function addMusicianForm() {
-        return view('musicians/musician-add', [
-            'musician' => null,
+    public function allMusiciansUnpaginated(MusicianRequest $request) {
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'musicians' => Musician::all(),
+            ],
+            'message' => 'Musicians received',
         ]);
     }
 
     public function getMusician($id) {
-        return view('musicians/musician',[
-            'musician' => Musician::with('genres', 'user')->findOrFail($id),
-            'usedElsewhere' => $this->checkMusicianUsage($id)
-        ]);
-    }
-
-    public function editMusicianForm($id) {
-        return view('musicians/musician-add', [
-            'musician' => Musician::with('genres')->findOrFail($id),
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'musician' => Musician::with('genres', 'songs', 'events', 'user')->findOrFail($id),
+                'usedElsewhere' => $this->checkMusicianUsage($id)
+            ],
+            'message' => 'Musicians received',
         ]);
     }
 
     public function addMusician(MusicianRequest $request) {
-        // Save the image
-        $fileName = saveImage($request);
-
         // Create the musician
         $musicianData = $request->all();
-        $musicianData['image'] = $fileName;
+        $musicianData['image'] = $request->get('image');
         $musicianData['user_id'] = Auth::user()->id;
 
         $musician = Musician::create($musicianData);
 
         // Adds genres to the pivot table
-        $musician->genres()->sync(genreToIndex($musicianData['genre']));
+        $musician->genres()->sync($musicianData['genre']);
 
-        return redirect()->route('musicians.list');
+        return response()->json([
+            'success' => true,
+            'data' => $musician,
+            'message' => "Musician successfully added."
+        ]);
     }
 
-    public function editMusician($id, MusicianRequest $request) {
+    public function editMusician($musicianId, MusicianRequest $request) {
         $musicianData = $request->except(['_token', "_method"]);
 
-        // Save the image
-        $fileName = saveImage($request);
-        $musicianData['image'] = $fileName;
+        $musicianData['image'] = $request->get('image');
 
-        $musician = Musician::findOrFail($id);
+        $musician = Musician::findOrFail($musicianId);
 
         // Deletes the old image
         deleteImage($musician->image);
+
         $musician->update($musicianData);
 
         // Updates genres in the pivot table
-        $musician->genres()->sync(genreToIndex($request->genre));
+        $musician->genres()->sync($request->genre);
 
-        return redirect()->route('musicians.list');
+        return response()->json([
+            'success' => true,
+            'data' => $musician,
+            'message' => "Musician successfully edited."
+        ]);
     }
 
-    public function deleteMusician($id) {
-        $musician = Musician::findOrFail($id);
+    public function deleteMusician($musicianId) {
+        $musician = Musician::findOrFail($musicianId);
         $musician->delete();
 
         deleteImage($musician->image);
 
-        return redirect()->route('musicians.list');
+        return response()->json([
+            'success' => true,
+            'data' => $musicianId,
+            'message' => 'Musician removed',
+        ]);
     }
 
     public function searchMusiciansByFilter($sortOrder, $sortField) {
         if ($sortOrder === null) {
-            return Musician::paginate(7);
+            return Musician::join('musicians_genres', 'musicians.id', '=', 'musicians_genres.musician_id')
+                ->join('genres', 'musicians_genres.genre_id', '=', 'genres.id')
+                ->select('musicians.*')
+                ->with('songs')
+                ->with('events')
+                ->paginate(7);
         } else {
             if ($sortField === "genre") {
                 return Musician::join('musicians_genres', 'musicians.id', '=', 'musicians_genres.musician_id')
@@ -108,7 +119,13 @@ class MusicianController extends Controller
                     ->with('events')
                     ->paginate(7);
             } else {
-                return Musician::orderBy($sortField, $sortOrder)->paginate(7);
+                return Musician::join('musicians_genres', 'musicians.id', '=', 'musicians_genres.musician_id')
+                    ->join('genres', 'musicians_genres.genre_id', '=', 'genres.id')
+                    ->orderBy($sortField, $sortOrder)
+                    ->select('musicians.*')
+                    ->with('songs')
+                    ->with('events')
+                    ->paginate(7);
             }
         }
     }
@@ -117,6 +134,9 @@ class MusicianController extends Controller
         return Musician::where('name', 'LIKE', '%' . $keyword . '%')
             ->orWhereHas('genres', function ($query) use ($keyword) {
                 $query->where('name', 'LIKE', '%' . $keyword . '%');
+            })
+            ->orWhereHas('songs', function ($query) use ($keyword) {
+                $query->where('title', 'LIKE', '%' . $keyword . '%');
             })
             ->with('songs')
             ->with('events')

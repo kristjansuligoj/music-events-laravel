@@ -1,0 +1,93 @@
+<div class="container p-5 sm:p-8 bg-white shadow sm:rounded-lg">
+  <div *ngIf="authService.getLoggedUser()?.id === event?.user?.id">
+    <div class="flex justify-between items-center mb-4">
+      <app-button
+        [route]="'/events/edit/' + event.id"
+        buttonText="Edit event"
+      ></app-button>
+
+      <button
+        (click)="removeEvent(event.id)"
+        class="
+          inline-flex items-center
+          px-3 py-2 m-3 bg-red-800
+          border border-transparent text-xs rounded text-white uppercase
+          hover:bg-red-700 focus:bg-red-700
+          active:bg-red-900 focus:outline-none
+        "
+      >Remove event</button>
+    </div>
+  </div>
+
+  <div class="flex justify-between items-center p-3">
+    <h2><strong>{{ event.name }}</strong></h2>
+
+    <div *ngIf="authService.getLoggedUser() && futureEvent">
+      <button
+        (click)="attendEvent(event.id)"
+        class="
+          inline-flex items-center
+          px-3 py-2 m-3 bg-red-800
+          border border-transparent text-xs rounded text-white uppercase
+          hover:bg-red-700 focus:bg-red-700
+          active:bg-red-900 focus:outline-none
+        "
+      >{{ attending ? "I'm not going." : "I'm going" }}</button>
+    </div>
+  </div>
+
+  <hr class="mb-3">
+
+  <div class="p-3">
+    <app-span
+      title="Date"
+      [data]="event.date"
+    />
+
+    <app-span
+      title="Time"
+      [data]="event.time"
+    />
+
+    <div class="mb-2" *ngIf="coordinates.lat">
+      <app-span
+        title="Address"
+        [data]="event.address"
+      />
+
+      <google-map [options]="mapOptions">
+        <map-marker [position]="coordinates"></map-marker>
+      </google-map>
+    </div>
+
+    <app-span
+      title="Description"
+      [data]="event.description"
+    />
+
+    <app-span
+      title="Ticket price"
+      [data]="event.ticketPrice + '€'"
+    />
+
+    <ng-container *ngIf="event.musicians">
+      <app-span
+        title="Musician"
+        [data]="event.musicians[0]?.name"
+      />
+    </ng-container>
+
+    <div *ngIf="event.participants?.length > 0">
+      <app-unordered-list
+        target="name"
+        [title]="futureEvent ? 'Users that are going to this event:' : 'Users that went to this event:' "
+        [items]="event.participants"
+      />
+    </div>
+
+    <app-span
+      title="Added by"
+      [data]="event?.user?.name"
+    />
+  </div>
+</div>

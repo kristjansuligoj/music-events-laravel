@@ -1,4 +1,7 @@
 <form action="" class="flex items-center">
+    @if(request()->has('showAttending'))
+        <input type="hidden" name="showAttending" value="{{ request('showAttending') }}">
+    @endif
     <input
         type="text"
         placeholder="Search by keyword . . ."
