@@ -1,5 +1,5 @@
 import {Component, TemplateRef, ViewChild} from '@angular/core';
-import {NgForOf, NgIf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {UserService} from "../../../services/user.service";
@@ -7,6 +7,7 @@ import {AuthService} from "../../../services/auth.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {TextInputComponent} from "../../shared/text-input/text-input.component";
 import {passwordMatchValidator} from "../../../validators/passwordMatchValidator";
+import {SubmitButtonComponent} from "../../shared/submit-button/submit-button.component";
 
 @Component({
   selector: 'app-register-form',
@@ -16,6 +17,8 @@ import {passwordMatchValidator} from "../../../validators/passwordMatchValidator
     ReactiveFormsModule,
     NgForOf,
     TextInputComponent,
+    NgClass,
+    SubmitButtonComponent,
   ],
   providers: [
     UserService,
@@ -26,7 +29,7 @@ import {passwordMatchValidator} from "../../../validators/passwordMatchValidator
 })
 export class RegisterFormComponent {
   public registerForm: FormGroup = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.maxLength(255)]),
+    username: new FormControl('', [Validators.required, Validators.maxLength(255)]),
     email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(255)]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
     confirmPassword: new FormControl('', [Validators.required, Validators.minLength(8)]),
@@ -40,18 +43,20 @@ export class RegisterFormComponent {
   ) { }
 
   public getAdditionalErrors() {
-    if (this.registerForm.hasError('passwordMismatch')) {
+    if (this.registerForm.hasError('passwordMismatch') && !this.registerForm.controls["password"].pristine) {
       return { confirmPassword: ['Passwords do not match'] };
     } else return this.errors;
   }
 
   onSubmit(): void {
     if (this.registerForm.valid) {
-      const name = this.registerForm.value.name;
+      const username = this.registerForm.value.username;
       const email = this.registerForm.value.email;
       const password = this.registerForm.value.password;
-      this.userService.register({name: name, email: email, password: password})
-        .subscribe({
+      const passwordConfirmation = this.registerForm.value.confirmPassword;
+      this.userService.register(
+        {username: username, email: email, password: password, password_confirmation: passwordConfirmation}
+      ).subscribe({
           next: (): void => { this.router.navigate(['/login']); },
           error: (response: HttpErrorResponse): void => {
             this.errors = response.error.errors;

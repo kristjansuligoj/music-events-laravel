@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 import {TextInputComponent} from "../../shared/text-input/text-input.component";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ButtonComponent} from "../../shared/button/button.component";
+import {SubmitButtonComponent} from "../../shared/submit-button/submit-button.component";
 
 @Component({
   selector: 'app-login-form',
@@ -16,7 +17,8 @@ import {ButtonComponent} from "../../shared/button/button.component";
     ReactiveFormsModule,
     NgIf,
     TextInputComponent,
-    ButtonComponent
+    ButtonComponent,
+    SubmitButtonComponent
   ],
   providers: [
     UserService,

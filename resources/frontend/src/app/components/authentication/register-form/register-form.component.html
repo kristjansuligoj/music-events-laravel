@@ -3,11 +3,11 @@
 
     <div class="container">
       <app-text-input
-        name="name"
+        name="username"
         inputType="text"
         [formGroup]="registerForm"
         [errors]="{
-          required: 'Name is required!',
+          required: 'Username is required!',
           maxlength: 'Max length is 255 characters!',
         }"
         [additionalErrors]="this.errors"
