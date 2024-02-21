@@ -1,0 +1,29 @@
+<div *ngIf="elements.length > 0; else noContentMessage" class="content-container">
+  <div *ngFor="let element of elements" class="element-preview mt-5">
+    <app-musician-preview *ngIf="name === 'musician'" [musician]="element"/>
+    <app-event-preview *ngIf="name === 'event'" [event]="element"/>
+    <app-song-preview *ngIf="name === 'song'" [song]="element"/>
+  </div>
+
+  <div
+    *ngIf="nextPageUrl || prevPageUrl"
+    class="pagination-container"
+  >
+    <button
+      (click)="goToPrevPage()"
+      [disabled]="!prevPageUrl"
+      class="pagination-button"
+    >Previous Page</button>
+
+    <button
+      (click)="goToNextPage()"
+      [disabled]="!nextPageUrl"
+      class="pagination-button"
+    >Next Page</button>
+  </div>
+</div>
+<ng-template #noContentMessage>
+  <div class="no-content-message">
+    There are no {{ name }}s with the given criteria.
+  </div>
+</ng-template>
