@@ -15,6 +15,9 @@ import {UserService} from "../../../services/user.service";
     RouterLinkActive,
     JsonPipe
   ],
+  providers: [
+    UserService,
+  ],
   templateUrl: './navigation-bar.component.html',
   styleUrl: './navigation-bar.component.css'
 })
