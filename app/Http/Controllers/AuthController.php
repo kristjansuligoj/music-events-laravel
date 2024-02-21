@@ -23,7 +23,7 @@ class AuthController extends Controller
             'password' => ['required', 'confirmed'],
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -31,7 +31,10 @@ class AuthController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $request->name . " created",
+            'data' => [
+                'user' => $request->name . " created",
+                'token' => $user->createToken('myapptoken')->plainTextToken,
+            ],
             'message' => 'Registration successful',
         ]);
     }
