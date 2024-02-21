@@ -19,22 +19,10 @@
     />
   </ng-container>
 
-  <div *ngIf="events.length > 0; else noContentMessage">
-    <div *ngFor="let event of events" class="mt-5">
-      <app-event-preview [event]="event"/>
-    </div>
-
-    <div
-      *ngIf="nextPageUrl || prevPageUrl"
-      class="d-flex justify-content-center m-5"
-    >
-      <button (click)="goToPrevPage()" [disabled]="!prevPageUrl">Previous Page</button>
-      <button (click)="goToNextPage()" [disabled]="!nextPageUrl">Next Page</button>
-    </div>
-  </div>
-  <ng-template #noContentMessage>
-    <div class="no-content-message">
-      There are no events with the given criteria.
-    </div>
-  </ng-template>
+  <app-pagination
+    [elements]="events"
+    [nextPageUrl]="nextPageUrl"
+    [prevPageUrl]="prevPageUrl"
+    name="event"
+  />
 </div>

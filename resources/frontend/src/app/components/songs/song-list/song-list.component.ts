@@ -7,19 +7,21 @@ import {AuthService} from "../../../services/auth.service";
 import {SongService} from "../../../services/song.service";
 import {RouterLink} from "@angular/router";
 import {SongPreviewComponent} from "../song-preview/song-preview.component";
+import {PaginationComponent} from "../../shared/pagination/pagination.component";
 
 @Component({
   selector: 'app-song-list',
   standalone: true,
-  imports: [
-    ButtonComponent,
-    MusicianPreviewComponent,
-    NgForOf,
-    NgIf,
-    SearchBarComponent,
-    RouterLink,
-    SongPreviewComponent,
-  ],
+    imports: [
+        ButtonComponent,
+        MusicianPreviewComponent,
+        NgForOf,
+        NgIf,
+        SearchBarComponent,
+        RouterLink,
+        SongPreviewComponent,
+        PaginationComponent,
+    ],
   providers: [
     SongService
   ],
@@ -75,41 +77,5 @@ export class SongListComponent implements OnInit {
         console.error('Error fetching songs:', error);
       }
     });
-  }
-
-  /**
-   * Uses pagination links to show the next page of songs
-   */
-  goToNextPage(): void {
-    if (this.nextPageUrl) {
-      this.songService.paginatedSongs(this.nextPageUrl).subscribe({
-        next: (response: any) => {
-          this.songs = response.data.songs.data;
-          this.nextPageUrl = response.data.songs.next_page_url;
-          this.prevPageUrl = response.data.songs.prev_page_url;
-        },
-        error: (error) => {
-          console.error('Error fetching songs:', error);
-        }
-      });
-    }
-  }
-
-  /**
-   * Uses pagination links to show the previous page of songs
-   */
-  goToPrevPage(): void {
-    if (this.prevPageUrl) {
-      this.songService.paginatedSongs(this.prevPageUrl).subscribe({
-        next: (response: any) => {
-          this.songs = response.data.songs.data;
-          this.nextPageUrl = response.data.songs.next_page_url;
-          this.prevPageUrl = response.data.songs.prev_page_url;
-        },
-        error: (error) => {
-          console.error('Error fetching songs:', error);
-        }
-      });
-    }
   }
 }

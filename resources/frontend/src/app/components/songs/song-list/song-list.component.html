@@ -19,22 +19,10 @@
     />
   </ng-container>
 
-  <div *ngIf="songs.length > 0; else noContentMessage">
-    <div *ngFor="let song of songs" class="mt-5">
-      <app-song-preview [song]="song"/>
-    </div>
-
-    <div
-      *ngIf="songs.length > 7"
-      class="d-flex justify-content-center m-5"
-    >
-      <button (click)="goToPrevPage()" [disabled]="!prevPageUrl">Previous Page</button>
-      <button (click)="goToNextPage()" [disabled]="!nextPageUrl">Next Page</button>
-    </div>
-  </div>
-  <ng-template #noContentMessage>
-    <div class="no-content-message">
-      There are no songs with the given criteria.
-    </div>
-  </ng-template>
+  <app-pagination
+    [elements]="songs"
+    [nextPageUrl]="nextPageUrl"
+    [prevPageUrl]="prevPageUrl"
+    name="song"
+  />
 </div>

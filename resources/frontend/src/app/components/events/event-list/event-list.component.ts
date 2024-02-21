@@ -7,6 +7,7 @@ import {EventService} from "../../../services/event.service";
 import {AuthService} from "../../../services/auth.service";
 import {EventPreviewComponent} from "../event-preview/event-preview.component";
 import {Router} from "@angular/router";
+import {PaginationComponent} from "../../shared/pagination/pagination.component";
 
 @Component({
   selector: 'app-event-list',
@@ -18,7 +19,8 @@ import {Router} from "@angular/router";
     NgIf,
     SearchBarComponent,
     EventPreviewComponent,
-    JsonPipe
+    JsonPipe,
+    PaginationComponent
   ],
   providers: [
     EventService
@@ -83,42 +85,6 @@ export class EventListComponent implements OnInit {
       })
     } else {
       this.eventService.allEvents(keyword, filter).subscribe({
-        next: (response: any) => {
-          this.events = response.data.events.data;
-          this.nextPageUrl = response.data.events.next_page_url;
-          this.prevPageUrl = response.data.events.prev_page_url;
-        },
-        error: (error) => {
-          console.error('Error fetching events:', error);
-        }
-      });
-    }
-  }
-
-  /**
-   * Uses pagination links to show the next page of events
-   */
-  goToNextPage(): void {
-    if (this.nextPageUrl) {
-      this.eventService.paginatedEvents(this.nextPageUrl).subscribe({
-        next: (response: any) => {
-          this.events = response.data.events.data;
-          this.nextPageUrl = response.data.events.next_page_url;
-          this.prevPageUrl = response.data.events.prev_page_url;
-        },
-        error: (error) => {
-          console.error('Error fetching events:', error);
-        }
-      });
-    }
-  }
-
-  /**
-   * Uses pagination links to show the previous page of events
-   */
-  goToPrevPage(): void {
-    if (this.prevPageUrl) {
-      this.eventService.paginatedEvents(this.prevPageUrl).subscribe({
         next: (response: any) => {
           this.events = response.data.events.data;
           this.nextPageUrl = response.data.events.next_page_url;
