@@ -36,7 +36,7 @@ export class EventViewComponent implements OnInit {
   public event: any = {};
   public coordinates: any = {};
   public mapOptions: any = {
-    center: {
+    center: { // Default values show center of Maribor
       lat: 46.23469202161742,
       lng: 15.27740625050234,
     },
@@ -51,7 +51,7 @@ export class EventViewComponent implements OnInit {
     private router: Router,
   ) {}
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     const id: string = this.location.path().split('/')[2];
     this.eventService.getEventById(id).subscribe({
       next: (response: any) => {
@@ -93,7 +93,12 @@ export class EventViewComponent implements OnInit {
     })
   }
 
-  public attendEvent(eventId: string) {
+  /**
+   * Add authorized user as attendee to the given event
+   *
+   * @param { string } eventId
+   */
+  public attendEvent(eventId: string): void {
     this.attending = !this.attending;
 
     if (this.attending) {
@@ -114,10 +119,14 @@ export class EventViewComponent implements OnInit {
         }
       })
     }
-
   }
 
-  public removeEvent(id: string) {
+  /**
+   * Removes the given event
+   *
+   * @param { string } id
+   */
+  public removeEvent(id: string): void {
     this.eventService.removeEvent(id).subscribe({
       next: (response: any) => {
         this.router.navigate(['/events']).then(r => {});

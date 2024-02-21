@@ -32,7 +32,7 @@ export class SongViewComponent {
     private location: Location,
     private router: Router,
   ) {}
-  public ngOnInit() {
+  public ngOnInit(): void {
     const id: string = this.location.path().split('/')[2];
     this.songService.getSongById(id).subscribe({
       next: (response: any) => {
@@ -44,7 +44,12 @@ export class SongViewComponent {
     })
   }
 
-  public removeSong(id: string) {
+  /**
+   * Removes the given song
+   *
+   * @param { string } id
+   */
+  public removeSong(id: string): void {
     this.songService.removeSong(id).subscribe({
       next: (response: any) => {
         this.router.navigate(['/songs']).then(r => {});

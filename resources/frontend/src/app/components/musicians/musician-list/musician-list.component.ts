@@ -39,19 +39,35 @@ export class MusicianListComponent implements OnInit {
     public authService: AuthService,
   ) {}
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.getMusicians("", null);
   }
 
-  public search(event: any) {
+  /**
+   * Gets musicians based on the given search string
+   *
+   * @param { any } event
+   */
+  public search(event: any): void {
     this.getMusicians(event, null);
   }
 
-  public filter(event: any) {
+  /**
+   * Gets musicians based on the given filter
+   *
+   * @param { any } event
+   */
+  public filter(event: any): void {
     this.getMusicians("", event);
   }
 
-  public getMusicians(keyword: string, filter: any) {
+  /**
+   * Gets the musicians based on the given parameters
+   *
+   * @param { string } keyword
+   * @param { any } filter
+   */
+  public getMusicians(keyword: string, filter: any): void {
     this.musicianService.allMusicians(keyword, filter).subscribe({
       next: (response: any) => {
         this.musicians = response.data.musicians.data;
@@ -64,6 +80,9 @@ export class MusicianListComponent implements OnInit {
     });
   }
 
+  /**
+   * Uses pagination links to show the next page of musicians
+   */
   goToNextPage(): void {
     if (this.nextPageUrl) {
       this.musicianService.paginatedMusicians(this.nextPageUrl).subscribe({
@@ -79,6 +98,9 @@ export class MusicianListComponent implements OnInit {
     }
   }
 
+  /**
+   * Uses pagination links to show the previous page of musicians
+   */
   goToPrevPage(): void {
     if (this.prevPageUrl) {
       this.musicianService.paginatedMusicians(this.prevPageUrl).subscribe({

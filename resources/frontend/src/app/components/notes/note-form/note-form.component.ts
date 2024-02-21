@@ -58,11 +58,14 @@ export class NoteFormComponent implements OnInit {
     category: new FormControl('', [Validators.required]),
   });
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.getDefaultValues()
   }
 
-  public getDefaultValues() {
+  /**
+   * Gets default values for note form. If user is editing, fill the inputs with current values
+   */
+  public getDefaultValues(): void {
     if (this.authService.getAuthToken() && this.authService.getLukaAuthToken()) {
       this.categoryService.allCategories(this.authService.getLukaLoggedUser().id).subscribe({
         next: (response: any) => {
@@ -107,7 +110,7 @@ export class NoteFormComponent implements OnInit {
     }
   }
 
-  public onSubmit() {
+  public onSubmit(): void {
     const noteData: any = {
       title: this.editForm.value.title,
       content: this.editForm.value.content,

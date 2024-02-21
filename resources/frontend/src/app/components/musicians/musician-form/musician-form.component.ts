@@ -50,11 +50,14 @@ export class MusicianFormComponent implements OnInit {
     genre: new FormArray([], [Validators.required]),
   });
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.getDefaultValues();
   }
 
-  public getDefaultValues() {
+  /**
+   * Gets default values for musician form. If user is editing, fill the inputs with current values
+   */
+  public getDefaultValues(): void {
     this.route.params.subscribe(params => {
       const id = params['id'];
 
@@ -87,6 +90,11 @@ export class MusicianFormComponent implements OnInit {
     })
   }
 
+  /**
+   * Ready the file to be uploaded when user submits the form
+   *
+   * @param { any } event
+   */
   onFileSelected(event: any): void {
     const file: File = event.files[0];
     const reader: FileReader = new FileReader();
@@ -101,7 +109,7 @@ export class MusicianFormComponent implements OnInit {
     }
   }
 
-  public onSubmit() {
+  public onSubmit(): void {
     const genre: number[] = [];
     this.editForm.value.genre.forEach((value: boolean, index: number) => {
       if (value) { genre.push(genres[index].id); }

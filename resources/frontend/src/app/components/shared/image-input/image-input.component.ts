@@ -21,7 +21,13 @@ export class ImageInputComponent {
   @Input() required: boolean = true;
 
   constructor() {}
-  public onFileSelected(event: any) {
+
+  /**
+   * Emits the selected file
+   *
+   * @param { any } event
+   */
+  public onFileSelected(event: any): void {
     this.selectedImage.emit(event.target); // Emit the selected file
   }
 }

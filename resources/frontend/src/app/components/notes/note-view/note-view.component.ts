@@ -27,7 +27,7 @@ import {NoteService} from "../../../services/note.service";
   templateUrl: './note-view.component.html',
   styleUrl: './note-view.component.css'
 })
-export class NoteViewComponent implements OnInit{
+export class NoteViewComponent implements OnInit {
   public note: any = {};
 
   constructor(
@@ -36,7 +36,7 @@ export class NoteViewComponent implements OnInit{
     private location: Location,
     private router: Router,
   ) {}
-  public ngOnInit() {
+  public ngOnInit(): void {
     const id: string = this.location.path().split('/')[2];
     this.noteService.getNoteById(id).subscribe({
       next: (response: any) => {
@@ -48,7 +48,12 @@ export class NoteViewComponent implements OnInit{
     })
   }
 
-  public removeNote(id: string) {
+  /**
+   * Removes the given note
+   *
+   * @param { string } id
+   */
+  public removeNote(id: string): void {
     this.noteService.removeNote(id).subscribe({
       next: (response: any) => {
         this.router.navigate(['/notes']).then(r => {});

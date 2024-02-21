@@ -5,6 +5,14 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'titleCase'
 })
 export class TitleCasePipe implements PipeTransform {
+  /**
+   * This pipe transforms camel case strings to spaced out strings, and capitalizes the first letter
+   * Example:
+   * camelCaseString -> Camel case string
+   *
+   * @param { string } value
+   * @return string
+   */
   transform(value: string): string {
     if (!value) return value;
 

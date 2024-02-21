@@ -26,17 +26,27 @@ export class SearchBarComponent implements OnInit {
   public searchItem: string = "";
   public currentField: string = "";
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.fields.forEach((field: string) => {
       this.ordersMap[field] = '';
     });
   }
 
-  public search(searchItem: any) {
+  /**
+   * Emits the search string, so form components can catch it, and use it for search
+   *
+   * @param { string } searchItem
+   */
+  public search(searchItem: string): void {
     this.searchItemEmitter.emit(searchItem);
   }
 
-  public filter(field: string) {
+  /**
+   * Emits the search map, so form components can catch it, and use it for filtering
+   *
+   * @param { string } field
+   */
+  public filter(field: string): void {
     this.currentField = field;
 
     if (this.ordersMap[field] === '') {

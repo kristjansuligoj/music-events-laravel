@@ -3,7 +3,6 @@ import {ButtonComponent} from "../../shared/button/button.component";
 import {MusicianPreviewComponent} from "../../musicians/musician-preview/musician-preview.component";
 import {NgForOf, NgIf} from "@angular/common";
 import {SearchBarComponent} from "../../shared/search-bar/search-bar.component";
-import {MusicianService} from "../../../services/musician.service";
 import {AuthService} from "../../../services/auth.service";
 import {SongService} from "../../../services/song.service";
 import {RouterLink} from "@angular/router";
@@ -37,19 +36,35 @@ export class SongListComponent implements OnInit {
     public authService: AuthService,
   ) {}
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.getSongs("", null);
   }
 
-  public search(event: any) {
+  /**
+   * Gets songs based on the given search string
+   *
+   * @param { any } event
+   */
+  public search(event: any): void {
     this.getSongs(event, null);
   }
 
-  public filter(event: any) {
+  /**
+   * Gets songs based on the given filter
+   *
+   * @param { any } event
+   */
+  public filter(event: any): void {
     this.getSongs("", event);
   }
 
-  public getSongs(keyword: string, filter: any) {
+  /**
+   * Gets the songs based on the given parameters
+   *
+   * @param { string } keyword
+   * @param { any } filter
+   */
+  public getSongs(keyword: string, filter: any): void {
     this.songService.allSongs(keyword, filter).subscribe({
       next: (response: any) => {
         this.songs = response.data.songs.data;
@@ -62,6 +77,9 @@ export class SongListComponent implements OnInit {
     });
   }
 
+  /**
+   * Uses pagination links to show the next page of songs
+   */
   goToNextPage(): void {
     if (this.nextPageUrl) {
       this.songService.paginatedSongs(this.nextPageUrl).subscribe({
@@ -77,6 +95,9 @@ export class SongListComponent implements OnInit {
     }
   }
 
+  /**
+   * Uses pagination links to show the previous page of songs
+   */
   goToPrevPage(): void {
     if (this.prevPageUrl) {
       this.songService.paginatedSongs(this.prevPageUrl).subscribe({

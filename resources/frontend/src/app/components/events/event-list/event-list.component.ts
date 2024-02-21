@@ -6,7 +6,7 @@ import {SearchBarComponent} from "../../shared/search-bar/search-bar.component";
 import {EventService} from "../../../services/event.service";
 import {AuthService} from "../../../services/auth.service";
 import {EventPreviewComponent} from "../event-preview/event-preview.component";
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-event-list',
@@ -36,9 +36,8 @@ export class EventListComponent implements OnInit {
     public eventService: EventService,
     public authService: AuthService,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
   ) {}
-  public ngOnInit() {
+  public ngOnInit(): void {
     if (this.authService.getLoggedUser() && this.router.url === "/events/history") {
       this.getHistory = true;
     }
@@ -46,15 +45,31 @@ export class EventListComponent implements OnInit {
     this.getEvents("", null);
   }
 
-  public search(event: any) {
+  /**
+   * Gets events based on the given search string
+   *
+   * @param { any } event
+   */
+  public search(event: any): void {
     this.getEvents(event, null);
   }
 
-  public filter(event: any) {
+  /**
+   * Gets events based on the given filter
+   *
+   * @param { any } event
+   */
+  public filter(event: any): void {
     this.getEvents("", event);
   }
 
-  public getEvents(keyword: string, filter: any) {
+  /**
+   * Gets the events based on the given parameters
+   *
+   * @param { string } keyword
+   * @param { any } filter
+   */
+  public getEvents(keyword: string, filter: any): void {
     if (this.authService.getLoggedUser() && this.getHistory) {
       this.eventService.userEventHistory(this.authService.getLoggedUser().id).subscribe({
         next: (response: any) => {
@@ -80,6 +95,9 @@ export class EventListComponent implements OnInit {
     }
   }
 
+  /**
+   * Uses pagination links to show the next page of events
+   */
   goToNextPage(): void {
     if (this.nextPageUrl) {
       this.eventService.paginatedEvents(this.nextPageUrl).subscribe({
@@ -95,6 +113,9 @@ export class EventListComponent implements OnInit {
     }
   }
 
+  /**
+   * Uses pagination links to show the previous page of events
+   */
   goToPrevPage(): void {
     if (this.prevPageUrl) {
       this.eventService.paginatedEvents(this.prevPageUrl).subscribe({

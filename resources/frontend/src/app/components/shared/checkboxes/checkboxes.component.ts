@@ -1,7 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {JsonPipe, NgForOf, NgIf} from "@angular/common";
 import {TitleCasePipe} from "../../../pipes/title-case.pipe";
-import {FormArray, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {FormGroup, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-checkboxes',

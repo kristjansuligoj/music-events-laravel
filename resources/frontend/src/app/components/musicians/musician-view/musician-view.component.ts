@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MusicianService} from "../../../services/musician.service";
 import {JsonPipe, Location, NgIf, NgOptimizedImage} from '@angular/common';
 import {UnorderedListComponent} from "../../shared/unordered-list/unordered-list.component";
@@ -31,7 +31,7 @@ export class MusicianViewComponent implements OnInit {
     private location: Location,
     private router: Router,
   ) {}
-  public ngOnInit() {
+  public ngOnInit(): void {
     const id: string = this.location.path().split('/')[2];
     this.musicianService.getMusicianById(id).subscribe({
       next: (response: any) => {
@@ -43,7 +43,12 @@ export class MusicianViewComponent implements OnInit {
     })
   }
 
-  public removeMusician(id: string) {
+  /**
+   * Removes the given musician
+   *
+   * @param { string } id
+   */
+  public removeMusician(id: string): void {
     this.musicianService.removeMusician(id).subscribe({
       next: (response: any) => {
         this.router.navigate(['/musicians']).then(r => {});

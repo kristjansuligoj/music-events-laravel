@@ -1,6 +1,6 @@
-import {Component, TemplateRef, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {UserService} from "../../../services/user.service";
 import {AuthService} from "../../../services/auth.service";
@@ -42,7 +42,12 @@ export class RegisterFormComponent {
     private userService: UserService,
   ) { }
 
-  public getAdditionalErrors() {
+  /**
+   * Checks if 'passwordMismatch' error exists, and returns it, so user can see the error
+   *
+   * @return any
+   */
+  public getAdditionalErrors(): any {
     if (this.registerForm.hasError('passwordMismatch') && !this.registerForm.controls["password"].pristine) {
       return { confirmPassword: ['Passwords do not match'] };
     } else return this.errors;

@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import {EventService} from "../../../services/event.service";
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../../services/auth.service";
 import {NoteService} from "../../../services/note.service";
 import {ButtonComponent} from "../../shared/button/button.component";
@@ -29,14 +28,14 @@ import {SpanComponent} from "../../shared/span/span.component";
   templateUrl: './note-list.component.html',
   styleUrl: './note-list.component.css'
 })
-export class NoteListComponent {
+export class NoteListComponent implements OnInit {
   notes: any[] = [];
 
   constructor(
     public noteService: NoteService,
     public authService: AuthService,
   ) {}
-  public ngOnInit() {
+  public ngOnInit(): void {
     if (this.authService.getLukaLoggedUser()) {
       this.noteService.allNotes().subscribe({
         next: (response: any) => {
@@ -49,7 +48,10 @@ export class NoteListComponent {
     }
   }
 
-  public loadNotes() {
+  /**
+   * Gets all the authenticated users notes
+   */
+  public getNotes(): void {
     this.noteService.allNotes().subscribe({
       next: (response: any) => {
         this.notes = response.data.notes;

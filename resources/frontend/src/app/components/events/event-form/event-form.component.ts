@@ -59,11 +59,14 @@ export class EventFormComponent implements OnInit {
     musician: new FormControl('', [Validators.required]),
   });
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.getDefaultValues()
   }
 
-  public getDefaultValues() {
+  /**
+   * Gets default values for event form. If user is editing, fill the inputs with current values
+   */
+  public getDefaultValues(): void {
     this.musicianService.allMusiciansUnpaginated().subscribe({
       next: (response: any) => {
         // Maps the object to correct property names for dropdown component
@@ -71,8 +74,6 @@ export class EventFormComponent implements OnInit {
           key: item.id,
           value: item.name,
         }));
-
-        console.log(this.musicians);
 
         this.route.params.subscribe(params => {
           const id = params['id'];
@@ -107,7 +108,7 @@ export class EventFormComponent implements OnInit {
     });
   }
 
-  public onSubmit() {
+  public onSubmit(): void {
     const eventData: any = {
       date: this.editForm.value.date,
       time: this.editForm.value.time,

@@ -57,11 +57,14 @@ export class SongFormComponent implements OnInit {
     genre: new FormArray([]),
   });
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.getDefaultValues();
   }
 
-  public getDefaultValues() {
+  /**
+   * Gets default values for song form. If user is editing, fill the inputs with current values
+   */
+  public getDefaultValues(): void {
     this.musicianService.allMusiciansUnpaginated().subscribe({
       next: (response: any) => {
         // Maps the object to correct property names for dropdown component
@@ -108,11 +111,9 @@ export class SongFormComponent implements OnInit {
     })
   }
 
-  public onSubmit() {
+  public onSubmit(): void {
     const genre: number[] = [];
-    console.log(this.editForm.value.genre);
     this.editForm.value.genre.forEach((value: boolean, index: number) => {
-      console.log(index);
       if (value) { genre.push(genres[index].id); }
     });
 
