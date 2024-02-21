@@ -80,6 +80,7 @@ Route::prefix('songs')->group(function () {
 Route::prefix('events')->group(function () {
     Route::get('/', [EventController::class, 'allEvents'])->name('events.list');
     Route::get('/{eventId}', [EventController::class, 'getEvent'])->whereUuid('event')->name('events.get');
+    Route::get('/user/{email}', [EventController::class, 'getUsersEvents']);
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/history/{userId}', [EventController::class, 'eventHistory'])->name('events.eventsHistory');
