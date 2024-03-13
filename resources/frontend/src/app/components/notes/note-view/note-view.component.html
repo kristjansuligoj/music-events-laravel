@@ -6,16 +6,11 @@
         buttonText="Edit note"
       ></app-button>
 
-      <button
-        (click)="removeNote(note.id)"
-        class="
-          inline-flex items-center
-          px-3 py-2 m-3 bg-red-800
-          border border-transparent text-xs rounded text-white uppercase
-          hover:bg-red-700 focus:bg-red-700
-          active:bg-red-900 focus:outline-none
-        "
-      >Remove note</button>
+      <app-button
+        buttonText="Remove note"
+        [removeButton]="true"
+        (clickedEmitter)="removeNote(note.id)"
+      />
     </div>
   </div>
 

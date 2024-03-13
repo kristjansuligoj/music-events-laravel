@@ -6,16 +6,11 @@
         buttonText="Edit song"
       ></app-button>
 
-      <button
-        (click)="removeSong(song.id)"
-        class="
-          inline-flex items-center
-          px-3 py-2 m-3 bg-red-800
-          border border-transparent text-xs rounded text-white uppercase
-          hover:bg-red-700 focus:bg-red-700
-          active:bg-red-900 focus:outline-none
-        "
-      >Remove song</button>
+      <app-button
+        buttonText="Remove song"
+        [removeButton]="true"
+        (clickedEmitter)="removeSong(song.id)"
+      />
     </div>
   </div>
 
