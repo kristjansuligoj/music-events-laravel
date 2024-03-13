@@ -15,97 +15,147 @@ import {SongFormComponent} from "./components/songs/song-form/song-form.componen
 import {SongViewComponent} from "./components/songs/song-view/song-view.component";
 import {NoteFormComponent} from "./components/notes/note-form/note-form.component";
 import {NoteViewComponent} from "./components/notes/note-view/note-view.component";
+import {AuthGuard} from "./guards/auth.guard";
 
 export const routes: Routes = [
   {
     path: '',
     component: HomepageComponent,
-    title: 'Home'
+    title: 'Home',
   },
   {
     path: 'musicians',
-    component: MusicianListComponent,
-    title: 'Musicians'
-  },
-  {
-    path: 'musicians/add',
-    component: MusicianFormComponent,
-    title: 'Musician'
-  },
-  {
-    path: 'musicians/:id',
-    component: MusicianViewComponent,
-    title: 'Musician'
-  },
-  {
-    path: 'musicians/edit/:id',
-    component: MusicianFormComponent,
-    title: 'Musician'
+    children: [
+      {
+        path: '',
+        component: MusicianListComponent,
+        title: 'Musicians',
+      },
+      {
+        path: 'add',
+        component: MusicianFormComponent,
+        title: 'Add musician',
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'mine',
+        component: MusicianListComponent,
+        title: 'My musicians'
+      },
+      {
+        path: ':id',
+        component: MusicianViewComponent,
+        title: 'Musician view'
+      },
+      {
+        path: 'edit/:id',
+        component: MusicianFormComponent,
+        title: 'Edit musician',
+        canActivate: [AuthGuard],
+      },
+    ]
   },
   {
     path: 'events',
-    component: EventListComponent,
-    title: 'Events'
-  },
-  {
-    path: 'events/add',
-    component: EventFormComponent,
-    title: 'event'
-  },
-  {
-    path: 'events/history',
-    component: EventListComponent,
-    title: 'event'
-  },
-  {
-    path: 'events/:id',
-    component: EventViewComponent,
-    title: 'event'
-  },
-  {
-    path: 'events/edit/:id',
-    component: EventFormComponent,
-    title: 'event'
+    children: [
+      {
+        path: '',
+        component: EventListComponent,
+        title: 'Events',
+      },
+      {
+        path: 'add',
+        component: EventFormComponent,
+        title: 'Add event',
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'history',
+        component: EventListComponent,
+        title: 'Event history'
+      },
+      {
+        path: 'mine',
+        component: EventListComponent,
+        title: 'My events'
+      },
+      {
+        path: ':id',
+        component: EventViewComponent,
+        title: 'Event view'
+      },
+      {
+        path: 'edit/:id',
+        component: EventFormComponent,
+        title: 'Edit event',
+        canActivate: [AuthGuard],
+      },
+    ]
   },
   {
     path: 'songs',
-    component: SongListComponent,
-    title: 'Songs'
-  },
-  {
-    path: 'songs/add',
-    component: SongFormComponent,
-    title: 'song'
-  },
-  {
-    path: 'songs/:id',
-    component: SongViewComponent,
-    title: 'song'
-  },
-  {
-    path: 'songs/edit/:id',
-    component: SongFormComponent,
-    title: 'song'
+    children: [
+      {
+        path: '',
+        component: SongListComponent,
+        title: 'Songs',
+      },
+      {
+        path: 'add',
+        component: SongFormComponent,
+        title: 'Add song',
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'mine',
+        component: SongListComponent,
+        title: 'My songs'
+      },
+      {
+        path: ':id',
+        component: SongViewComponent,
+        title: 'Song view'
+      },
+      {
+        path: 'edit/:id',
+        component: SongFormComponent,
+        title: 'Edit song',
+        canActivate: [AuthGuard],
+      },
+    ],
   },
   {
     path: 'notes',
-    component: NoteListComponent,
-    title: 'Notes'
-  },
-  {
-    path: 'notes/add',
-    component: NoteFormComponent,
-    title: 'note'
-  },
-  {
-    path: 'notes/:id',
-    component: NoteViewComponent,
-    title: 'note'
-  },
-  {
-    path: 'notes/edit/:id',
-    component: NoteFormComponent,
-    title: 'note'
+    children: [
+      {
+        path: '',
+        component: NoteListComponent,
+        title: 'Notes',
+      },
+      {
+        path: 'add',
+        component: NoteFormComponent,
+        title: 'Add note',
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'mine',
+        component: NoteListComponent,
+        title: 'My notes'
+      },
+      {
+        path: ':id',
+        component: NoteViewComponent,
+        title: 'Note view',
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'edit/:id',
+        component: NoteFormComponent,
+        title: 'Edit note',
+        canActivate: [AuthGuard],
+      },
+    ],
   },
   {
     path: 'login',
@@ -120,6 +170,7 @@ export const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    title: 'Profile'
+    title: 'Profile',
+    canActivate: [AuthGuard],
   },
 ];
