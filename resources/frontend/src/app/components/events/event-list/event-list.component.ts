@@ -42,6 +42,16 @@ export class EventListComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
+    if (this.authService.getLoggedUser()) {
+      if (this.router.url === "/events/history") {
+        this.getHistory = true;
+      }
+
+      if (this.router.url === "/events/mine") {
+        this.getMine = true;
+      }
+    }
+
     if (this.authService.getLoggedUser() && this.router.url === "/events/history") {
       this.getHistory = true;
     }
@@ -89,6 +99,14 @@ export class EventListComponent implements OnInit {
       this.eventService.allEvents(keyword, filter).subscribe({
         next: (response: any) => {
           this.events = response.data.events.data;
+
+          if (this.getMine) {
+            const loggedUserId: string = this.authService.getLoggedUser().id;
+            this.events = this.events.filter((item: any) => {
+              return item.id === loggedUserId;
+            })
+          }
+
           this.nextPageUrl = response.data.events.next_page_url;
           this.prevPageUrl = response.data.events.prev_page_url;
         },
