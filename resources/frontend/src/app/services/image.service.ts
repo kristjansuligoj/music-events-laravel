@@ -8,10 +8,16 @@ import {Observable} from "rxjs";
 })
 export class ImageService {
   apiUrl: string = environment.API_URL + '/images'
+
   constructor(
     private http: HttpClient,
   ) { }
 
+  /**
+   * Uploads the given image
+   *
+   * @param { any } image
+   */
   public uploadImage(image: any): Observable<any[]> {
     return this.http.post<any[]>(`${this.apiUrl}`, image);
   }

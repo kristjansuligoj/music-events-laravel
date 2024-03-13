@@ -7,10 +7,17 @@ import {Observable} from "rxjs";
   providedIn: 'root'
 })
 export class UserService {
-  apiUrl: string = environment.API_URL;
-  lukaApiUrl: string = environment.LUKA_API_URL;
+  public apiUrl: string = environment.API_URL;
+  public lukaApiUrl: string = environment.LUKA_API_URL;
+
   constructor(private http: HttpClient) {}
 
+  /**
+   * Logs the user in the system
+   *
+   * @param { any } userData
+   * @param { boolean } lukaApp
+   */
   public login(userData: any, lukaApp: boolean): Observable<any[]> {
     if (lukaApp) {
       return this.http.post<any[]>(`${this.lukaApiUrl}/tokens/authenticate`, userData);
@@ -19,10 +26,18 @@ export class UserService {
     }
   }
 
+  /**
+   * Logs the user out of the system
+   */
   public logout(): Observable<any[]> {
     return this.http.post<any[]>(`${this.apiUrl}/logout`, null);
   }
 
+  /**
+   * Registers user to the site
+   *
+   * @param { any } userData
+   */
   public register(userData: any): Observable<any[]> {
     return this.http.post<any[]>(`${this.apiUrl}/register`, userData);
   }

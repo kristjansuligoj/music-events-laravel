@@ -13,6 +13,11 @@ export class GoogleAPIService {
     private http: HttpClient,
   ) { }
 
+  /**
+   * Gets the coordinates for the given address
+   *
+   * @param { string } address
+   */
   public getCoordinates(address: string): Observable<any[]> {
     const params = new HttpParams()
       .set('address', address)
