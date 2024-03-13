@@ -82,17 +82,7 @@ export class NoteFormComponent implements OnInit {
                 next: (response: any ) => {
                   this.note = response.data.note;
 
-                  this.editForm.patchValue({
-                    title: this.note.title,
-                    content: this.note.content,
-                    priority: this.note.priority,
-                    deadline: this.note.deadline,
-                    tags: this.note.tags,
-                    visibility: this.note.public,
-                    category: this.note.category_id,
-                  })
-
-                  this.formLoaded = true;
+                  this.resetForm();
                 },
                 error: (response: HttpErrorResponse): void => {
                   this.router.navigate(['/notes']).then(r => {});
@@ -138,5 +128,19 @@ export class NoteFormComponent implements OnInit {
         },
       })
     }
+  }
+
+  public resetForm(): void {
+    this.editForm.reset({
+      title: this.note.title,
+      content: this.note.content,
+      priority: this.note.priority,
+      deadline: this.note.deadline,
+      tags: this.note.tags,
+      visibility: this.note.public,
+      category: this.note.category_id,
+    });
+
+    this.formLoaded = true;
   }
 }

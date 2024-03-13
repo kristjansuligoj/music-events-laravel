@@ -80,21 +80,14 @@ export class SongFormComponent implements OnInit {
             this.songService.getSongById(id).subscribe({
               next: (response: any ) => {
                 this.song = response.data.song;
-                this.editForm.patchValue({
-                  musician: this.song.musician_id,
-                  title: this.song.title,
-                  length: this.song.length,
-                  releaseDate: formatDate(this.song.releaseDate),
-                  authors: extractAuthorNames(this.song.authors),
-                })
+
+                this.resetForm();
 
                 this.genres.forEach((genre: any) => {
                   const formArray: FormArray = this.editForm.get('genre') as FormArray;
                   const checked = this.song.genres?.some((item: any) => item.name === genre.label);
                   formArray.push(new FormControl(checked));
                 });
-
-                this.formLoaded = true;
               },
             })
           } else {
@@ -142,6 +135,18 @@ export class SongFormComponent implements OnInit {
         },
       })
     }
+  }
+
+  public resetForm(): void {
+    this.editForm.reset({
+      musician: this.song.musician_id,
+      title: this.song.title,
+      length: this.song.length,
+      releaseDate: formatDate(this.song.releaseDate),
+      authors: extractAuthorNames(this.song.authors),
+    });
+
+    this.formLoaded = true;
   }
 
   protected readonly genres = genres;

@@ -65,17 +65,14 @@ export class MusicianFormComponent implements OnInit {
         this.musicianService.getMusicianById(id).subscribe({
           next: (response: any ) => {
             this.musician = response.data.musician;
-            this.editForm.patchValue({
-              name: this.musician.name,
-            });
+
+            this.resetForm();
 
             this.genres.forEach((genre: any) => {
               const formArray: FormArray = this.editForm.get('genre') as FormArray;
               const checked = this.musician.genres?.some((item: any) => item.name === genre.label);
               formArray.push(new FormControl(checked));
             });
-
-            this.formLoaded = true;
           },
         })
       } else {
@@ -142,6 +139,14 @@ export class MusicianFormComponent implements OnInit {
         }
       },
     })
+  }
+
+  public resetForm(): void {
+    this.editForm.reset({
+      name: this.musician.name,
+    });
+
+    this.formLoaded = true;
   }
 
   protected readonly genres = genres;

@@ -33,7 +33,6 @@ import {dateRelativeToTodayValidator} from "../../../validators/dateRelativeToTo
     MusicianService,
   ],
   templateUrl: './event-form.component.html',
-  styleUrl: './event-form.component.css'
 })
 export class EventFormComponent implements OnInit {
   public errors: any = {};
@@ -84,17 +83,7 @@ export class EventFormComponent implements OnInit {
               next: (response: any ) => {
                 this.event = response.data.event;
 
-                this.editForm.patchValue({
-                  date: formatDate(this.event.date),
-                  time: this.event.time,
-                  name: this.event.name,
-                  address: this.event.address,
-                  ticketPrice: this.event.ticketPrice,
-                  description: this.event.description,
-                  musician: this.event.musicians[0].id,
-                })
-
-                this.formLoaded = true;
+                this.resetForm();
               },
               error: (response: HttpErrorResponse): void => {
                 this.router.navigate(['/events']).then(r => {});
@@ -136,5 +125,19 @@ export class EventFormComponent implements OnInit {
         },
       })
     }
+  }
+
+  public resetForm(): void {
+    this.editForm.reset({
+      date: formatDate(this.event.date),
+      time: this.event.time,
+      name: this.event.name,
+      address: this.event.address,
+      ticketPrice: this.event.ticketPrice,
+      description: this.event.description,
+      musician: this.event.musicians[0].id,
+    });
+
+    this.formLoaded = true;
   }
 }
