@@ -60,6 +60,10 @@ class EventController extends Controller
      */
     public function eventHistory($userId): JsonResponse
     {
+        if (!uuid_is_valid($userId)) {
+            $userId = User::where('email', $userId)->first()->id;
+        }
+
         $events = Event::join('event_participants', 'events.id', '=', 'event_participants.event_id')
             ->with('musicians')
             ->where('event_participants.user_id', $userId)
@@ -76,7 +80,24 @@ class EventController extends Controller
         ]);
     }
 
+    /**
+     * Fetches all the events that a certain user is attending
+     *
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUsersEvents($email)
+    {
+        $user = User::where('email', $email)->first();
+
+        return response()->json($user->attending()->with('musicians')->get());
+    }
+
     public function addUserToEvent($eventId, $userId) {
+        if (!uuid_is_valid($userId)) {
+            $userId = User::where('email', $userId)->first()->id;
+        }
+
         $event = Event::find($eventId);
 
         if (!$event || Carbon::parse($event->date)->lt(Carbon::now())) {
@@ -117,6 +138,10 @@ class EventController extends Controller
     }
 
     public function removeUserFromEvent($eventId, $userId) {
+        if (!uuid_is_valid($userId)) {
+            $userId = User::where('email', $userId)->first()->id;
+        }
+
         $event = Event::find($eventId);
 
         if (!$event) {
