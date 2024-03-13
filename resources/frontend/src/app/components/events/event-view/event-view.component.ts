@@ -9,6 +9,7 @@ import {SpanComponent} from "../../shared/span/span.component";
 import {GoogleMap, MapMarker} from "@angular/google-maps";
 import {GoogleAPIService} from "../../../services/google-api.service";
 import {formatDate, isEventInFuture} from "../../../helpers/functions";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-event-view',
@@ -36,8 +37,8 @@ export class EventViewComponent implements OnInit {
   public coordinates: any = {};
   public mapOptions: any = {
     center: { // Default values show center of Maribor
-      lat: 46.23469202161742,
-      lng: 15.27740625050234,
+      lat: environment.EVENT_CENTER_LAT,
+      lng: environment.EVENT_CENTER_LNG,
     },
     zoom: 14
   };

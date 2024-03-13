@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center pb-6 pl-5">
       <div class="flex items-center">
         <img
-          [ngSrc]="'http://192.168.150.221/images/musicians/' + musician.image"
+          [ngSrc]="environment.SERVER_BASE_URL + '/images/musicians/' + musician.image"
           alt="Musician Image"
           width="50"
           height="50"

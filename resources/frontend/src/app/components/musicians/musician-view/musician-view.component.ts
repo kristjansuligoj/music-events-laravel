@@ -5,6 +5,7 @@ import {UnorderedListComponent} from "../../shared/unordered-list/unordered-list
 import {AuthService} from "../../../services/auth.service";
 import {ButtonComponent} from "../../shared/button/button.component";
 import {Router} from "@angular/router";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-musician-view',
@@ -58,4 +59,6 @@ export class MusicianViewComponent implements OnInit {
       }
     })
   }
+
+  protected readonly environment = environment;
 }
