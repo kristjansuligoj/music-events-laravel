@@ -21,7 +21,6 @@ import {SpanComponent} from "../../shared/span/span.component";
     SongService,
   ],
   templateUrl: './song-view.component.html',
-  styleUrl: './song-view.component.css'
 })
 export class SongViewComponent {
   public song: any = {};
@@ -32,6 +31,7 @@ export class SongViewComponent {
     private location: Location,
     private router: Router,
   ) {}
+
   public ngOnInit(): void {
     const id: string = this.location.path().split('/')[2];
     this.songService.getSongById(id).subscribe({
@@ -49,7 +49,7 @@ export class SongViewComponent {
    *
    * @param { string } id
    */
-  public removeSong(id: string): void {
+  public removeSong(id: any): void {
     this.songService.removeSong(id).subscribe({
       next: (response: any) => {
         this.router.navigate(['/songs']).then(r => {});

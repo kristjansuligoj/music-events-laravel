@@ -15,15 +15,14 @@ import {FormGroup, ReactiveFormsModule} from "@angular/forms";
     JsonPipe
   ],
   templateUrl: './text-input.component.html',
-  styleUrl: './text-input.component.css'
 })
 export class TextInputComponent {
-  @Input() name: string = '';
-  @Input() inputType: string = '';
-  @Input() formGroup: FormGroup = new FormGroup({});
-  @Input() errors: { [key: string]: string } = {};
-  @Input() required: boolean = true;
-  @Input() additionalErrors: any = {};
+  @Input() public name: string = '';
+  @Input() public inputType: string = '';
+  @Input() public formGroup: FormGroup = new FormGroup({});
+  @Input() public errors: { [key: string]: string } = {};
+  @Input() public required: boolean = true;
+  @Input() public additionalErrors: any = {};
 
   protected readonly Object = Object;
 }

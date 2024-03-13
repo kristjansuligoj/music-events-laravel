@@ -15,8 +15,7 @@ import {SpanComponent} from "../../shared/span/span.component";
     JsonPipe
   ],
   templateUrl: './song-preview.component.html',
-  styleUrl: './song-preview.component.css'
 })
 export class SongPreviewComponent {
-  @Input() song: any = {};
+  @Input() public song: any = {};
 }

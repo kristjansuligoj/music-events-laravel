@@ -20,7 +20,6 @@ import {Router} from "@angular/router";
     MusicianService
   ],
   templateUrl: './musician-view.component.html',
-  styleUrl: './musician-view.component.css'
 })
 export class MusicianViewComponent implements OnInit {
   public musician: any = {};
@@ -31,6 +30,7 @@ export class MusicianViewComponent implements OnInit {
     private location: Location,
     private router: Router,
   ) {}
+
   public ngOnInit(): void {
     const id: string = this.location.path().split('/')[2];
     this.musicianService.getMusicianById(id).subscribe({

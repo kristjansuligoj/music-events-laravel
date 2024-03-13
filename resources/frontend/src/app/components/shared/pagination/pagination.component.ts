@@ -32,10 +32,10 @@ export class PaginationComponent {
     public songService: SongService,
   ) {}
 
-  @Input() elements: any;
-  @Input() name: string = "";
-  @Input() nextPageUrl: string | null = null;
-  @Input() prevPageUrl: string | null = null;
+  @Input() public elements: any;
+  @Input() public name: string = "";
+  @Input() public nextPageUrl: string | null = null;
+  @Input() public prevPageUrl: string | null = null;
 
   /**
    * Uses pagination links to show the next page of musicians

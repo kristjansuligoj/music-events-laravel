@@ -5,10 +5,9 @@ import {Component, Input} from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './submit-button.component.html',
-  styleUrl: './submit-button.component.css'
 })
 export class SubmitButtonComponent {
-  @Input() editing: boolean = false;
-  @Input() formInvalid: boolean = true;
-  @Input() customText: string = "";
+  @Input() public editing: boolean = false;
+  @Input() public formInvalid: boolean = true;
+  @Input() public customText: string = "";
 }

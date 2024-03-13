@@ -32,7 +32,6 @@ import {dateRelativeToTodayValidator} from "../../../validators/dateRelativeToTo
     MusicianService,
   ],
   templateUrl: './song-form.component.html',
-  styleUrl: './song-form.component.css'
 })
 export class SongFormComponent implements OnInit {
   public errors: any = {};

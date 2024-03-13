@@ -11,10 +11,9 @@ import {TitleCasePipe} from "../../../pipes/title-case.pipe";
     JsonPipe,
   ],
   templateUrl: './unordered-list.component.html',
-  styleUrl: './unordered-list.component.css'
 })
 export class UnorderedListComponent {
-  @Input() target: string = "";
-  @Input() title: string = "";
-  @Input() items: [] = [];
+  @Input() public target: string = "";
+  @Input() public title: string = "";
+  @Input() public items: [] = [];
 }

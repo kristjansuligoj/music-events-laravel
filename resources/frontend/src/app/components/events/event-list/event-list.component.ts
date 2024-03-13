@@ -29,16 +29,18 @@ import {PaginationComponent} from "../../shared/pagination/pagination.component"
   styleUrl: './event-list.component.css'
 })
 export class EventListComponent implements OnInit {
-  events: any[] = [];
-  getHistory: boolean = false;
-  nextPageUrl: string | null = null;
-  prevPageUrl: string | null = null;
+  public events: any[] = [];
+  public getHistory: boolean = false;
+  public getMine: boolean = false;
+  public nextPageUrl: string | null = null;
+  public prevPageUrl: string | null = null;
 
   constructor(
     public eventService: EventService,
     public authService: AuthService,
     private router: Router,
   ) {}
+
   public ngOnInit(): void {
     if (this.authService.getLoggedUser() && this.router.url === "/events/history") {
       this.getHistory = true;

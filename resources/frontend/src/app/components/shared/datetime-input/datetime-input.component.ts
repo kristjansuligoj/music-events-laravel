@@ -27,9 +27,8 @@ import {FormGroup, ReactiveFormsModule} from "@angular/forms";
     ReactiveFormsModule,
   ],
   templateUrl: './datetime-input.component.html',
-  styleUrl: './datetime-input.component.css'
 })
 export class DatetimeInputComponent {
-  @Input() formGroup: FormGroup = new FormGroup({});
-  @Input() name: string = "";
+  @Input() public formGroup: FormGroup = new FormGroup({});
+  @Input() public name: string = "";
 }

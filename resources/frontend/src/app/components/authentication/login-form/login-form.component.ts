@@ -23,12 +23,11 @@ import {SubmitButtonComponent} from "../../shared/submit-button/submit-button.co
   providers: [
     UserService,
   ],
-  styleUrls: ['./login-form.component.css']
 })
 export class LoginFormComponent {
   // This makes the component log in on Lukas' app
-  @Input() lukaApp: boolean = false;
-  @Output() authenticated: EventEmitter<boolean> = new EventEmitter();
+  @Input() public lukaApp: boolean = false;
+  @Output() public authenticated: EventEmitter<boolean> = new EventEmitter();
 
   public errors: string = "";
 
@@ -36,6 +35,7 @@ export class LoginFormComponent {
     email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(255)]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
   });
+
   constructor(
     private fb: FormBuilder,
     private router: Router,

@@ -32,6 +32,9 @@ export class SongListComponent implements OnInit {
   songs: any[] = [];
   nextPageUrl: string | null = null;
   prevPageUrl: string | null = null;
+  public songs: any[] = [];
+  public nextPageUrl: string | null = null;
+  public prevPageUrl: string | null = null;
 
   constructor(
     public songService: SongService,

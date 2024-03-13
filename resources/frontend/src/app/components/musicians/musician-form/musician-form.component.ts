@@ -28,7 +28,6 @@ import {SubmitButtonComponent} from "../../shared/submit-button/submit-button.co
     ImageService,
   ],
   templateUrl: './musician-form.component.html',
-  styleUrl: './musician-form.component.css'
 })
 export class MusicianFormComponent implements OnInit {
   public errors: any = {};
@@ -95,7 +94,7 @@ export class MusicianFormComponent implements OnInit {
    *
    * @param { any } event
    */
-  onFileSelected(event: any): void {
+  public onFileSelected(event: any): void {
     const file: File = event.files[0];
     const reader: FileReader = new FileReader();
 

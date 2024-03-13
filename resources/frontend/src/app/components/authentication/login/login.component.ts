@@ -8,7 +8,6 @@ import {LoginFormComponent} from "../login-form/login-form.component";
   imports: [
     LoginFormComponent,
   ],
-  styleUrl: './login.component.css'
 })
 export class LoginComponent {
 }

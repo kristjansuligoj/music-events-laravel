@@ -26,15 +26,16 @@ import {SpanComponent} from "../../shared/span/span.component";
     NoteService,
   ],
   templateUrl: './note-list.component.html',
-  styleUrl: './note-list.component.css'
 })
 export class NoteListComponent implements OnInit {
   notes: any[] = [];
+  public notes: any[] = [];
 
   constructor(
     public noteService: NoteService,
     public authService: AuthService,
   ) {}
+
   public ngOnInit(): void {
     if (this.authService.getLukaLoggedUser()) {
       this.noteService.allNotes().subscribe({

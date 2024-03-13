@@ -13,13 +13,12 @@ import {TitleCasePipe} from "../../../pipes/title-case.pipe";
         TitleCasePipe
     ],
   templateUrl: './textarea-input.component.html',
-  styleUrl: './textarea-input.component.css'
 })
 export class TextareaInputComponent {
-  @Input() name: string = '';
-  @Input() formGroup: FormGroup = new FormGroup({});
-  @Input() errors: { [key: string]: string } = {};
-  @Input() required: boolean = true;
-  @Input() additionalErrors: any = {};
+  @Input() public name: string = '';
+  @Input() public formGroup: FormGroup = new FormGroup({});
+  @Input() public errors: { [key: string]: string } = {};
+  @Input() public required: boolean = true;
+  @Input() public additionalErrors: any = {};
   protected readonly Object = Object;
 }

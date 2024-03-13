@@ -25,7 +25,6 @@ import {NoteService} from "../../../services/note.service";
     NoteService,
   ],
   templateUrl: './note-view.component.html',
-  styleUrl: './note-view.component.css'
 })
 export class NoteViewComponent implements OnInit {
   public note: any = {};
@@ -36,6 +35,7 @@ export class NoteViewComponent implements OnInit {
     private location: Location,
     private router: Router,
   ) {}
+
   public ngOnInit(): void {
     const id: string = this.location.path().split('/')[2];
     this.noteService.getNoteById(id).subscribe({

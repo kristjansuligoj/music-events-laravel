@@ -29,8 +29,6 @@ function printArray($data, $field): string {
             $fileName = $request->image;
         }
 
-        info($fileName);
-
         File::put(public_path('images/musicians/' . $fileName), $decodedImage);
         return $fileName;
     }

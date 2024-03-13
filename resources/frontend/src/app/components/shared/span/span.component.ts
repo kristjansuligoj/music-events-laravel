@@ -13,9 +13,8 @@ import {TitleCasePipe} from "../../../pipes/title-case.pipe";
     TitleCasePipe
   ],
   templateUrl: './span.component.html',
-  styleUrl: './span.component.css'
 })
 export class SpanComponent {
-  @Input() title: string = "";
-  @Input() data: string = "";
+  @Input() public title: string = "";
+  @Input() public data: string = "";
 }

@@ -25,7 +25,6 @@ import {SubmitButtonComponent} from "../../shared/submit-button/submit-button.co
     AuthService,
   ],
   templateUrl: './register-form.component.html',
-  styleUrl: './register-form.component.css'
 })
 export class RegisterFormComponent {
   public registerForm: FormGroup = new FormGroup({
@@ -59,9 +58,13 @@ export class RegisterFormComponent {
       const email = this.registerForm.value.email;
       const password = this.registerForm.value.password;
       const passwordConfirmation = this.registerForm.value.confirmPassword;
-      this.userService.register(
-        {username: username, email: email, password: password, password_confirmation: passwordConfirmation}
-      ).subscribe({
+
+      this.userService.register({
+        username: username,
+        email: email,
+        password: password,
+        password_confirmation: passwordConfirmation,
+      }).subscribe({
           next: (): void => { this.router.navigate(['/login']); },
           error: (response: HttpErrorResponse): void => {
             this.errors = response.error.errors;

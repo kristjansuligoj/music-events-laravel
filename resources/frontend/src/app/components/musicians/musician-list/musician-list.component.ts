@@ -35,6 +35,10 @@ export class MusicianListComponent implements OnInit {
   sortOrder: any = {};
   nextPageUrl: string | null = null;
   prevPageUrl: string | null = null;
+  public musicians: any[] = [];
+  public sortOrder: any = {};
+  public nextPageUrl: string | null = null;
+  public prevPageUrl: string | null = null;
 
   constructor(
     public musicianService: MusicianService,

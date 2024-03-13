@@ -19,10 +19,9 @@ import {UserService} from "../../../services/user.service";
     UserService,
   ],
   templateUrl: './navigation-bar.component.html',
-  styleUrl: './navigation-bar.component.css'
 })
 export class NavigationBarComponent {
-  loggedIn: boolean = true;
+  public loggedIn: boolean = true;
 
   constructor(
     public authService: AuthService,

@@ -17,9 +17,9 @@ import {SpanComponent} from "../span/span.component";
   styleUrl: './search-bar.component.css'
 })
 export class SearchBarComponent implements OnInit {
-  @Input() fields: any = [];
-  @Output() searchItemEmitter: EventEmitter<string> = new EventEmitter();
-  @Output() filterEmitter: EventEmitter<any> = new EventEmitter();
+  @Input() public fields: any = [];
+  @Output() public searchItemEmitter: EventEmitter<string> = new EventEmitter();
+  @Output() public filterEmitter: EventEmitter<any> = new EventEmitter();
 
   public ordersMap: { [key: string]: string } = {};
 

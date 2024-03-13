@@ -17,8 +17,8 @@ import {UnorderedListComponent} from "../../shared/unordered-list/unordered-list
     UnorderedListComponent
   ],
   templateUrl: './musician-preview.component.html',
-  styleUrl: './musician-preview.component.css'
 })
 export class MusicianPreviewComponent {
   @Input() musician: any = {};
+  @Input() public musician: any = {};
 }

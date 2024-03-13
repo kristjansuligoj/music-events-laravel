@@ -15,8 +15,7 @@ import {SpanComponent} from "../../shared/span/span.component";
     JsonPipe
   ],
   templateUrl: './event-preview.component.html',
-  styleUrl: './event-preview.component.css'
 })
 export class EventPreviewComponent {
-  @Input() event: any = {};
+  @Input() public event: any = {};
 }

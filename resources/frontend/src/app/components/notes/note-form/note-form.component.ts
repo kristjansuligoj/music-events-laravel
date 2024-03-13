@@ -31,7 +31,6 @@ import {DatetimeInputComponent} from "../../shared/datetime-input/datetime-input
     CategoryService,
   ],
   templateUrl: './note-form.component.html',
-  styleUrl: './note-form.component.css'
 })
 export class NoteFormComponent implements OnInit {
   public errors: any = {};

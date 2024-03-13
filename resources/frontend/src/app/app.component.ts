@@ -17,5 +17,5 @@ import {GoogleMapsModule} from "@angular/google-maps";
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'frontend';
+  public title: string = 'frontend';
 }

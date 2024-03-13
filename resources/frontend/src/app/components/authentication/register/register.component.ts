@@ -10,7 +10,6 @@ import {RegisterFormComponent} from "../register-form/register-form.component";
     RegisterFormComponent
   ],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
 })
 export class RegisterComponent {
 

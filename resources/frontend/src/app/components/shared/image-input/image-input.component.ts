@@ -12,15 +12,12 @@ import {FormGroup, ReactiveFormsModule} from "@angular/forms";
     ImageService,
   ],
   templateUrl: './image-input.component.html',
-  styleUrl: './image-input.component.css'
 })
 export class ImageInputComponent {
-  @Output() selectedImage: EventEmitter<any> = new EventEmitter();
-  @Input() formGroup: FormGroup = new FormGroup({});
-  @Input() name: string = "";
-  @Input() required: boolean = true;
-
-  constructor() {}
+  @Input() public formGroup: FormGroup = new FormGroup({});
+  @Input() public name: string = "";
+  @Input() public required: boolean = true;
+  @Output() public selectedImage: EventEmitter<any> = new EventEmitter();
 
   /**
    * Emits the selected file

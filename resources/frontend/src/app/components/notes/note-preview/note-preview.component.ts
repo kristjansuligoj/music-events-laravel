@@ -12,8 +12,7 @@ import {DatePipe} from "@angular/common";
     DatePipe
   ],
   templateUrl: './note-preview.component.html',
-  styleUrl: './note-preview.component.css'
 })
 export class NotePreviewComponent {
-  @Input() note: any = {};
+  @Input() public note: any = {};
 }

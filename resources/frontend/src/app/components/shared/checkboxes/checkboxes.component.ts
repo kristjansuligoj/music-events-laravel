@@ -14,16 +14,15 @@ import {FormGroup, ReactiveFormsModule} from "@angular/forms";
     JsonPipe
   ],
   templateUrl: './checkboxes.component.html',
-  styleUrl: './checkboxes.component.css'
 })
 export class CheckboxesComponent {
-  @Input() options: any[] = [];
-  @Input() editing: boolean = false;
-  @Input() name: string = "";
-  @Input() required: boolean = true;
-  @Input() formGroup: FormGroup = new FormGroup({});
-  @Input() errors: { [key: string]: string } = {};
-  @Input() additionalErrors: any = {};
+  @Input() public options: any[] = [];
+  @Input() public editing: boolean = false;
+  @Input() public name: string = "";
+  @Input() public required: boolean = true;
+  @Input() public formGroup: FormGroup = new FormGroup({});
+  @Input() public errors: { [key: string]: string } = {};
+  @Input() public additionalErrors: any = {};
 
   protected readonly Object = Object;
 }

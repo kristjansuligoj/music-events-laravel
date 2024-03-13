@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
+    /**
+     * Fetches all events
+     *
+     * @param EventRequest $request
+     * @return JsonResponse
+     */
     public function allEvents(EventRequest $request) {
         if ($request->has('keyword')) {
             $events = $this->searchEventsByKeyword($request->keyword, (bool)$request->showAttending);
@@ -28,6 +34,12 @@ class EventController extends Controller
         ]);
     }
 
+    /**
+     * Fetches specific event
+     *
+     * @param $eventId
+     * @return JsonResponse
+     */
     public function getEvent($eventId) {
         $event = Event::with('musicians', 'participants', 'user')->findOrFail($eventId);
         $event->time = Carbon::parse($event->time)->format("H:i");

@@ -9,7 +9,6 @@ import {TitleCasePipe} from "../../../pipes/title-case.pipe";
   selector: 'app-dropdown',
   standalone: true,
   templateUrl: './dropdown.component.html',
-  styleUrl: './dropdown.component.css',
   imports: [
     NgForOf,
     MatSelect,
@@ -26,8 +25,8 @@ import {TitleCasePipe} from "../../../pipes/title-case.pipe";
   ]
 })
 export class DropdownComponent {
-  @Input() options: any = {};
-  @Input() formGroup: FormGroup = new FormGroup({});
-  @Input() name: string = "";
+  @Input() public options: any = {};
+  @Input() public formGroup: FormGroup = new FormGroup({});
+  @Input() public name: string = "";
   protected readonly Object = Object;
 }

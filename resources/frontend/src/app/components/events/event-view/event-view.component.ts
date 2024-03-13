@@ -28,7 +28,6 @@ import {formatDate, isEventInFuture} from "../../../helpers/functions";
     GoogleAPIService,
   ],
   templateUrl: './event-view.component.html',
-  styleUrl: './event-view.component.css'
 })
 export class EventViewComponent implements OnInit {
   public futureEvent: boolean = false;
