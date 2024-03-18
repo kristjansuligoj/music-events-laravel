@@ -1,0 +1,34 @@
+<article class="border mb-5 justify-content-between align-items-center sm:p-7 bg-gray-100 shadow sm:rounded-lg">
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="flex justify-between items-center pb-6 pl-5">
+      <div class="flex items-center">
+        <h2 class="ml-3"><strong>{{ event.name }}</strong></h2>
+      </div>
+
+      <app-button
+        [route]="'/events/' + event.id"
+        buttonText="More Details"
+        buttonStyle="margin-left: auto;"
+      ></app-button>
+    </div>
+    <hr>
+  </div>
+
+  <div class="mt-5">
+    <app-span
+      title="Date"
+      [data]="event.date"
+    />
+
+    <app-span
+      title="Ticket price"
+      [data]="event.ticketPrice + '€'"
+    />
+
+    <app-span
+      title="Musician"
+      [data]="event.musicians[0].name"
+    />
+  </div>
+
+</article>

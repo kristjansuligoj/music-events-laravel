@@ -1,0 +1,28 @@
+<div class="container p-5 sm:p-8 bg-white shadow sm:rounded-lg">
+
+  <div class="text-center mb-5">
+    <h1 class="font-bold">Songs</h1>
+  </div>
+
+  <div>
+    <app-search-bar
+      [fields]="['title', 'genre', 'length', 'releaseDate', 'authors', 'musician']"
+      (searchItemEmitter)="search($event)"
+      (filterEmitter)="filter($event)"
+    />
+  </div>
+
+  <ng-container *ngIf="authService.getAuthToken()">
+    <app-button
+      route="/songs/add"
+      buttonText="Add song"
+    />
+  </ng-container>
+
+  <app-pagination
+    [elements]="songs"
+    [nextPageUrl]="nextPageUrl"
+    [prevPageUrl]="prevPageUrl"
+    name="song"
+  />
+</div>

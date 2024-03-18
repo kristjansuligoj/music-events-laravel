@@ -1,0 +1,56 @@
+<div class="container p-5 sm:p-8 bg-white shadow sm:rounded-lg">
+  <div *ngIf="authService.getAuthToken()">
+    <div class="flex justify-between items-center mb-4">
+      <app-button
+        [route]="'/songs/edit/' + song.id"
+        buttonText="Edit song"
+      ></app-button>
+
+      <app-button
+        buttonText="Remove song"
+        [removeButton]="true"
+        (clickedEmitter)="removeSong(song.id)"
+      />
+    </div>
+  </div>
+
+  <div class="p-3">
+    <h2><strong>{{ song.title }}</strong></h2>
+  </div>
+
+  <hr class="mb-3">
+
+  <div class="p-3">
+    <app-span
+      title="Length"
+      [data]="song.length"
+    />
+
+    <app-span
+      title="Release date"
+      [data]="song.releaseDate"
+    />
+
+    <app-unordered-list
+      [items]="song.authors"
+      target="name"
+      title="Authors:"
+    ></app-unordered-list>
+
+    <app-unordered-list
+      [items]="song.genres"
+      target="name"
+      title="Genres:"
+    ></app-unordered-list>
+
+    <app-span
+      title="Musician"
+      [data]="song.musician?.name"
+    />
+
+    <app-span
+      title="Added by"
+      [data]="song?.user?.name"
+    />
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<button
+  [disabled]="disabled"
+  [routerLink]="route"
+  [type]="type"
+  (click)="handleClick()"
+  [class]="removeButton ? 'baseButton removeButton' : 'baseButton'"
+  [style]="buttonStyle"
+>
+  {{ buttonText }}
+</button>

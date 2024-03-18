@@ -1,0 +1,58 @@
+<div class="container p-5 sm:p-8 bg-white shadow sm:rounded-lg">
+  <div *ngIf="authService.getAuthToken()">
+    <div class="flex justify-between items-center mb-4">
+      <app-button
+        [route]="'/musicians/edit/' + musician.id"
+        buttonText="Edit Musician"
+      ></app-button>
+
+      <button
+        (click)="removeMusician(musician.id)"
+        class="
+          inline-flex items-center
+          px-3 py-2 m-3 bg-red-800
+          border border-transparent text-xs rounded text-white uppercase
+          hover:bg-red-700 focus:bg-red-700
+          active:bg-red-900 focus:outline-none
+        "
+      >Remove Musician</button>
+    </div>
+  </div>
+
+  <div class="flex items-center p-3">
+    <img
+      [ngSrc]="environment.SERVER_BASE_URL + '/images/musicians/' + musician.image"
+      alt="Musician Image"
+      width="50"
+      height="50"
+      style="border-radius: 50%"
+    >
+    <h2 class="ml-3">{{ musician.name }}</h2>
+  </div>
+
+  <hr class="mb-3">
+
+  <div class="p-3">
+    <app-unordered-list
+      [items]="musician.genres"
+      target="name"
+      title="Genres:"
+    ></app-unordered-list>
+
+    <div *ngIf="musician?.events?.length > 0">
+      <app-unordered-list
+        [items]="musician.events"
+        target="name"
+        title="Performing in events:"
+      ></app-unordered-list>
+    </div>
+
+    <div *ngIf="musician?.songs?.length > 0">
+      <app-unordered-list
+        [items]="musician.songs"
+        target="title"
+        title="Performing in songs:"
+      ></app-unordered-list>
+    </div>
+  </div>
+</div>

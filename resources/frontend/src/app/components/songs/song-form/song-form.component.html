@@ -1,0 +1,72 @@
+<div class="bg-white p-5">
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="p-5">
+    <ng-container *ngIf="formLoaded">
+
+      <app-text-input
+        [additionalErrors]="errors"
+        [errors]="{
+            required: 'Title is required!',
+          }"
+        [formGroup]="editForm"
+        inputType="text"
+        name="title"
+      />
+
+      <app-text-input
+        [additionalErrors]="errors"
+        [errors]="{
+            required: 'It should be a number!',
+            min: 'Minimum value is 10!',
+            max: 'Maximum value is 300!',
+          }"
+        [formGroup]="editForm"
+        inputType="number"
+        name="length"
+      />
+
+      <app-text-input
+        [additionalErrors]="errors"
+        [errors]="{
+            required: 'Release date is required!',
+            dateBeforeToday: 'Date should be a date before today',
+          }"
+        [formGroup]="editForm"
+        inputType="date"
+        name="releaseDate"
+      />
+
+      <app-text-input
+        [additionalErrors]="errors"
+        [errors]="{
+            required: 'Authors is required!',
+          }"
+        [formGroup]="editForm"
+        inputType="text"
+        name="authors"
+      />
+
+      <app-checkboxes
+        [editing]="editing"
+        [options]="genres"
+        [formGroup]="editForm"
+        [errors]="{
+          required: 'Genre is required!',
+        }"
+        name="genre"
+      />
+
+      <app-dropdown
+        [options]="musicians"
+        [formGroup]="editForm"
+        name="musician"
+      />
+
+    </ng-container>
+
+    <app-submit-button
+      [formInvalid]="editForm.invalid"
+      [editing]="editing"
+    />
+
+  </form>
+</div>

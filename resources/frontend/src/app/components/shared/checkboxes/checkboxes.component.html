@@ -1,0 +1,44 @@
+<div *ngIf="formGroup.get(name)" class="mb-5">
+  <div [formGroup]="formGroup">
+    <label
+      class="block font-medium text-sm text-gray-700 mb-2"
+      for="{{name}}"
+    >
+      <span id="{{name}}">{{ required ? '*' : '' }} {{ name | titleCase }}:</span>
+    </label>
+    <div
+      *ngFor="let option of options; let i = index"
+      [formArrayName]="name"
+    >
+      <input
+        class="mr-2"
+        type="checkbox"
+        [formControlName]="i"
+      >
+      <label>
+        <small>{{ option.label }}</small>
+      </label>
+    </div>
+
+    <div class="h-1 mb-4">
+      <div *ngIf="formGroup.get(name)?.invalid && (formGroup.get(name)?.dirty || formGroup.get(name)?.touched)">
+        <div *ngFor="let key of Object.keys(errors)">
+          <div *ngIf="formGroup.get(name)?.errors?.[key]">
+          <span class="text-red-600">
+            <small>{{ errors[key] }}</small>
+          </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="h-1">
+      <div *ngFor="let error of additionalErrors[name]">
+      <span class="text-red-600">
+        <small>{{ error }}</small>
+      </span>
+      </div>
+    </div>
+
+  </div>
+</div>

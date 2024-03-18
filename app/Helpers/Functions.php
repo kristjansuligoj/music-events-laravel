@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 function printArray($data, $field): string {
         $html = "";
@@ -19,15 +20,25 @@ function printArray($data, $field): string {
     }
 
     function saveImage($request): string {
-        $fileName = time() . '.' . $request->image->extension();
-        $request->image->move(public_path('images/musicians'), $fileName);
+        $imageData = $request->image;
+        $data = substr($imageData, strpos($imageData, ',') + 1);
+        $decodedImage = base64_decode($data);
+        if ($request->type) {
+            $fileName = time() . '.' . explode("/", $request->type)[1];
+        } else {
+            $fileName = $request->image;
+        }
+
+        File::put(public_path('images/musicians/' . $fileName), $decodedImage);
         return $fileName;
     }
 
-    function deleteImage($path): void {
-        if(File::exists('images/musicians' . $path)) {
-            File::delete('images/musicians' . $path);
+    function deleteImage($path): bool {
+        if(File::exists('images/musicians/' . $path)) {
+            File::delete('images/musicians/' . $path);
+            return true;
         }
+        return false;
     }
 
     function genreToIndex($genres): array {

@@ -1,0 +1,40 @@
+<div class="bg-white p-5">
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="p-5">
+    <ng-container *ngIf="formLoaded">
+
+      <app-image-input
+        [formGroup]="editForm"
+        (selectedImage)="onFileSelected($event)"
+        name="image"
+      />
+
+      <app-text-input
+        [additionalErrors]="errors"
+        [errors]="{
+            required: 'Name is required!',
+          }"
+        [formGroup]="editForm"
+        inputType="text"
+        name="name"
+      />
+
+      <app-checkboxes
+        [options]="genres"
+        [formGroup]="editForm"
+        [errors]="{
+          required: 'Genre is required!',
+          atLeastOneChecked: 'Genre is required!',
+        }"
+        [additionalErrors]="errors"
+        name="genre"
+      />
+
+    </ng-container>
+
+    <app-submit-button
+      [formInvalid]="editForm.invalid"
+      [editing]="editing"
+    />
+
+  </form>
+</div>

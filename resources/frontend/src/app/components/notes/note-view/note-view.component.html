@@ -1,0 +1,55 @@
+<div class="container p-5 sm:p-8 bg-white shadow sm:rounded-lg">
+  <div *ngIf="authService.getLukaLoggedUser()?.id === note?.user_id">
+    <div class="flex justify-between items-center mb-4">
+      <app-button
+        [route]="'/notes/edit/' + note.id"
+        buttonText="Edit note"
+      ></app-button>
+
+      <app-button
+        buttonText="Remove note"
+        [removeButton]="true"
+        (clickedEmitter)="removeNote(note.id)"
+      />
+    </div>
+  </div>
+
+  <div class="flex justify-between items-center p-3">
+    <h2><strong>{{ note.title }}</strong></h2>
+  </div>
+
+  <hr class="mb-3">
+
+  <div class="p-3">
+    <app-span
+      title="Content"
+      [data]="note.content"
+    />
+
+    <app-span
+      title="Category"
+      [data]="note?.category?.title"
+    />
+
+    <app-span
+      title="Deadline"
+      data="{{note.deadline}}"
+    />
+
+    <app-span
+      title="Priority"
+      [data]="note.priority"
+    />
+
+    <app-span
+      title="Tags"
+      [data]="note.tags"
+    />
+
+    <app-span
+      title="Public"
+      [data]="note.public ? 'Yes' : 'No'"
+    />
+
+  </div>
+</div>

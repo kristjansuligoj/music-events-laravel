@@ -1,0 +1,38 @@
+<div class="container">
+  <h1>Welcome to Your Profile</h1>
+
+    <hr class="my-3">
+
+    <app-span
+      title="email"
+      [data]="loggedUser.email"
+    />
+
+    <app-span
+      title="name"
+      [data]="loggedUser.name"
+    />
+
+    <hr class="my-3">
+
+    <app-button
+      route="/events/history"
+      buttonText="View event history"
+    />
+
+    <app-button
+      route="/musicians/mine"
+      buttonText="View my musicians"
+    />
+
+    <app-button
+      route="/events/mine"
+      buttonText="View my events"
+    />
+
+    <app-button
+      route="/songs/mine"
+      buttonText="View my songs"
+    />
+
+</div>

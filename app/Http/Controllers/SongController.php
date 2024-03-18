@@ -3,55 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SongRequest;
-use App\Models\Author;
-use App\Models\Musician;
 use App\Models\Song;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class SongController extends Controller
 {
     public function allSongs(SongRequest $request) {
-        $sortOrderMap = getOrderMap(
-            "songs",
-            $request->input('field'),
-            ["title", "genre", "length", "releaseDate", "authors", "musician"]
-        );
-
         if ($request->has('keyword')) {
             $songs = $this->searchSongsByKeyword($request->keyword);
         } else {
             $songs = $this->searchSongsByFilter($request->order, $request->field);
         }
 
-        return view('songs/songs', [
-            'songs' => $songs,
-            'sortOrder' => $sortOrderMap,
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'songs' => $songs,
+            ],
+            'message' => 'Song successfully added.'
         ]);
     }
 
-    public function addSongForm() {
-        return view('songs/song-add', [
-            'song' => null,
-            'musicians' => Musician::all(),
-        ]);
-    }
-
-    public function getSong($id) {
-        return view('songs/song',[
-            'song' => Song::with('musician', 'genres', 'authors', 'user')->findOrFail($id)
-        ]);
-    }
-
-    public function editSongForm($id) {
-        $song = Song::with('musician', 'genres', 'authors')->findOrFail($id);
-
-        // Save the authors as a single string
-        $song['authors'] = authorsToString($song->authors);
-
-        return view('songs/song-add', [
-            'song' => $song,
-            'musicians' => Musician::all(),
+    public function getSong($songId) {
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'song' => Song::with('musician', 'genres', 'authors', 'user')->findOrFail($songId)
+            ],
+            'message' => 'Song successfully added.'
         ]);
     }
 
@@ -62,31 +41,49 @@ class SongController extends Controller
         $song = Song::create($songData);
 
         // Adds genres to the pivot table
-        $song->genres()->sync(genreToIndex($request->genre));
+        $song->genres()->sync($request->genre);
 
         saveAuthorsToTable($request->authors, $song);
 
-        return redirect()->route('songs.list');
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'songs' => $song
+            ],
+            'message' => 'Song successfully added.'
+        ]);
     }
 
-    public function editSong($id, SongRequest $request) {
+    public function editSong($songId, SongRequest $request) {
         $songData = $request->except(['_token', "_method"]);
         $songData['musician_id'] = $songData['musician'];
         unset($songData['musician']);
 
-        $song = Song::findOrFail($id);
+        $song = Song::findOrFail($songId);
         $song->update($songData);
 
-        $song->genres()->sync(genreToIndex($request->genre));
+        $song->genres()->sync($request->genre);
 
-        return redirect()->route('songs.list');
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'songs' => $song
+            ],
+            'message' => 'Song successfully edited.'
+        ]);
     }
 
-    public function deleteSong($id) {
-        $song = Song::findOrFail($id);
+    public function deleteSong($songId) {
+        $song = Song::findOrFail($songId);
         $song->delete();
 
-        return redirect()->route('songs.list');
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'song' => $songId
+            ],
+            'message' => 'Song successfully removed.'
+        ]);
     }
 
     public function searchSongsByFilter($sortOrder, $sortField) {

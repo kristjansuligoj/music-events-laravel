@@ -1,0 +1,50 @@
+<article class="border mb-5 justify-content-between align-items-center sm:p-7 bg-gray-100 shadow sm:rounded-lg">
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="flex justify-between items-center pb-6 pl-5">
+      <div class="flex items-center">
+        <img
+          [ngSrc]="environment.SERVER_BASE_URL + '/images/musicians/' + musician.image"
+          alt="Musician Image"
+          width="50"
+          height="50"
+          style="border-radius: 50%"
+        >
+        <h5 class="ml-3"><strong>{{ musician.name }}</strong></h5>
+      </div>
+
+      <app-button
+        [route]="'/musicians/' + musician.id"
+        buttonText="More Details"
+        buttonStyle="margin-left: auto;"
+      ></app-button>
+    </div>
+    <hr>
+  </div>
+
+  <div class="mt-5">
+    <div class="mb-3">
+      <app-unordered-list
+        [items]="musician.songs"
+        target="title"
+        [title]="
+          musician.songs.length > 0
+          ? 'This musician has written the following songs:'
+          : 'This musician has not written any songs yet.'
+        "
+      />
+    </div>
+
+    <div class="mb-3">
+      <app-unordered-list
+        [items]="musician.events"
+        target="name"
+        [title]="
+          musician.events.length > 0
+          ? 'This musician is performing on following events:'
+          : 'This musician is not performing on any events.'
+        "
+      />
+    </div>
+  </div>
+
+</article>

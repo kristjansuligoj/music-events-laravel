@@ -1,0 +1,12 @@
+<div class="my-2">
+  <label
+    class="block font-medium text-sm text-gray-700 mb-2"
+    for="{{ title }}"
+  ><b>{{ title }}</b></label>
+  <ul class="list-disc list-inside pl-2">
+    <li
+      *ngFor="let item of items"
+      class="font-sans text-sm text-gray-700"
+    >{{ item[target] }}</li>
+  </ul>
+</div>

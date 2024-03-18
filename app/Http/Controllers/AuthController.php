@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -13,38 +13,40 @@ class AuthController extends Controller
      * Registers the user and returns a token
      *
      * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function register(Request $request) {
-
+    public function register(Request $request): JsonResponse
+    {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => 'required',
+            'password' => ['required', 'confirmed'],
         ]);
 
         $user = User::create([
-            'name' => $request->name,
+            'name' => $request->username,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => Hash::make($request->password),
         ]);
 
-        $token = $user->createToken('myapptoken')->plainTextToken;
-
-        $response = [
-            'token' => $token
-        ];
-
-        return response($response, 201);
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'user' => $request->name . " created",
+                'token' => $user->createToken('myapptoken')->plainTextToken,
+            ],
+            'message' => 'Registration successful',
+        ]);
     }
 
     /**
      * Authenticates the user and returns a token
      *
      * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function login(Request $request) {
+    public function login(Request $request): JsonResponse
+    {
 
         $validated = $request->validate([
             'email' => ['required', 'string'],
@@ -54,32 +56,44 @@ class AuthController extends Controller
         $user = User::where('email', $validated['email'])->first();
 
         if(!$user || !Hash::check($validated['password'], $user->password)) {
-            return response([
-                'message' => 'Your credentials dont match'
-            ], 401);
+            return response()->json([
+                'success' => false,
+                'data' => '',
+                'message' => 'Incorrect credentials',
+            ]);
         }
 
-        $token = $user->createToken('myapptoken')->plainTextToken;
-
-        $response = [
-            'token' => $token
-        ];
-
-        return response($response, 201);
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'user' => $user,
+                'token' => $user->createToken('myapptoken')->plainTextToken
+            ],
+            'message' => 'Log in successful',
+        ]);
     }
 
     /**
      * Logs out the user and deletes the tokens
      *
      * @param Request $request
-     * @return \Exception|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function logout(Request $request) {
+    public function logout(): JsonResponse
+    {
         try {
             auth()->user()->tokens()->delete();
+            return response()->json([
+                'success' => true,
+                'data' => '',
+                'message' => 'Log out successful',
+            ]);
         } catch (\Exception $e) {
-            return $e;
+            return response()->json([
+                'success' => false,
+                'data' => '',
+                'message' => 'Log out unsuccessful',
+            ]);
         }
-        return response('Successfully logged out');
     }
 }

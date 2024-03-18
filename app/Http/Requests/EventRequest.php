@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Symfony\Component\HttpFoundation\Response;
 
 class EventRequest extends FormRequest
 {
@@ -33,28 +36,27 @@ class EventRequest extends FormRequest
             'musician' => ['required'],
         ];
 
-        if ($this->route()->uri === 'events/edit/{event}') {
+        if ($this->route()->uri === 'api/events/edit/{event}') {
             // If the route name is 'edit-event', add the unique validation rule with the event ID.
             $rules['name'] = ['required', 'unique:events,name,' . $this->route('event')];
             $rules['address'] = ['required', 'unique:events,address,' . $this->route('event')];
         }
 
-        if ($this->route()->uri === 'events') {
+        if ($this->route()->uri === 'api/events') {
             $rules = [];
         }
 
         return $rules;
     }
 
-    /**
-     * Get custom error messages for validator errors.
-     *
-     * @return array<string, string>
-     */
-    public function messages()
+    protected function failedValidation(Validator $validator)
     {
-        return [
-            'date.date_format' => 'The date is invalid.',
-        ];
+        throw new HttpResponseException(
+            response()->json([
+                'success' => false,
+                'data' => $validator->errors(),
+                'message' => "Data validation failed."
+            ], Response::HTTP_UNPROCESSABLE_ENTITY)
+        );
     }
 }
