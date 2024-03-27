@@ -6,17 +6,19 @@ import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
 import {SongService} from "../../../services/song.service";
 import {SpanComponent} from "../../shared/span/span.component";
+import {HrComponent} from "../../shared/hr/hr.component";
 
 @Component({
   selector: 'app-song-view',
   standalone: true,
-  imports: [
-    ButtonComponent,
-    NgIf,
-    NgOptimizedImage,
-    UnorderedListComponent,
-    SpanComponent,
-  ],
+    imports: [
+        ButtonComponent,
+        NgIf,
+        NgOptimizedImage,
+        UnorderedListComponent,
+        SpanComponent,
+        HrComponent,
+    ],
   providers: [
     SongService,
   ],

@@ -3,14 +3,16 @@ import {EventService} from "../../../services/event.service";
 import {AuthService} from "../../../services/auth.service";
 import {ButtonComponent} from "../../shared/button/button.component";
 import {SpanComponent} from "../../shared/span/span.component";
+import {HrComponent} from "../../shared/hr/hr.component";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [
-    ButtonComponent,
-    SpanComponent
-  ],
+    imports: [
+        ButtonComponent,
+        SpanComponent,
+        HrComponent
+    ],
   providers: [
     EventService,
   ],

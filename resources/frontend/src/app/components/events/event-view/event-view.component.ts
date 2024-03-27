@@ -10,20 +10,22 @@ import {GoogleMap, MapMarker} from "@angular/google-maps";
 import {GoogleAPIService} from "../../../services/google-api.service";
 import {formatDate, isEventInFuture} from "../../../helpers/functions";
 import {environment} from "../../../../environments/environment";
+import {HrComponent} from "../../shared/hr/hr.component";
 
 @Component({
   selector: 'app-event-view',
   standalone: true,
-  imports: [
-    ButtonComponent,
-    NgIf,
-    NgOptimizedImage,
-    UnorderedListComponent,
-    JsonPipe,
-    SpanComponent,
-    GoogleMap,
-    MapMarker
-  ],
+    imports: [
+        ButtonComponent,
+        NgIf,
+        NgOptimizedImage,
+        UnorderedListComponent,
+        JsonPipe,
+        SpanComponent,
+        GoogleMap,
+        MapMarker,
+        HrComponent
+    ],
   providers: [
     EventService,
     GoogleAPIService,
