@@ -8,7 +8,16 @@ use Illuminate\Support\Facades\Auth;
 
 class SongController extends Controller
 {
+    /**
+     * This variable decides if the returned songs will be paginated or not
+     *
+     * @var bool
+     */
+    private $unpaginated = false;
+
     public function allSongs(SongRequest $request) {
+        $this->unpaginated = $request->has('unpaginated');
+
         if ($request->has('keyword')) {
             $songs = $this->searchSongsByKeyword($request->keyword);
         } else {
@@ -87,33 +96,34 @@ class SongController extends Controller
     }
 
     public function searchSongsByFilter($sortOrder, $sortField) {
-        if ($sortOrder === null) {
-            return Song::paginate(7);
-        } else {
+        $query = Song::query();
+
+        if ($sortOrder !== null) {
             if ($sortField === "genre") {
-                return Song::join('songs_genres', 'songs.id', '=', 'songs_genres.song_id')
+                $query->join('songs_genres', 'songs.id', '=', 'songs_genres.song_id')
                     ->join('genres', 'songs_genres.genre_id', '=', 'genres.id')
-                    ->orderBy('genres.name', $sortOrder)
-                    ->select('songs.*')
-                    ->paginate(7);
-            } else if ($sortField === "authors") {
-                return Song::join('authors', 'songs.id', '=', 'authors.song_id')
-                    ->orderBy('authors.name', $sortOrder)
-                    ->select('songs.*')
-                    ->paginate(7);
-            } else if ($sortField === "musician") {
-                return Song::join('musicians', 'songs.musician_id', '=', 'musicians.id')
-                    ->orderBy('musicians.name', $sortOrder)
-                    ->select('songs.*')
-                    ->paginate(7);
-            } else {
-                return Song::orderBy($sortField, $sortOrder)->paginate(7);;
+                    ->orderBy('genres.name', $sortOrder);
+            } elseif ($sortField === "authors") {
+                $query->join('authors', 'songs.id', '=', 'authors.song_id')
+                    ->orderBy('authors.name', $sortOrder);
+            } elseif ($sortField === "musician") {
+                $query->join('musicians', 'songs.musician_id', '=', 'musicians.id')
+                    ->orderBy('musicians.name', $sortOrder);
+            } elseif ($sortField !== null) {
+                $query->orderBy($sortField, $sortOrder);
             }
         }
+
+        if ($this->unpaginated) {
+            return $query->get();
+        }
+
+        return $query->paginate(7);
     }
 
     public function searchSongsByKeyword($keyword) {
-        return Song::where('title', 'LIKE', '%' . $keyword . '%')
+        $query = Song::where('title', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('user_id', 'LIKE', '%' . $keyword . '%')
             ->orWhere('length', 'LIKE', '%' . $keyword . '%')
             ->orWhere('releaseDate', 'LIKE', '%' . $keyword . '%')
             ->orWhereHas('genres', function ($query) use ($keyword) {
@@ -121,7 +131,12 @@ class SongController extends Controller
             })
             ->orWhereHas('musician', function ($query) use ($keyword) {
                 $query->where('name', 'LIKE', '%' . $keyword . '%');
-            })
-            ->paginate(7);
+            });
+
+        if ($this->unpaginated) {
+            return $query->get();
+        }
+
+        return $query->paginate(7);
     }
 }

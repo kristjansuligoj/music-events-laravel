@@ -28,9 +28,10 @@ export class SongService {
    *
    * @param { string } keyword
    * @param { any } filter
+   * @param { boolean } unpaginated
    */
-  public allSongs(keyword: string, filter: any): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}${getFilterQuery(keyword, filter)}`);
+  public allSongs(keyword: string = "", filter: any = null, unpaginated: boolean = false): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}${getFilterQuery(keyword, filter, unpaginated)}`);
   }
 
   /**
