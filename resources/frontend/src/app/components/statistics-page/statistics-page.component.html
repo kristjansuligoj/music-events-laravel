@@ -1,0 +1,17 @@
+<div class="container p-5 sm:p-8 bg-white shadow sm:rounded-lg">
+  <div class="mb-5">
+    <h1 class="text-3xl font-semibold text-gray-800 mb-4">Statistics</h1>
+    <p class="text-lg text-gray-600">
+      Insightful stats on musicians, songs, and events, all in one place.
+    </p>
+  </div>
+
+  <app-hr/>
+
+  <ng-container *ngIf="authService.getAuthToken()">
+    <div class="mb-5">
+      <h1 class="text-2xl font-semibold text-gray-800 mb-4">My statistics</h1>
+
+    </div>
+  </ng-container>
+</div>

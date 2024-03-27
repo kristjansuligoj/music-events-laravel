@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import {StatisticsPageComponent} from "./components/statistics-page/statistics-page.component";
 import {MusicianListComponent} from "./components/musicians/musician-list/musician-list.component";
 import {EventListComponent} from "./components/events/event-list/event-list.component";
 import {SongListComponent} from "./components/songs/song-list/song-list.component";
@@ -22,6 +23,11 @@ export const routes: Routes = [
     path: '',
     component: HomepageComponent,
     title: 'Home',
+  },
+  {
+    path: 'statistics',
+    component: StatisticsPageComponent,
+    title: 'Statistics',
   },
   {
     path: 'musicians',
