@@ -96,7 +96,7 @@ class SongController extends Controller
     }
 
     public function searchSongsByFilter($sortOrder, $sortField) {
-        $query = Song::query();
+        $query = Song::query()->with('genres');
 
         if ($sortOrder !== null) {
             if ($sortField === "genre") {
@@ -122,7 +122,8 @@ class SongController extends Controller
     }
 
     public function searchSongsByKeyword($keyword) {
-        $query = Song::where('title', 'LIKE', '%' . $keyword . '%')
+        $query = Song::query()->with('genres')
+            ->where('title', 'LIKE', '%' . $keyword . '%')
             ->orWhere('user_id', 'LIKE', '%' . $keyword . '%')
             ->orWhere('length', 'LIKE', '%' . $keyword . '%')
             ->orWhere('releaseDate', 'LIKE', '%' . $keyword . '%')
