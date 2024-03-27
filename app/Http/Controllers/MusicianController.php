@@ -10,7 +10,15 @@ use Illuminate\Support\Facades\Auth;
 
 class MusicianController extends Controller
 {
+    /**
+     * This variable decides if the returned musicians will be paginated or not
+     *
+     * @var bool
+     */
+    private $unpaginated = false;
+
     public function allMusicians(MusicianRequest $request) {
+        $this->unpaginated = $request->has('unpaginated');
 
         if ($request->has('keyword')) {
             $musicians = $this->searchMusiciansByKeyword($request->keyword);
@@ -22,16 +30,6 @@ class MusicianController extends Controller
             'success' => true,
             'data' => [
                 'musicians' => $musicians,
-            ],
-            'message' => 'Musicians received',
-        ]);
-    }
-
-    public function allMusiciansUnpaginated(MusicianRequest $request) {
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'musicians' => Musician::all(),
             ],
             'message' => 'Musicians received',
         ]);
@@ -102,36 +100,30 @@ class MusicianController extends Controller
     }
 
     public function searchMusiciansByFilter($sortOrder, $sortField) {
-        if ($sortOrder === null) {
-            return Musician::join('musicians_genres', 'musicians.id', '=', 'musicians_genres.musician_id')
-                ->join('genres', 'musicians_genres.genre_id', '=', 'genres.id')
-                ->select('musicians.*')
-                ->with('songs')
-                ->with('events')
-                ->paginate(7);
-        } else {
+        $query = Musician::join('musicians_genres', 'musicians.id', '=', 'musicians_genres.musician_id')
+            ->join('genres', 'musicians_genres.genre_id', '=', 'genres.id')
+            ->select('musicians.*')
+            ->with('songs')
+            ->with('events');
+
+        if ($sortOrder !== null) {
             if ($sortField === "genre") {
-                return Musician::join('musicians_genres', 'musicians.id', '=', 'musicians_genres.musician_id')
-                    ->join('genres', 'musicians_genres.genre_id', '=', 'genres.id')
-                    ->orderBy('genres.name', $sortOrder)
-                    ->select('musicians.*')
-                    ->with('songs')
-                    ->with('events')
-                    ->paginate(7);
+                $query->orderBy('genres.name', $sortOrder);
             } else {
-                return Musician::join('musicians_genres', 'musicians.id', '=', 'musicians_genres.musician_id')
-                    ->join('genres', 'musicians_genres.genre_id', '=', 'genres.id')
-                    ->orderBy($sortField, $sortOrder)
-                    ->select('musicians.*')
-                    ->with('songs')
-                    ->with('events')
-                    ->paginate(7);
+                $query->orderBy($sortField, $sortOrder);
             }
         }
+
+        if ($this->unpaginated) {
+            return $query->get();
+        }
+
+        return $query->paginate(7);
     }
 
     public function searchMusiciansByKeyword($keyword) {
-        return Musician::where('name', 'LIKE', '%' . $keyword . '%')
+        $query = Musician::where('name', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('user_id', 'LIKE', '%' . $keyword . '%')
             ->orWhereHas('genres', function ($query) use ($keyword) {
                 $query->where('name', 'LIKE', '%' . $keyword . '%');
             })
@@ -139,8 +131,13 @@ class MusicianController extends Controller
                 $query->where('title', 'LIKE', '%' . $keyword . '%');
             })
             ->with('songs')
-            ->with('events')
-            ->paginate(7);
+            ->with('events');
+
+        if ($this->unpaginated) {
+            return $query->get();
+        }
+
+        return $query->paginate(7);
     }
 
     public function checkMusicianUsage($id) {
