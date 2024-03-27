@@ -51,7 +51,12 @@ export function getFilterQuery(keyword: string, filter: any, unpaginated: boolea
 
   let unpaginatedQuery: string = "";
   if (unpaginated) {
-    unpaginatedQuery += "?unpaginated=true";
+    if (keyword !== "" || filter !== null) {
+      unpaginatedQuery += "&"
+    } else {
+      unpaginatedQuery += "?"
+    }
+    unpaginatedQuery += "unpaginated=true";
   }
 
   return keywordQuery + filterQuery + unpaginatedQuery;
