@@ -7,20 +7,22 @@ import {UnorderedListComponent} from "../../shared/unordered-list/unordered-list
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
 import {NoteService} from "../../../services/note.service";
+import {HrComponent} from "../../shared/hr/hr.component";
 
 @Component({
   selector: 'app-note-view',
   standalone: true,
-  imports: [
-    ButtonComponent,
-    GoogleMap,
-    MapMarker,
-    NgIf,
-    SpanComponent,
-    UnorderedListComponent,
-    DatePipe,
-    JsonPipe,
-  ],
+    imports: [
+        ButtonComponent,
+        GoogleMap,
+        MapMarker,
+        NgIf,
+        SpanComponent,
+        UnorderedListComponent,
+        DatePipe,
+        JsonPipe,
+        HrComponent,
+    ],
   providers: [
     NoteService,
   ],

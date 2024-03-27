@@ -4,19 +4,21 @@ import {JsonPipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {ButtonComponent} from "../../shared/button/button.component";
 import {UnorderedListComponent} from "../../shared/unordered-list/unordered-list.component";
 import {environment} from "../../../../environments/environment";
+import {HrComponent} from "../../shared/hr/hr.component";
 
 @Component({
   selector: 'app-musician-preview',
   standalone: true,
-  imports: [
-    RouterLink,
-    NgForOf,
-    JsonPipe,
-    NgOptimizedImage,
-    ButtonComponent,
-    NgIf,
-    UnorderedListComponent
-  ],
+    imports: [
+        RouterLink,
+        NgForOf,
+        JsonPipe,
+        NgOptimizedImage,
+        ButtonComponent,
+        NgIf,
+        UnorderedListComponent,
+        HrComponent
+    ],
   templateUrl: './musician-preview.component.html',
 })
 export class MusicianPreviewComponent {

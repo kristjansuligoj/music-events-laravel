@@ -6,17 +6,19 @@ import {AuthService} from "../../../services/auth.service";
 import {ButtonComponent} from "../../shared/button/button.component";
 import {Router} from "@angular/router";
 import {environment} from "../../../../environments/environment";
+import {HrComponent} from "../../shared/hr/hr.component";
 
 @Component({
   selector: 'app-musician-view',
   standalone: true,
-  imports: [
-    JsonPipe,
-    NgOptimizedImage,
-    UnorderedListComponent,
-    NgIf,
-    ButtonComponent,
-  ],
+    imports: [
+        JsonPipe,
+        NgOptimizedImage,
+        UnorderedListComponent,
+        NgIf,
+        ButtonComponent,
+        HrComponent,
+    ],
   providers: [
     MusicianService
   ],

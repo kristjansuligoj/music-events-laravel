@@ -3,17 +3,19 @@ import {ButtonComponent} from "../../shared/button/button.component";
 import {JsonPipe, NgOptimizedImage} from "@angular/common";
 import {UnorderedListComponent} from "../../shared/unordered-list/unordered-list.component";
 import {SpanComponent} from "../../shared/span/span.component";
+import {HrComponent} from "../../shared/hr/hr.component";
 
 @Component({
   selector: 'app-event-preview',
   standalone: true,
-  imports: [
-    ButtonComponent,
-    NgOptimizedImage,
-    UnorderedListComponent,
-    SpanComponent,
-    JsonPipe
-  ],
+    imports: [
+        ButtonComponent,
+        NgOptimizedImage,
+        UnorderedListComponent,
+        SpanComponent,
+        JsonPipe,
+        HrComponent
+    ],
   templateUrl: './event-preview.component.html',
 })
 export class EventPreviewComponent {
