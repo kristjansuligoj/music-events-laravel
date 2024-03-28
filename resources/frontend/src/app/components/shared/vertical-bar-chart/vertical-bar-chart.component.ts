@@ -20,7 +20,7 @@ export class VerticalBarChartComponent {
   @Input() public xAxisLabel: string = 'X axis label';
   @Input() public showYAxisLabel: boolean = true;
   @Input() public yAxisLabel: string = 'Y axis label';
-  @Input() public colorScheme: { domain } = {
+  @Input() public colorScheme: any = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
 }
