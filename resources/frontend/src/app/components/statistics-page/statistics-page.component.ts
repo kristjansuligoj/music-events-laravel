@@ -32,6 +32,7 @@ export class StatisticsPageComponent implements OnInit {
   public myMusicians: any = [];
   public mySongs: any = [];
   public myEvents: any = [];
+  public addedElements: any = [];
 
   public constructor(
     public authService: AuthService,
@@ -65,6 +66,8 @@ export class StatisticsPageComponent implements OnInit {
               this.eventService.allEvents(id, null, true).subscribe({
                   next: (response: any) => {
                     this.myEvents = response.data.events;
+
+                    this.getAddedElementsCount();
                   },
                   error: (response: any) => {
                     console.log(response);
@@ -82,5 +85,25 @@ export class StatisticsPageComponent implements OnInit {
         console.log(response);
       }
     });
+  }
+
+  /**
+   * Counts all the added elements and formats the data for pie chart representation
+   */
+  public getAddedElementsCount(): void {
+    this.addedElements = [
+      {
+        "name": "Musicians",
+        "value": this.myMusicians.length,
+      },
+      {
+        "name": "Songs",
+        "value": this.mySongs.length,
+      },
+      {
+        "name": "Events",
+        "value": this.myEvents.length,
+      },
+    ]
   }
 }
