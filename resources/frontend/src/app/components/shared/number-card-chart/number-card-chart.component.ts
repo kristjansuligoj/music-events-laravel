@@ -13,7 +13,7 @@ export class NumberCardChartComponent {
   @Input() public data: any[] = [];
   @Input() public size: [number, number] = [700, 400];
   @Input() public cardColor: string = '#232837';
-  @Input() public colorScheme: { domain } = {
+  @Input() public colorScheme: any = {
     domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
   };
 }
