@@ -41,6 +41,9 @@ export class StatisticsPageComponent implements OnInit {
 
   public loggedUser: any;
 
+  // Graph data
+  public genreCount: any = [];
+
   public constructor(
     public authService: AuthService,
     public musicianService: MusicianService,
@@ -73,6 +76,8 @@ export class StatisticsPageComponent implements OnInit {
                     if (this.loggedUser) {
                       this.filterElements();
                     }
+
+                    this.getGenreCount();
                   },
                   error: (response: any) => {
                     console.log(response);
@@ -99,5 +104,25 @@ export class StatisticsPageComponent implements OnInit {
     this.myMusicians = this.musicians.filter((musician: any) => {return musician.user_id === this.loggedUser.id});
     this.mySongs = this.songs.filter((song: any) => {return song.user_id === this.loggedUser.id});
     this.myEvents = this.events.filter((event: any) => {return event.user_id === this.loggedUser.id});
+  }
+
+  /**
+   * Goes through songs and counts how many times a genre appears,
+   * it then formats the data for pie chart representation
+   */
+  public getGenreCount(): void {
+    const genreCounts = this.mySongs.reduce((counts: any, song: any) => {
+      song.genres.forEach((genre: any) => {
+        counts[genre.name] = (counts[genre.name] || 0) + 1;
+      });
+      return counts;
+    }, {});
+
+    this.genreCount = Object.keys(genreCounts).map((name: string): any => ({
+      name,
+      value: genreCounts[name]
+    }));
+
+    console.log(this.genreCount);
   }
 }
