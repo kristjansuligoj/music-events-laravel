@@ -41,6 +41,9 @@ export class StatisticsPageComponent implements OnInit {
 
   public loggedUser: any;
 
+  // Graph data
+  public topArtists: any = [];
+
   public constructor(
     public authService: AuthService,
     public musicianService: MusicianService,
@@ -73,6 +76,8 @@ export class StatisticsPageComponent implements OnInit {
                     if (this.loggedUser) {
                       this.filterElements();
                     }
+
+                    this.getTopArtists();
                   },
                   error: (response: any) => {
                     console.log(response);
@@ -99,5 +104,16 @@ export class StatisticsPageComponent implements OnInit {
     this.myMusicians = this.musicians.filter((musician: any) => {return musician.user_id === this.loggedUser.id});
     this.mySongs = this.songs.filter((song: any) => {return song.user_id === this.loggedUser.id});
     this.myEvents = this.events.filter((event: any) => {return event.user_id === this.loggedUser.id});
+  }
+
+  /**
+   * Goes through musicians and counts how many times they are participating in an event,
+   * it then formats the data for number card chart representation
+   */
+  public getTopArtists(): void {
+    this.topArtists = this.musicians.map((musician: any) => ({
+      name: musician.name,
+      value: musician.events.length
+    })).sort((a: any, b: any) => b.value - a.value).slice(0, 10);
   }
 }

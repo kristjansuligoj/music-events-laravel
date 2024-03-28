@@ -13,5 +13,34 @@
       <h1 class="text-2xl font-semibold text-gray-800 mb-4">My statistics</h1>
 
     </div>
+    <app-hr/>
+  </ng-container>
+
+  <ng-container>
+    <div class="mb-5">
+      <h1 class="text-2xl font-semibold text-gray-800 mb-4">Overall statistics</h1>
+
+      <app-hr/>
+
+      <div class="flex flex-col justify-center items-center">
+        <h1 class="text-2xl font-semibold text-gray-800 mb-4">Top artists</h1>
+        <p class="text-lg text-gray-600">
+          <small><i>This is decided based on how many events they are participating in.</i></small>
+        </p>
+
+        <ng-container *ngIf="topArtists.length > 0; else noData">
+          <app-number-card-chart
+            [data]="topArtists"
+          ></app-number-card-chart>
+        </ng-container>
+
+        <ng-template #noData>
+          <h3 class="text-gray-800">Not enough data available for this graph.</h3>
+        </ng-template>
+
+      </div>
+
+    </div>
+    <app-hr/>
   </ng-container>
 </div>
