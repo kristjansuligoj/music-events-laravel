@@ -122,7 +122,5 @@ export class StatisticsPageComponent implements OnInit {
       name,
       value: genreCounts[name]
     }));
-
-    console.log(this.genreCount);
   }
 }
