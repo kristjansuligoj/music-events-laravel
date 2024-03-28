@@ -41,6 +41,9 @@ export class StatisticsPageComponent implements OnInit {
 
   public loggedUser: any;
 
+  // Graph data
+  public addedElements: any = [];
+
   public constructor(
     public authService: AuthService,
     public musicianService: MusicianService,
@@ -73,6 +76,8 @@ export class StatisticsPageComponent implements OnInit {
                     if (this.loggedUser) {
                       this.filterElements();
                     }
+
+                    this.getAddedElementsCount();
                   },
                   error: (response: any) => {
                     console.log(response);
@@ -99,5 +104,26 @@ export class StatisticsPageComponent implements OnInit {
     this.myMusicians = this.musicians.filter((musician: any) => {return musician.user_id === this.loggedUser.id});
     this.mySongs = this.songs.filter((song: any) => {return song.user_id === this.loggedUser.id});
     this.myEvents = this.events.filter((event: any) => {return event.user_id === this.loggedUser.id});
+  }
+
+
+  /**
+   * Counts all the added elements and formats the data for pie chart representation
+   */
+  public getAddedElementsCount(): void {
+    this.addedElements = [
+      {
+        "name": "Musicians",
+        "value": this.myMusicians.length,
+      },
+      {
+        "name": "Songs",
+        "value": this.mySongs.length,
+      },
+      {
+        "name": "Events",
+        "value": this.myEvents.length,
+      },
+    ]
   }
 }
