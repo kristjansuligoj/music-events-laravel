@@ -29,42 +29,50 @@ import {EventService} from "../../services/event.service";
   templateUrl: './statistics-page.component.html',
 })
 export class StatisticsPageComponent implements OnInit {
+  // All elements
+  public musicians: any = [];
+  public songs: any = [];
+  public events: any = [];
+
+  // Elements added by the logged user
   public myMusicians: any = [];
   public mySongs: any = [];
   public myEvents: any = [];
+
+  public loggedUser: any;
 
   public constructor(
     public authService: AuthService,
     public musicianService: MusicianService,
     public songService: SongService,
     public eventService: EventService,
-  ) {}
+  ) {
+    this.loggedUser = this.authService.getLoggedUser();
+  }
 
   public ngOnInit(): void {
-    const loggedUser: any = this.authService.getLoggedUser();
-
-    if (loggedUser) {
-      this.fetchMyAddedElements(loggedUser.id);
-    }
+    this.fetchElements();
   }
 
   /**
-   * Fetches all elements the logged user has added, for further analysis
-   *
-   * @param { string } id
+   * Fetches all elements from the database, for further analysis
    */
-  public fetchMyAddedElements(id: string): void {
-    this.musicianService.allMusicians(id, null, true).subscribe({
+  public fetchElements(): void {
+    this.musicianService.allMusicians('', null, true).subscribe({
       next: (response: any) => {
-        this.myMusicians = response.data.musicians;
+        this.musicians = response.data.musicians;
 
-        this.songService.allSongs(id, null, true).subscribe({
+        this.songService.allSongs('', null, true).subscribe({
             next: (response: any) => {
-              this.mySongs = response.data.songs;
+              this.songs = response.data.songs;
 
-              this.eventService.allEvents(id, null, true).subscribe({
+              this.eventService.allEvents('', null, true).subscribe({
                   next: (response: any) => {
-                    this.myEvents = response.data.events;
+                    this.events = response.data.events;
+
+                    if (this.loggedUser) {
+                      this.filterElements();
+                    }
                   },
                   error: (response: any) => {
                     console.log(response);
@@ -82,5 +90,14 @@ export class StatisticsPageComponent implements OnInit {
         console.log(response);
       }
     });
+  }
+
+  /**
+   * Saves elements that were added by the logged user
+   */
+  public filterElements(): void {
+    this.myMusicians = this.musicians.filter((musician: any) => {return musician.user_id === this.loggedUser.id});
+    this.mySongs = this.songs.filter((song: any) => {return song.user_id === this.loggedUser.id});
+    this.myEvents = this.events.filter((event: any) => {return event.user_id === this.loggedUser.id});
   }
 }
