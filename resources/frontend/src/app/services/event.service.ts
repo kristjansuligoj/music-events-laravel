@@ -27,9 +27,10 @@ export class EventService {
    *
    * @param { string } keyword
    * @param { any } filter
+   * @param { boolean } unpaginated
    */
-  public allEvents(keyword: string, filter: any): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}${getFilterQuery(keyword, filter)}`);
+  public allEvents(keyword: string = "", filter: any = null, unpaginated: boolean = false): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}${getFilterQuery(keyword, filter, unpaginated)}`);
   }
 
   /**

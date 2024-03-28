@@ -64,7 +64,7 @@ export class SongFormComponent implements OnInit {
    * Gets default values for song form. If user is editing, fill the inputs with current values
    */
   public getDefaultValues(): void {
-    this.musicianService.allMusiciansUnpaginated().subscribe({
+    this.musicianService.allMusicians("", null, true).subscribe({
       next: (response: any) => {
         // Maps the object to correct property names for dropdown component
         this.musicians = response.data.musicians.map((item: any) => ({

@@ -13,12 +13,21 @@ use Illuminate\Support\Facades\Auth;
 class EventController extends Controller
 {
     /**
+     * This variable decides if the returned musicians will be paginated or not
+     *
+     * @var bool
+     */
+    private $unpaginated = false;
+
+    /**
      * Fetches all events
      *
      * @param EventRequest $request
      * @return JsonResponse
      */
     public function allEvents(EventRequest $request) {
+        $this->unpaginated = $request->has('unpaginated');
+
         if ($request->has('keyword')) {
             $events = $this->searchEventsByKeyword($request->keyword, (bool)$request->showAttending);
         } else {
@@ -237,50 +246,56 @@ class EventController extends Controller
                 ->where('event_participants.user_id', auth()->user()->id);
         }
 
-        if ($sortField === "musician") {
-            $query->join('events_musicians', 'events.id', '=', 'events_musicians.event_id')
-                ->join('musicians', 'events_musicians.musician_id', '=', 'musicians.id');
+        if ($sortOrder !== null) {
+            if ($sortField === "musician") {
+                $query->join('events_musicians', 'events.id', '=', 'events_musicians.event_id')
+                    ->join('musicians', 'events_musicians.musician_id', '=', 'musicians.id');
 
-            if (in_array(strtolower($sortOrder), ['asc', 'desc'])) {
-                $query->orderBy('musicians.name', $sortOrder);
+                if (in_array(strtolower($sortOrder), ['asc', 'desc'])) {
+                    $query->orderBy('musicians.name', $sortOrder);
+                }
+            } else {
+                $query->orderBy($sortField, $sortOrder);
             }
-        } elseif ($sortOrder !== null) {
-            $query->orderBy($sortField, $sortOrder);
         }
 
-        return $query->with('musicians')->select('events.*')->paginate(7);
+        $query->with('musicians')->select('events.*');
+
+        if ($this->unpaginated) {
+            return $query->get();
+        }
+
+        return $query->paginate(7);
     }
 
     public function searchEventsByKeyword($keyword, $showAttending = false) {
+        $query = Event::query();
+
+        $query->where(function ($query) use ($keyword) {
+            $query->where('name', 'LIKE', "%$keyword%")
+                ->orWhere('user_id', 'LIKE', "%$keyword%")
+                ->orWhere('address', 'LIKE', "%$keyword%")
+                ->orWhere('date', 'LIKE', "%$keyword%")
+                ->orWhere('time', 'LIKE', "%$keyword%")
+                ->orWhere('description', 'LIKE', "%$keyword%")
+                ->orWhere('ticketPrice', 'LIKE', "%$keyword%")
+                ->orWhereHas('musicians', function ($subquery) use ($keyword) {
+                    $subquery->where('name', 'LIKE', "%$keyword%");
+                });
+        });
+
         if ($showAttending) {
-            return Event::join('event_participants', 'events.id', '=', 'event_participants.event_id')
-                ->where('event_participants.user_id', auth()->user()->id)
-                ->where(function ($query) use ($keyword) {
-                    $query->where('name', 'LIKE', '%' . $keyword . '%')
-                        ->orWhere('address', 'LIKE', '%' . $keyword . '%')
-                        ->orWhere('date', 'LIKE', '%' . $keyword . '%')
-                        ->orWhere('time', 'LIKE', '%' . $keyword . '%')
-                        ->orWhere('description', 'LIKE', '%' . $keyword . '%')
-                        ->orWhere('ticketPrice', 'LIKE', '%' . $keyword . '%')
-                        ->orWhereHas('musicians', function ($subquery) use ($keyword) {
-                            $subquery->where('name', 'LIKE', '%' . $keyword . '%');
-                        });
-                })
-                ->with('musicians')
-                ->select('events.*')
-                ->paginate(7);
-        } else {
-            return Event::where('name', 'LIKE', '%' . $keyword . '%')
-                ->orWhere('address', 'LIKE', '%' . $keyword . '%')
-                ->orWhere('date', 'LIKE', '%' . $keyword . '%')
-                ->orWhere('time', 'LIKE', '%' . $keyword . '%')
-                ->orWhere('description', 'LIKE', '%' . $keyword . '%')
-                ->orWhere('ticketPrice', 'LIKE', '%' . $keyword . '%')
-                ->orWhereHas('musicians', function ($query) use ($keyword) {
-                    $query->where('name', 'LIKE', '%' . $keyword . '%');
-                })->with('musicians')
-                ->select('events.*')
-                ->paginate(7);
+            $query->join('event_participants', 'events.id', '=', 'event_participants.event_id')
+                ->where('event_participants.user_id', auth()->user()->id);
         }
+
+        $query = $query->with('musicians')
+            ->select('events.*');
+
+        if ($this->unpaginated) {
+            return $query->get();
+        }
+
+        return $query->paginate(7);
     }
 }

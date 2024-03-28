@@ -29,16 +29,10 @@ export class MusicianService {
    *
    * @param { string } keyword
    * @param { any } filter
+   * @param { boolean } unpaginated
    */
-  public allMusicians(keyword: string, filter: any): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}${getFilterQuery(keyword, filter)}`);
-  }
-
-  /**
-   * Fetches all musicians without pagination
-   */
-  public allMusiciansUnpaginated(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/unpaginated`);
+  public allMusicians(keyword: string = "", filter: any = null, unpaginated: boolean = false): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}${getFilterQuery(keyword, filter, unpaginated)}`);
   }
 
   /**

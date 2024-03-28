@@ -54,7 +54,6 @@ Route::group(['prefix' => 'notes', 'middleware' => ['auth:sanctum']], function (
 
 Route::prefix('musicians')->group(function () {
     Route::get('/', [MusicianController::class, 'allMusicians'])->name('musicians.list');
-    Route::get('/unpaginated', [MusicianController::class, 'allMusiciansUnpaginated'])->name('musicians.listUnpaginated');
     Route::get('/{musicianId}', [MusicianController::class, 'getMusician'])->whereUuid('musician')->name('musicians.get');;
 
     Route::middleware('auth:sanctum')->group(function () {

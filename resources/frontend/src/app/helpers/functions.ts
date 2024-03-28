@@ -35,9 +35,10 @@ export function isEventInFuture(date: any): boolean {
  *
  * @param { string } keyword
  * @param { any } filter
+ * @param { boolean } unpaginated
  * @return string
  */
-export function getFilterQuery(keyword: string, filter: any): string {
+export function getFilterQuery(keyword: string, filter: any, unpaginated: boolean = false): string {
   let keywordQuery: string = "";
   if (keyword !== "") {
     keywordQuery += "?keyword=" + keyword;
@@ -48,5 +49,15 @@ export function getFilterQuery(keyword: string, filter: any): string {
     filterQuery += "?order=" + filter.order + "&field=" + filter.field;
   }
 
-  return keywordQuery + filterQuery;
+  let unpaginatedQuery: string = "";
+  if (unpaginated) {
+    if (keyword !== "" || filter !== null) {
+      unpaginatedQuery += "&"
+    } else {
+      unpaginatedQuery += "?"
+    }
+    unpaginatedQuery += "unpaginated=true";
+  }
+
+  return keywordQuery + filterQuery + unpaginatedQuery;
 }
