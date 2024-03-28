@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {NgxChartsModule} from "@swimlane/ngx-charts";
+import {LegendPosition, NgxChartsModule} from "@swimlane/ngx-charts";
 
 @Component({
   selector: 'app-vertical-bar-chart',
@@ -20,7 +20,9 @@ export class VerticalBarChartComponent {
   @Input() public xAxisLabel: string = 'X axis label';
   @Input() public showYAxisLabel: boolean = true;
   @Input() public yAxisLabel: string = 'Y axis label';
+  @Input() public animations: boolean = false;
   @Input() public colorScheme: any = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
+  protected readonly LegendPosition = LegendPosition;
 }
