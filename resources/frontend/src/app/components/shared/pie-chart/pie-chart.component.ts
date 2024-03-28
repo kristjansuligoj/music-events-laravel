@@ -18,6 +18,6 @@ export class PieChartComponent {
   @Input() public legendPosition: LegendPosition = LegendPosition.Right;
   @Input() public gradient: boolean = true;
   @Input() public colorScheme: any = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#2D5A71', '#E37222', '#6E44FF']
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
 }

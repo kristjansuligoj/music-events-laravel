@@ -14,6 +14,6 @@ export class NumberCardChartComponent {
   @Input() public size: [number, number] = [700, 400];
   @Input() public cardColor: string = '#232837';
   @Input() public colorScheme: any = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#2D5A71', '#E37222', '#6E44FF']
+    domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
   };
 }
