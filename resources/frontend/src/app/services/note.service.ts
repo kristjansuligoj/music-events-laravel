@@ -53,7 +53,7 @@ export class NoteService {
    * @param { any } noteData
    */
   public editNote(noteData: any): Observable<any[]> {
-    return this.http.patch<any[]>(`${this.apiUrl}/edit/${noteData.id}`, noteData);
+    return this.http.patch<any[]>(`${this.apiUrl}/${noteData.id}`, noteData);
   }
 
   /**
@@ -62,6 +62,6 @@ export class NoteService {
    * @param id
    */
   public removeNote(id: string): Observable<any[]> {
-    return this.http.delete<any[]>(`${this.apiUrl}/remove/${id}`);
+    return this.http.delete<any[]>(`${this.apiUrl}/${id}`);
   }
 }
