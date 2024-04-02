@@ -42,6 +42,7 @@ export class StatisticsPageComponent implements OnInit {
   public loggedUser: any;
 
   // Graph data
+  public genreCount: any = [];
   public addedElements: any = [];
   public topArtists: any = [];
   public mostPopularGenreCount: any = [];
@@ -80,6 +81,7 @@ export class StatisticsPageComponent implements OnInit {
                       this.filterElements();
                     }
 
+                    this.getGenreCount();
                     this.getAddedElementsCount();
                     this.getTopArtists();
                     this.getMostPopularGenreCount();
@@ -113,6 +115,24 @@ export class StatisticsPageComponent implements OnInit {
   }
 
   /**
+   * Goes through songs and counts how many times a genre appears,
+   * it then formats the data for pie chart representation
+   */
+  public getGenreCount(): void {
+    const genreCounts = this.mySongs.reduce((counts: any, song: any) => {
+      song.genres.forEach((genre: any) => {
+        counts[genre.name] = (counts[genre.name] || 0) + 1;
+      });
+      return counts;
+    }, {});
+
+    this.genreCount = Object.keys(genreCounts).map((name: string): any => ({
+      name,
+      value: genreCounts[name]
+    }));
+  }
+      
+   /**
    * Counts all the added elements and formats the data for pie chart representation
    */
   public getAddedElementsCount(): void {

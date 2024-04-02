@@ -13,6 +13,7 @@ import {DropdownComponent} from "../../shared/dropdown/dropdown.component";
 import {MusicianService} from "../../../services/musician.service";
 import {SubmitButtonComponent} from "../../shared/submit-button/submit-button.component";
 import {dateRelativeToTodayValidator} from "../../../validators/dateRelativeToTodayValidator";
+import {atLeastOneCheckboxClickedValidator} from "../../../validators/atLeastOneCheckboxClickedValidator";
 
 @Component({
   selector: 'app-song-form',
@@ -53,7 +54,7 @@ export class SongFormComponent implements OnInit {
     length: new FormControl('', [Validators.required, Validators.min(10), Validators.max(300)]),
     releaseDate: new FormControl('', [Validators.required, dateRelativeToTodayValidator('before')]),
     authors: new FormControl('', [Validators.required]),
-    genre: new FormArray([]),
+    genre: new FormArray([], [atLeastOneCheckboxClickedValidator()]),
   });
 
   public ngOnInit(): void {
