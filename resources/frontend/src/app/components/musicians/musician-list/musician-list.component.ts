@@ -45,7 +45,7 @@ export class MusicianListComponent implements OnInit {
 
   public ngOnInit(): void {
     if (this.authService.getLoggedUser()) {
-      if (this.router.url === "/events/mine") {
+      if (this.router.url === "/musicians/mine") {
         this.getMine = true;
       }
     }
@@ -78,17 +78,13 @@ export class MusicianListComponent implements OnInit {
    * @param { any } filter
    */
   public getMusicians(keyword: string, filter: any): void {
+    if (this.getMine) {
+      keyword = this.authService.getLoggedUser().id;
+    }
+
     this.musicianService.allMusicians(keyword, filter).subscribe({
       next: (response: any) => {
         this.musicians = response.data.musicians.data;
-
-        if (this.getMine) {
-          const loggedUserId: string = this.authService.getLoggedUser().id;
-          this.musicians = this.musicians.filter((item: any) => {
-            return item.id === loggedUserId;
-          })
-        }
-
         this.nextPageUrl = response.data.musicians.next_page_url;
         this.prevPageUrl = response.data.musicians.prev_page_url;
       },

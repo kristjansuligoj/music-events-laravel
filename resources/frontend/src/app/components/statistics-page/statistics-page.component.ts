@@ -131,7 +131,7 @@ export class StatisticsPageComponent implements OnInit {
       value: genreCounts[name]
     }));
   }
-      
+
    /**
    * Counts all the added elements and formats the data for pie chart representation
    */
@@ -151,7 +151,7 @@ export class StatisticsPageComponent implements OnInit {
       },
     ]
   }
-  
+
   /**
    * Goes through musicians and counts how many times they are participating in an event,
    * it then formats the data for number card chart representation
@@ -160,7 +160,7 @@ export class StatisticsPageComponent implements OnInit {
     this.topArtists = this.musicians.map((musician: any) => ({
       name: musician.name,
       value: musician.events.length
-    });
+    })).sort((a: any, b: any) => b.value - a.value).slice(0, 12);
   }
 
    /**
@@ -189,6 +189,6 @@ export class StatisticsPageComponent implements OnInit {
     this.mostPopularEvents = this.events.map((event: any) => ({
       name: event.name,
       value: event.participants.length
-    })).sort((a: any, b: any) => b.value - a.value).slice(0, 10);
+    })).sort((a: any, b: any) => b.value - a.value).slice(0, 12);
   }
 }

@@ -21,7 +21,7 @@ class SongFactory extends Factory
      */
     public function definition()
     {
-        $user = User::first();
+        $user = User::inRandomOrder()->first();
 
         return [
             'musician_id' => Musician::inRandomOrder()->first()->id,
