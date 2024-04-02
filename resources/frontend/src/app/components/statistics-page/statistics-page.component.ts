@@ -43,6 +43,7 @@ export class StatisticsPageComponent implements OnInit {
 
   // Graph data
   public mostPopularGenreCount: any = [];
+  public mostPopularEvents: any = [];
 
   public constructor(
     public authService: AuthService,
@@ -78,6 +79,7 @@ export class StatisticsPageComponent implements OnInit {
                     }
 
                     this.getMostPopularGenreCount();
+                    this.getMostPopularEvents();
                   },
                   error: (response: any) => {
                     console.log(response);
@@ -122,5 +124,16 @@ export class StatisticsPageComponent implements OnInit {
       name,
       value: genreCounts[name]
     })).sort((a: any, b: any) => b.value - a.value);
+  }
+
+  /**
+   * Goes through events and counts how many users are participating in them,
+   * it then formats the data for number card chart representation
+   */
+  public getMostPopularEvents(): void {
+    this.mostPopularEvents = this.events.map((event: any) => ({
+      name: event.name,
+      value: event.participants.length
+    })).sort((a: any, b: any) => b.value - a.value).slice(0, 10);
   }
 }
