@@ -43,6 +43,10 @@ export class StatisticsPageComponent implements OnInit {
 
   // Graph data
   public genreCount: any = [];
+  public addedElements: any = [];
+  public topArtists: any = [];
+  public mostPopularGenreCount: any = [];
+  public mostPopularEvents: any = [];
 
   public constructor(
     public authService: AuthService,
@@ -78,6 +82,10 @@ export class StatisticsPageComponent implements OnInit {
                     }
 
                     this.getGenreCount();
+                    this.getAddedElementsCount();
+                    this.getTopArtists();
+                    this.getMostPopularGenreCount();
+                    this.getMostPopularEvents();
                   },
                   error: (response: any) => {
                     console.log(response);
@@ -122,5 +130,65 @@ export class StatisticsPageComponent implements OnInit {
       name,
       value: genreCounts[name]
     }));
+  }
+      
+   /**
+   * Counts all the added elements and formats the data for pie chart representation
+   */
+  public getAddedElementsCount(): void {
+    this.addedElements = [
+      {
+        "name": "Musicians",
+        "value": this.myMusicians.length,
+      },
+      {
+        "name": "Songs",
+        "value": this.mySongs.length,
+      },
+      {
+        "name": "Events",
+        "value": this.myEvents.length,
+      },
+    ]
+  }
+  
+  /**
+   * Goes through musicians and counts how many times they are participating in an event,
+   * it then formats the data for number card chart representation
+   */
+  public getTopArtists(): void {
+    this.topArtists = this.musicians.map((musician: any) => ({
+      name: musician.name,
+      value: musician.events.length
+    });
+  }
+
+   /**
+   * Goes through all songs and counts how many times a genre appears,
+   * it then formats the data for vertical bar chart representation
+   */
+  public getMostPopularGenreCount(): void {
+    const genreCounts = this.songs.reduce((counts: any, song: any) => {
+      song.genres.forEach((genre: any) => {
+        counts[genre.name] = (counts[genre.name] || 0) + 1;
+      });
+      return counts;
+    }, {});
+
+    this.mostPopularGenreCount = Object.keys(genreCounts).map((name: string): any => ({
+      name,
+      value: genreCounts[name]
+    })).sort((a: any, b: any) => b.value - a.value);
+  }
+
+  /**
+   * Goes through events and counts how many users are participating in them,
+   * it then formats the data for number card chart representation
+   */
+  public getMostPopularEvents(): void {
+    this.mostPopularEvents = this.events.map((event: any) => ({
+      name: event.name,
+      value: event.participants.length
+    })).sort((a: any, b: any) => b.value - a.value).slice(0, 10);
   }
 }
