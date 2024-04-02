@@ -20,7 +20,7 @@ class EventFactory extends Factory
      */
     public function definition()
     {
-        $user = User::first();
+        $user = User::inRandomOrder()->first();
 
         return [
             'name' => $this->faker->words(5, true),
