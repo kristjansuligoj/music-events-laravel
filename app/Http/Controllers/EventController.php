@@ -259,7 +259,7 @@ class EventController extends Controller
             }
         }
 
-        $query->with('musicians')->with('participants')->select('events.*');
+        $query->with('musicians','participants')->select('events.*');
 
         if ($this->unpaginated) {
             return $query->get();
@@ -289,7 +289,7 @@ class EventController extends Controller
                 ->where('event_participants.user_id', auth()->user()->id);
         }
 
-        $query = $query->with('musicians')->with('participants')->select('events.*');
+        $query = $query->with('musicians','participants')->select('events.*');
 
         if ($this->unpaginated) {
             return $query->get();
