@@ -42,6 +42,7 @@ export class StatisticsPageComponent implements OnInit {
   public loggedUser: any;
 
   // Graph data
+  public mostPopularGenreCount: any = [];
   public mostPopularEvents: any = [];
 
   public constructor(
@@ -77,6 +78,7 @@ export class StatisticsPageComponent implements OnInit {
                       this.filterElements();
                     }
 
+                    this.getMostPopularGenreCount();
                     this.getMostPopularEvents();
                   },
                   error: (response: any) => {
@@ -104,6 +106,24 @@ export class StatisticsPageComponent implements OnInit {
     this.myMusicians = this.musicians.filter((musician: any) => {return musician.user_id === this.loggedUser.id});
     this.mySongs = this.songs.filter((song: any) => {return song.user_id === this.loggedUser.id});
     this.myEvents = this.events.filter((event: any) => {return event.user_id === this.loggedUser.id});
+  }
+
+  /**
+   * Goes through all songs and counts how many times a genre appears,
+   * it then formats the data for vertical bar chart representation
+   */
+  public getMostPopularGenreCount(): void {
+    const genreCounts = this.songs.reduce((counts: any, song: any) => {
+      song.genres.forEach((genre: any) => {
+        counts[genre.name] = (counts[genre.name] || 0) + 1;
+      });
+      return counts;
+    }, {});
+
+    this.mostPopularGenreCount = Object.keys(genreCounts).map((name: string): any => ({
+      name,
+      value: genreCounts[name]
+    })).sort((a: any, b: any) => b.value - a.value);
   }
 
   /**
