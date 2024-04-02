@@ -23,6 +23,7 @@
       <app-hr/>
 
       <div class="flex flex-col justify-center items-center">
+
         <h1 class="text-2xl font-semibold text-gray-800 mb-4">Top artists</h1>
         <p class="text-lg text-gray-600">
           <small><i>This is decided based on how many events they are participating in.</i></small>
@@ -31,6 +32,29 @@
         <ng-container *ngIf="topArtists.length > 0; else noData">
           <app-number-card-chart
             [data]="topArtists"
+        
+        <h1 class="text-2xl font-semibold text-gray-800 mb-4">Most popular genre</h1>
+        <p class="text-lg text-gray-600">
+          <small><i>This is decided by which genre was added the most.</i></small>
+        </p>
+
+        <ng-container *ngIf="mostPopularGenreCount.length > 0; else noData">
+          <app-vertical-bar-chart
+            [data]="mostPopularGenreCount"
+            [showYAxisLabel]="false"
+            [showXAxisLabel]="false"
+            [showLegend]="false"
+            [animations]="false"
+          ></app-vertical-bar-chart>
+          
+        <h1 class="text-2xl font-semibold text-gray-800 mb-4">Most popular events</h1>
+        <p class="text-lg text-gray-600">
+          <small><i>This is decided based on how many users are attending an event.</i></small>
+        </p>
+
+        <ng-container *ngIf="mostPopularEvents.length > 0; else noData">
+          <app-number-card-chart
+            [data]="mostPopularEvents"
           ></app-number-card-chart>
         </ng-container>
 
