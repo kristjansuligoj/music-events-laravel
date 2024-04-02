@@ -42,6 +42,7 @@ export class StatisticsPageComponent implements OnInit {
   public loggedUser: any;
 
   // Graph data
+  public addedElements: any = [];
   public topArtists: any = [];
   public mostPopularGenreCount: any = [];
   public mostPopularEvents: any = [];
@@ -79,6 +80,7 @@ export class StatisticsPageComponent implements OnInit {
                       this.filterElements();
                     }
 
+                    this.getAddedElementsCount();
                     this.getTopArtists();
                     this.getMostPopularGenreCount();
                     this.getMostPopularEvents();
@@ -111,6 +113,26 @@ export class StatisticsPageComponent implements OnInit {
   }
 
   /**
+   * Counts all the added elements and formats the data for pie chart representation
+   */
+  public getAddedElementsCount(): void {
+    this.addedElements = [
+      {
+        "name": "Musicians",
+        "value": this.myMusicians.length,
+      },
+      {
+        "name": "Songs",
+        "value": this.mySongs.length,
+      },
+      {
+        "name": "Events",
+        "value": this.myEvents.length,
+      },
+    ]
+  }
+  
+  /**
    * Goes through musicians and counts how many times they are participating in an event,
    * it then formats the data for number card chart representation
    */
@@ -120,7 +142,6 @@ export class StatisticsPageComponent implements OnInit {
       value: musician.events.length
     });
   }
-  
 
    /**
    * Goes through all songs and counts how many times a genre appears,
