@@ -25,10 +25,14 @@
       [data]="event.ticketPrice + '€'"
     />
 
-    <app-span
-      title="Musician"
-      [data]="event.musicians[0].name"
-    />
+    <ng-container
+      *ngIf="event.musicians.length > 0"
+    >
+      <app-span
+        title="Musician"
+        [data]="event.musicians[0].name"
+      />
+    </ng-container>
   </div>
 
 </article>

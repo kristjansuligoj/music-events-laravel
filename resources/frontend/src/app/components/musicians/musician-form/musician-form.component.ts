@@ -10,6 +10,7 @@ import {genres} from "../../../config/genres";
 import {HttpErrorResponse} from "@angular/common/http";
 import {JsonPipe, NgIf} from "@angular/common";
 import {SubmitButtonComponent} from "../../shared/submit-button/submit-button.component";
+import {atLeastOneCheckboxClickedValidator} from "../../../validators/atLeastOneCheckboxClickedValidator";
 
 @Component({
   selector: 'app-musician-form',
@@ -46,7 +47,7 @@ export class MusicianFormComponent implements OnInit {
   public editForm: FormGroup = new FormGroup({
     image: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required]),
-    genre: new FormArray([], [Validators.required]),
+    genre: new FormArray([], [atLeastOneCheckboxClickedValidator()]),
   });
 
   public ngOnInit(): void {

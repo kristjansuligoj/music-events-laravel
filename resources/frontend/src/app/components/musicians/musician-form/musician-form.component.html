@@ -22,8 +22,7 @@
         [options]="genres"
         [formGroup]="editForm"
         [errors]="{
-          required: 'Genre is required!',
-          atLeastOneChecked: 'Genre is required!',
+          noCheckboxSelected: 'Genre is required!',
         }"
         [additionalErrors]="errors"
         name="genre"
