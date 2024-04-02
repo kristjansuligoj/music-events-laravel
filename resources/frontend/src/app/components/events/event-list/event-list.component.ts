@@ -96,17 +96,13 @@ export class EventListComponent implements OnInit {
         }
       })
     } else {
+      if (this.getMine) {
+        keyword = this.authService.getLoggedUser().id;
+      }
+
       this.eventService.allEvents(keyword, filter).subscribe({
         next: (response: any) => {
           this.events = response.data.events.data;
-
-          if (this.getMine) {
-            const loggedUserId: string = this.authService.getLoggedUser().id;
-            this.events = this.events.filter((item: any) => {
-              return item.id === loggedUserId;
-            })
-          }
-
           this.nextPageUrl = response.data.events.next_page_url;
           this.prevPageUrl = response.data.events.prev_page_url;
         },
