@@ -21,7 +21,7 @@ class MusicianFactory extends Factory
      */
     public function definition()
     {
-        $user = User::first();
+        $user = User::inRandomOrder()->first();
 
         $defaultImage = rand(1,5) . '.jpeg';
         $destinationImage = time() . '.jpeg';

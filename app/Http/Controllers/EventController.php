@@ -269,20 +269,17 @@ class EventController extends Controller
     }
 
     public function searchEventsByKeyword($keyword, $showAttending = false) {
-        $query = Event::query();
-
-        $query->where(function ($query) use ($keyword) {
-            $query->where('name', 'LIKE', "%$keyword%")
-                ->orWhere('user_id', 'LIKE', "%$keyword%")
-                ->orWhere('address', 'LIKE', "%$keyword%")
-                ->orWhere('date', 'LIKE', "%$keyword%")
-                ->orWhere('time', 'LIKE', "%$keyword%")
-                ->orWhere('description', 'LIKE', "%$keyword%")
-                ->orWhere('ticketPrice', 'LIKE', "%$keyword%")
-                ->orWhereHas('musicians', function ($subquery) use ($keyword) {
-                    $subquery->where('name', 'LIKE', "%$keyword%");
-                });
-        });
+        $query = Event::query()
+            ->where('name', 'LIKE', "%" . $keyword . "%")
+            ->orWhere('user_id', 'LIKE', "%" . $keyword . "%")
+            ->orWhere('address', 'LIKE', "%" . $keyword . "%")
+            ->orWhere('date', 'LIKE', "%" . $keyword . "%")
+            ->orWhere('time', 'LIKE', "%" . $keyword . "%")
+            ->orWhere('description', 'LIKE', "%" . $keyword . "%")
+            ->orWhere('ticketPrice', 'LIKE', "%" . $keyword . "%")
+            ->orWhereHas('musicians', function ($subquery) use ($keyword) {
+                $subquery->where('name', 'LIKE', "%$keyword%");
+            });
 
         if ($showAttending) {
             $query->join('event_participants', 'events.id', '=', 'event_participants.event_id')

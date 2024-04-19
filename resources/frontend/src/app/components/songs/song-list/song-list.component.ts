@@ -42,7 +42,7 @@ export class SongListComponent implements OnInit {
 
   public ngOnInit(): void {
     if (this.authService.getLoggedUser()) {
-      if (this.router.url === "/events/mine") {
+      if (this.router.url === "/songs/mine") {
         this.getMine = true;
       }
     }
@@ -75,17 +75,13 @@ export class SongListComponent implements OnInit {
    * @param { any } filter
    */
   public getSongs(keyword: string, filter: any): void {
+    if (this.getMine) {
+      keyword = this.authService.getLoggedUser().id;
+    }
+
     this.songService.allSongs(keyword, filter).subscribe({
       next: (response: any) => {
         this.songs = response.data.songs.data;
-
-        if (this.getMine) {
-          const loggedUserId: string = this.authService.getLoggedUser().id;
-          this.songs = this.songs.filter((item: any) => {
-            return item.id === loggedUserId;
-          })
-        }
-
         this.nextPageUrl = response.data.songs.next_page_url;
         this.prevPageUrl = response.data.songs.prev_page_url;
       },
