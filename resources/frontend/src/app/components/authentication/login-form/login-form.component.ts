@@ -14,6 +14,7 @@ import {
   GoogleSigninButtonModule, MicrosoftLoginProvider,
   SocialAuthService
 } from "@abacritt/angularx-social-login";
+import {SocialLoginsComponent} from "../social-logins/social-logins.component";
 
 @Component({
   selector: 'app-login-form',
@@ -25,7 +26,8 @@ import {
     TextInputComponent,
     ButtonComponent,
     SubmitButtonComponent,
-    GoogleSigninButtonModule
+    GoogleSigninButtonModule,
+    SocialLoginsComponent
   ],
   providers: [
     UserService,
@@ -145,19 +147,5 @@ export class LoginFormComponent implements OnInit {
     this.authService.setLoggedUser(user);
     this.authService.setAuthToken(token);
     this.router.navigate(['/']).then(r => {});
-  }
-
-  /**
-   * Signs in with Facebook
-   */
-  signInWithFB(): void {
-    this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID);
-  }
-
-  /**
-   * Signs in with Microsoft
-   */
-  signInWithMicrosoft(): void {
-    this.socialAuthService.signIn(MicrosoftLoginProvider.PROVIDER_ID);
   }
 }
