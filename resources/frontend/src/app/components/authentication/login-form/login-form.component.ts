@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import {NgIf} from "@angular/common";
@@ -8,6 +8,12 @@ import {TextInputComponent} from "../../shared/text-input/text-input.component";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ButtonComponent} from "../../shared/button/button.component";
 import {SubmitButtonComponent} from "../../shared/submit-button/submit-button.component";
+import {
+  FacebookLoginProvider,
+  GoogleLoginProvider,
+  GoogleSigninButtonModule, MicrosoftLoginProvider,
+  SocialAuthService
+} from "@abacritt/angularx-social-login";
 
 @Component({
   selector: 'app-login-form',
@@ -18,18 +24,20 @@ import {SubmitButtonComponent} from "../../shared/submit-button/submit-button.co
     NgIf,
     TextInputComponent,
     ButtonComponent,
-    SubmitButtonComponent
+    SubmitButtonComponent,
+    GoogleSigninButtonModule
   ],
   providers: [
     UserService,
   ],
 })
-export class LoginFormComponent {
+export class LoginFormComponent implements OnInit {
   // This makes the component log in on Lukas' app
   @Input() public lukaApp: boolean = false;
   @Output() public authenticated: EventEmitter<boolean> = new EventEmitter();
 
   public errors: string = "";
+  public user: any = {};
   public unverifiedEmail: boolean = false;
 
   public loginForm: FormGroup = new FormGroup({
@@ -42,7 +50,45 @@ export class LoginFormComponent {
     private router: Router,
     private userService: UserService,
     private authService: AuthService,
+    private socialAuthService: SocialAuthService,
   ) { }
+
+  ngOnInit() {
+    this.socialAuthService.authState.subscribe((user) => {
+      if (user) {
+        console.log(user);
+        console.log(`Log in with ${user.provider}`);
+        this.user = user;
+
+        let token: string = "";
+
+        if (this.user.provider === "GOOGLE") {
+          token = this.user.idToken;
+          console.log(this.user);
+        } else if (this.user.provider === "FACEBOOK") {
+          token = this.user.response.idToken;
+        } else if (this.user.provider === "MICROSOFT") {
+          token = this.user.response.idToken;
+        } else {
+          return;
+        }
+
+        this.userService.loginWithSocials(token, this.user.provider).subscribe({
+          next: (response: any): void => {
+            console.log(response);
+            this.navigateToHomepage(response.data.user, response.data.token);
+          },
+          error: (response: any): void => {
+            console.log(response);
+            this.errors = response.error.message;
+            if (this.errors == "You need to confirm your email before continuing.") {
+              this.unverifiedEmail = true;
+            }
+          },
+        })
+      }
+    });
+  }
 
   /**
    * Resends verification email
@@ -75,9 +121,7 @@ export class LoginFormComponent {
                 this.authService.setLukaAuthToken(response.token);
                 this.authenticated.emit(true);
               } else {
-                this.authService.setLoggedUser(response.data.user);
-                this.authService.setAuthToken(response.data.token);
-                this.router.navigate(['/']).then(r => {});
+                this.navigateToHomepage(response.data.user, response.data.token);
               }
             } else {
               this.errors = response.message;
@@ -89,5 +133,31 @@ export class LoginFormComponent {
           error: (response: HttpErrorResponse): void => { this.errors = response.message; console.log(response)},
         })
     }
+  }
+
+  /**
+   * Sets the user and token, and navigates to the main page
+   *
+   * @param { any } user
+   * @param { string } token
+   */
+  public navigateToHomepage(user: any, token: string): void {
+    this.authService.setLoggedUser(user);
+    this.authService.setAuthToken(token);
+    this.router.navigate(['/']).then(r => {});
+  }
+
+  /**
+   * Signs in with Facebook
+   */
+  signInWithFB(): void {
+    this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID);
+  }
+
+  /**
+   * Signs in with Microsoft
+   */
+  signInWithMicrosoft(): void {
+    this.socialAuthService.signIn(MicrosoftLoginProvider.PROVIDER_ID);
   }
 }

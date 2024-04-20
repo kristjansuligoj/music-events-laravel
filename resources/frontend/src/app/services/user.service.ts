@@ -27,6 +27,16 @@ export class UserService {
   }
 
   /**
+   * Logs the user in the system with socials
+   *
+   * @param { string } tokenId
+   * @param { string } social
+   */
+  public loginWithSocials(tokenId: string, social: string): Observable<any[]> {
+    return this.http.post<any[]>(`${this.apiUrl}/loginWithSocials/${social}`, {'tokenId': tokenId});
+  }
+
+  /**
    * Logs the user out of the system
    */
   public logout(): Observable<any[]> {
@@ -40,5 +50,14 @@ export class UserService {
    */
   public register(userData: any): Observable<any[]> {
     return this.http.post<any[]>(`${this.apiUrl}/register`, userData);
+  }
+
+  /**
+   * Resends email verification link
+   *
+   * @param { string } email
+   */
+  public resendVerificationEmail(email: string): Observable<any[]> {
+    return this.http.post<any[]>(`${this.apiUrl}/verify-email/notification`, {email: email});
   }
 }
