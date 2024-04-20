@@ -30,6 +30,7 @@ export class LoginFormComponent {
   @Output() public authenticated: EventEmitter<boolean> = new EventEmitter();
 
   public errors: string = "";
+  public unverifiedEmail: boolean = false;
 
   public loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(255)]),
@@ -42,6 +43,23 @@ export class LoginFormComponent {
     private userService: UserService,
     private authService: AuthService,
   ) { }
+
+  /**
+   * Resends verification email
+   */
+  public resendVerificationEmail(): void {
+    const email: string = this.loginForm.value.email || this.user.email;
+    this.userService.resendVerificationEmail(email).subscribe({
+      next: (response: any): void => {
+        console.log("Success");
+        console.log(response);
+      },
+      error: (response: any): void => {
+        console.log("Error");
+        console.log(response);
+      },
+    });
+  }
 
   onSubmit(): void {
     if (this.loginForm.valid) {
@@ -63,6 +81,9 @@ export class LoginFormComponent {
               }
             } else {
               this.errors = response.message;
+              if (this.errors == "You need to confirm your email before continuing.") {
+                this.unverifiedEmail = true;
+              }
             }
           },
           error: (response: HttpErrorResponse): void => { this.errors = response.message; console.log(response)},

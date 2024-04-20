@@ -61,12 +61,34 @@ class AuthController extends Controller
 
         $user = User::where('email', $validated['email'])->first();
 
-        if(!$user || !Hash::check($validated['password'], $user->password)) {
+        $emailUnverified = is_null($user->email_verified_at);
+
+        if(!$user || !Hash::check($validated['password'], $user->password) || $emailUnverified) {
+            $message = "Incorrect credentials";
+
+            if ($emailUnverified) {
+                $message = "You need to confirm your email before continuing.";
+            }
+
             return response()->json([
                 'success' => false,
                 'data' => '',
                 'message' => 'Incorrect credentials',
             ]);
+                'message' => $message,
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'user' => $user,
+                'token' => $user->createToken('myapptoken')->plainTextToken
+            ],
+            'message' => 'Log in successful',
+        ]);
+    }
+
         }
 
         return response()->json([
