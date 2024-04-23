@@ -40,6 +40,7 @@ export class LoginFormComponent implements OnInit {
   public errors: string = "";
   public user: any = {};
   public unverifiedEmail: boolean = false;
+  public additionalInfo: string = '';
 
   public loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(255)]),
@@ -57,18 +58,13 @@ export class LoginFormComponent implements OnInit {
   ngOnInit() {
     this.socialAuthService.authState.subscribe((user) => {
       if (user) {
-        console.log(user);
-        console.log(`Log in with ${user.provider}`);
         this.user = user;
 
         let token: string = "";
 
         if (this.user.provider === "GOOGLE") {
           token = this.user.idToken;
-          console.log(this.user);
-        } else if (this.user.provider === "FACEBOOK") {
-          token = this.user.response.idToken;
-        } else if (this.user.provider === "MICROSOFT") {
+        } else if (this.user.provider === "FACEBOOK" || this.user.provider === "MICROSOFT") {
           token = this.user.response.idToken;
         } else {
           return;
@@ -76,11 +72,9 @@ export class LoginFormComponent implements OnInit {
 
         this.userService.loginWithSocials(token, this.user.provider).subscribe({
           next: (response: any): void => {
-            console.log(response);
             this.navigateToHomepage(response.data.user, response.data.token);
           },
           error: (response: any): void => {
-            console.log(response);
             this.errors = response.error.message;
             if (this.errors == "You need to confirm your email before continuing.") {
               this.unverifiedEmail = true;
@@ -98,12 +92,12 @@ export class LoginFormComponent implements OnInit {
     const email: string = this.loginForm.value.email || this.user.email;
     this.userService.resendVerificationEmail(email).subscribe({
       next: (response: any): void => {
-        console.log("Success");
-        console.log(response);
+        this.unverifiedEmail = false;
+        this.errors = '';
+        this.additionalInfo = 'Verification has been sent to your email. Confirm it before logging in again.';
       },
       error: (response: any): void => {
-        console.log("Error");
-        console.log(response);
+        this.errors = response.message;
       },
     });
   }

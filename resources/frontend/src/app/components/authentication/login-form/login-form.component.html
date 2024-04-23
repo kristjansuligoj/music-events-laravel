@@ -27,13 +27,22 @@
       <div class="h-1 mb-8">
         <span class="text-red-600">
           <small>{{errors}}</small>
-        </span><br/>
+        </span>
 
         <ng-container
           *ngIf="unverifiedEmail"
-          (click)="resendVerificationEmail()"
         >
-          <button (click)="resendVerificationEmail()">Resend email verification link</button>
+          <button
+            (click)="resendVerificationEmail()"
+            class="linkButton"
+            type="button"
+          >Resend email verification link</button>
+        </ng-container>
+
+        <ng-container
+          *ngIf="additionalInfo !== ''"
+        >
+          <small>{{ additionalInfo }}</small>
         </ng-container>
       </div>
 
