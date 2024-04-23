@@ -6,12 +6,13 @@ import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthInterceptor } from "./interceptors/auth.interceptor";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import {MicrosoftLoginProvider, SocialAuthServiceConfig} from '@abacritt/angularx-social-login';
 import {
+  MicrosoftLoginProvider,
+  SocialAuthServiceConfig,
   GoogleLoginProvider,
-  FacebookLoginProvider
+  FacebookLoginProvider,
 } from '@abacritt/angularx-social-login';
-import {environment} from "../environments/environment";
+import { environment } from "../environments/environment";
 
 export const appConfig: ApplicationConfig = {
   providers: [

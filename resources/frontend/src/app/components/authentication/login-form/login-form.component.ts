@@ -9,9 +9,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {ButtonComponent} from "../../shared/button/button.component";
 import {SubmitButtonComponent} from "../../shared/submit-button/submit-button.component";
 import {
-  FacebookLoginProvider,
-  GoogleLoginProvider,
-  GoogleSigninButtonModule, MicrosoftLoginProvider,
+  GoogleSigninButtonModule,
   SocialAuthService
 } from "@abacritt/angularx-social-login";
 import {SocialLoginsComponent} from "../social-logins/social-logins.component";
@@ -20,6 +18,7 @@ import {SocialLoginsComponent} from "../social-logins/social-logins.component";
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
   standalone: true,
+  styleUrl: './login-form.component.css',
   imports: [
     ReactiveFormsModule,
     NgIf,
