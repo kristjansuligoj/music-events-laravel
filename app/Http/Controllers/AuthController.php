@@ -18,6 +18,7 @@ use Lcobucci\JWT\Token\InvalidTokenStructure;
 use Lcobucci\JWT\Token\Parser;
 use Lcobucci\JWT\Token\UnsupportedHeaderFound;
 use Lcobucci\JWT\UnencryptedToken;
+use Nette\Utils\Random;
 
 class AuthController extends Controller
 {
@@ -162,6 +163,35 @@ class AuthController extends Controller
                 'token' => $user->createToken('myapptoken')->plainTextToken
             ],
             'message' => 'Log in successful',
+        ]);
+    }
+
+    /**
+     * Handles user authentication for socials
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function authenticateSocials(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make(Random::generate(20)),
+            ]);
+        }
+
+        $token = $user->createToken('token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Success',
+            'data' => [
+                'user' => $user,
+                'token' => $token
+            ]
         ]);
     }
 

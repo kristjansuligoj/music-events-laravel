@@ -22,6 +22,7 @@ use App\Http\Controllers\SongController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login/socials', [AuthController::class, 'authenticateSocials']);
 Route::post('/loginWithSocials/{social}', [AuthController::class, 'loginWithSocials']);
 Route::post('/verify-email/notification', [AuthController::class, 'sendEmailVerificationNotification']);
 
