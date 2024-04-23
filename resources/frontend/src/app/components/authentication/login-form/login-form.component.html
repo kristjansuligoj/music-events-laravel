@@ -28,9 +28,27 @@
         <span class="text-red-600">
           <small>{{errors}}</small>
         </span>
+
+        <ng-container
+          *ngIf="unverifiedEmail"
+        >
+          <button
+            (click)="resendVerificationEmail()"
+            class="linkButton"
+            type="button"
+          >Resend email verification link</button>
+        </ng-container>
+
+        <ng-container
+          *ngIf="additionalInfo !== ''"
+        >
+          <small>{{ additionalInfo }}</small>
+        </ng-container>
       </div>
 
-      <app-submit-button
+    <app-social-logins/>
+
+    <app-submit-button
         [formInvalid]="loginForm.invalid"
         customText="Login"
       />

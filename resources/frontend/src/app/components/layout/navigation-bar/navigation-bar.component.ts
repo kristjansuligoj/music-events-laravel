@@ -4,6 +4,7 @@ import {ButtonComponent} from "../../shared/button/button.component";
 import {JsonPipe, NgIf} from "@angular/common";
 import {AuthService} from "../../../services/auth.service";
 import {UserService} from "../../../services/user.service";
+import {SocialAuthService} from "@abacritt/angularx-social-login";
 
 @Component({
   selector: 'app-navigation-bar',
@@ -26,6 +27,7 @@ export class NavigationBarComponent {
   constructor(
     public authService: AuthService,
     public userService: UserService,
+    private socialAuthService: SocialAuthService,
   ) {}
 
   /**
@@ -35,6 +37,7 @@ export class NavigationBarComponent {
     this.userService.logout();
     this.authService.setAuthToken(null);
     this.authService.setLoggedUser(null);
+    this.socialAuthService.signOut();
     this.loggedIn = false;
   }
 }

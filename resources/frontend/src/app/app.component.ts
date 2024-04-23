@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {HttpClientModule} from "@angular/common/http";
-import {NavigationBarComponent} from "./components/layout/navigation-bar/navigation-bar.component";
-import {GoogleMapsModule} from "@angular/google-maps";
+import { HttpClientModule } from "@angular/common/http";
+import { NavigationBarComponent } from "./components/layout/navigation-bar/navigation-bar.component";
+import { GoogleMapsModule } from "@angular/google-maps";
+import { SocialLoginModule } from "@abacritt/angularx-social-login";
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import {GoogleMapsModule} from "@angular/google-maps";
     HttpClientModule,
     NavigationBarComponent,
     GoogleMapsModule,
+    SocialLoginModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

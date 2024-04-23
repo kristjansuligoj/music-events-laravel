@@ -22,23 +22,25 @@ use App\Http\Controllers\SongController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/loginWithSocials/{social}', [AuthController::class, 'loginWithSocials']);
+Route::post('/verify-email/notification', [AuthController::class, 'sendEmailVerificationNotification']);
 
 Route::group(['prefix' => 'images', 'middleware' => ['auth:sanctum']], function() {
     Route::post('/', [ImageController::class, 'addImage']);
     Route::post('/{image}', [ImageController::class, 'removeImage']);
 });
 
-Route::group(['middleware' => ['auth:sanctum']], function () {
+Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::group(['prefix' => 'notes', 'middleware' => ['auth:sanctum']], function () {
+Route::group(['prefix' => 'notes', 'middleware' => ['auth:sanctum', 'verified']], function () {
     Route::get('/authenticationForm', [NoteController::class, 'authenticationForm'])->name('notes.authenticationForm');
     Route::post('/authenticate', [NoteController::class, 'authenticate'])->name('notes.authenticate');
 
@@ -56,7 +58,7 @@ Route::prefix('musicians')->group(function () {
     Route::get('/', [MusicianController::class, 'allMusicians'])->name('musicians.list');
     Route::get('/{musicianId}', [MusicianController::class, 'getMusician'])->whereUuid('musician')->name('musicians.get');;
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/add', [MusicianController::class, 'addMusician'])->name('musicians.add');
         Route::patch('/edit/{musicianId}', [MusicianController::class, 'editMusician'])->whereUuid('musician')->name('musicians.edit');
         Route::delete('/remove/{musicianId}', [MusicianController::class, 'deleteMusician'])->whereUuid('musician')->name('musicians.delete');
@@ -68,7 +70,7 @@ Route::prefix('songs')->group(function () {
     Route::get('/', [SongController::class, 'allSongs'])->name('songs.list');
     Route::get('/{songId}', [SongController::class, 'getSong'])->whereUuid('song')->name('songs.get');
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/add', [SongController::class, 'addSong'])->name('songs.add');
         Route::patch('/edit/{songId}', [SongController::class, 'editSong'])->whereUuid('song')->name('songs.edit');
         Route::delete('/remove/{songId}', [SongController::class, 'deleteSong'])->whereUuid('song')->name('songs.delete');
@@ -81,7 +83,7 @@ Route::prefix('events')->group(function () {
     Route::get('/{eventId}', [EventController::class, 'getEvent'])->whereUuid('event')->name('events.get');
     Route::get('/user/{email}', [EventController::class, 'getUsersEvents']);
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/history/{userId}', [EventController::class, 'eventHistory'])->name('events.eventsHistory');
         Route::post('/add', [EventController::class, 'addEvent'])->name('events.add');
         Route::post('/{eventId}/add-user/{userId}', [EventController::class, 'addUserToEvent'])->whereUuid(['event', 'user'])->name('events.addUserToEvent');
