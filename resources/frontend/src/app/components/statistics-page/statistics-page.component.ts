@@ -43,7 +43,21 @@ export class StatisticsPageComponent implements OnInit {
 
   // Graph data
   public genreCount: any = [];
-  public addedElements: any = [];
+  public addedElements: any = [
+    {
+      "name": "Musicians",
+      "value": 0,
+    },
+    {
+      "name": "Songs",
+      "value": 0
+    },
+    {
+      "name": "Events",
+      "value": 0
+    }
+  ]
+
   public topArtists: any = [];
   public mostPopularGenreCount: any = [];
   public mostPopularEvents: any = [];
