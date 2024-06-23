@@ -15,7 +15,7 @@ class EventSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         for($i = 0; $i < 100; $i++) {
             $event = Event::factory()->create();
