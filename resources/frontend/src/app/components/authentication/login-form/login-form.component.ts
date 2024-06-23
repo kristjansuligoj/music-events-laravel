@@ -70,17 +70,21 @@ export class LoginFormComponent implements OnInit {
           return;
         }
 
-        this.userService.loginWithSocials(token, this.user.provider).subscribe({
-          next: (response: any): void => {
-            this.navigateToHomepage(response.data.user, response.data.token);
-          },
-          error: (response: any): void => {
-            this.errors = response.error.message;
-            if (this.errors == "You need to confirm your email before continuing.") {
-              this.unverifiedEmail = true;
-            }
-          },
-        })
+        try {
+          this.userService.loginWithSocials(token, this.user.provider).subscribe({
+            next: (response: any): void => {
+              this.navigateToHomepage(response.data.user, response.data.token);
+            },
+            error: (response: any): void => {
+              this.errors = response.error.message;
+              if (this.errors == "You need to confirm your email before continuing.") {
+                this.unverifiedEmail = true;
+              }
+            },
+          })
+        } catch(exception: any) {
+          console.log("User logged in normally.");
+        }
       }
     });
   }

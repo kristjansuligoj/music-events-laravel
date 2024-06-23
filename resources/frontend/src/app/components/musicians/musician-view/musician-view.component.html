@@ -1,5 +1,5 @@
 <div class="container p-5 sm:p-8 bg-white shadow sm:rounded-lg">
-  <div *ngIf="authService.getAuthToken()">
+  <div *ngIf="authService.getLoggedUser()?.id === musician?.user?.id">
     <div class="flex justify-between items-center mb-4">
       <app-button
         [route]="'/musicians/edit/' + musician.id"
