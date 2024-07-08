@@ -73,7 +73,7 @@ class AuthController extends Controller
 
             $emailUnverified = is_null($user->email_verified_at);
 
-            if(!$user || !Hash::check($validated['password'], $user->password) || $emailUnverified) {
+            if(!Hash::check($validated['password'], $user->password) || $emailUnverified) {
                 $message = "Incorrect credentials";
 
                 if ($emailUnverified) {
