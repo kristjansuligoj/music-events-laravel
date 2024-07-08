@@ -68,32 +68,40 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        $user = User::where('email', $validated['email'])->first();
+        try {
+            $user = User::where('email', $validated['email'])->firstOrFail();
 
-        $emailUnverified = is_null($user->email_verified_at);
+            $emailUnverified = is_null($user->email_verified_at);
 
-        if(!$user || !Hash::check($validated['password'], $user->password) || $emailUnverified) {
-            $message = "Incorrect credentials";
+            if(!$user || !Hash::check($validated['password'], $user->password) || $emailUnverified) {
+                $message = "Incorrect credentials";
 
-            if ($emailUnverified) {
-                $message = "You need to confirm your email before continuing.";
+                if ($emailUnverified) {
+                    $message = "You need to confirm your email before continuing.";
+                }
+
+                return response()->json([
+                    'success' => false,
+                    'data' => '',
+                    'message' => $message,
+                ]);
             }
 
             return response()->json([
+                'success' => true,
+                'data' => [
+                    'user' => $user,
+                    'token' => $user->createToken('myapptoken')->plainTextToken
+                ],
+                'message' => 'Log in successful',
+            ]);
+        } catch(\Exception $e) {
+            return response()->json([
                 'success' => false,
                 'data' => '',
-                'message' => $message,
+                'message' => 'That email does not exist in our database.',
             ]);
         }
-
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'user' => $user,
-                'token' => $user->createToken('myapptoken')->plainTextToken
-            ],
-            'message' => 'Log in successful',
-        ]);
     }
 
     /**
